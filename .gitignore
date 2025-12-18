@@ -41,5 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # project docs
-public/El_Alto_Website.pdf
+public/*.pdf
+public/*.odt
 public/*.pdf:Zone.Identifier
+public/*.odt:Zone.Identifier
