@@ -27,17 +27,11 @@ export default function Hero() {
             Cabañas con vista panorámica en las sierras de Córdoba
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Button href="#cabanas" variant="primary" size="lg">
+            <Button href="/cabanas" variant="primary" size="lg">
               Ver Cabañas
             </Button>
-            <Button
-              href="https://wa.me/5491112345678"
-              variant="outline"
-              size="lg"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Consultar por WhatsApp
+            <Button href="/contacto" variant="outline" size="lg">
+              Consultar disponibilidad
             </Button>
           </div>
         </div>
