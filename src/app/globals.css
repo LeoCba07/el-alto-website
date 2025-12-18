@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  /* Earth Tone Color Palette - Natural & Organic */
+  --color-earth-dark: #3d2817;      /* Deep brown - headers, text */
+  --color-earth-medium: #6b4423;    /* Medium brown - accents */
+  --color-earth-light: #a67c52;     /* Warm tan - highlights */
+
+  --color-sand: #e8dcc4;            /* Light sand - backgrounds */
+  --color-sand-light: #f5f0e8;      /* Very light sand - sections */
+
+  --color-terracotta: #c86b3c;      /* Warm terracotta - primary CTA */
+  --color-terracotta-dark: #a85530; /* Darker terracotta - hover states */
+
+  --color-sage: #7a8b6f;            /* Sage green - secondary accent */
+  --color-forest: #4a5d43;          /* Forest green - secondary CTA */
+
+  --color-stone: #9b9180;           /* Warm gray - borders, dividers */
+  --color-stone-light: #d4cec3;     /* Light stone - subtle backgrounds */
+
+  /* Semantic colors */
+  --background: #ffffff;
+  --foreground: var(--color-earth-dark);
+  --accent-primary: var(--color-terracotta);
+  --accent-secondary: var(--color-forest);
+}
+
+@theme inline {
+  /* Background Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Earth Tones */
+  --color-earth-dark: #3d2817;
+  --color-earth-medium: #6b4423;
+  --color-earth-light: #a67c52;
+  --color-sand: #e8dcc4;
+  --color-sand-light: #f5f0e8;
+
+  /* Accent Colors */
+  --color-terracotta: #c86b3c;
+  --color-terracotta-dark: #a85530;
+  --color-sage: #7a8b6f;
+  --color-forest: #4a5d43;
+
+  /* Neutrals */
+  --color-stone: #9b9180;
+  --color-stone-light: #d4cec3;
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
