@@ -120,7 +120,9 @@ export default function ContactForm() {
           {errors.checkIn && (
             <p className="mt-1 text-sm text-red-500">{errors.checkIn}</p>
           )}
-          <p className="mt-1 text-xs text-stone">Check-in desde las 13:30 hs</p>
+          <p className="mt-1 text-xs text-stone">
+            {checkIn ? formatDate(checkIn) + ' — ' : ''}Check-in desde las 13:30 hs
+          </p>
         </div>
 
         <div>
@@ -143,7 +145,9 @@ export default function ContactForm() {
           {errors.checkOut && (
             <p className="mt-1 text-sm text-red-500">{errors.checkOut}</p>
           )}
-          <p className="mt-1 text-xs text-stone">Check-out hasta las 10:00 hs</p>
+          <p className="mt-1 text-xs text-stone">
+            {checkOut ? formatDate(checkOut) + ' — ' : ''}Check-out hasta las 10:00 hs
+          </p>
         </div>
       </div>
 
@@ -235,7 +239,7 @@ export default function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={3}
-          placeholder="Ej: ¿Tienen disponibilidad para esas fechas? ¿Aceptan mascotas?"
+          placeholder="Ej: ¿Tienen disponibilidad? ¿Cuál es la tarifa? ¿Tienen cuna para bebé?"
           className="w-full px-4 py-3 rounded-lg border border-stone-light focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent resize-none"
         />
       </div>
