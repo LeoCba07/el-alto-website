@@ -27,14 +27,17 @@ const cabanas = [
 
 export default function FeaturedCabanas() {
   return (
-    <section id="cabanas" className="bg-[var(--color-sand-light)] py-20">
+    <section id="cabanas" className="bg-cream py-20">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-bold text-[var(--color-earth-dark)] md:text-5xl">
+          <p className="text-amber font-medium mb-3 tracking-wide uppercase text-sm">
+            Alojamientos
+          </p>
+          <h2 className="mb-4 text-3xl font-bold text-text-dark md:text-4xl font-serif">
             Nuestras Cabañas
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-[var(--color-earth-medium)]">
+          <p className="mx-auto max-w-2xl text-lg text-text-medium">
             Descubrí el lugar perfecto para tu descanso en las sierras de
             Córdoba
           </p>
@@ -45,7 +48,7 @@ export default function FeaturedCabanas() {
           {cabanas.map((cabana) => (
             <div
               key={cabana.id}
-              className="group overflow-hidden rounded-2xl bg-white shadow-lg transition-transform hover:scale-105"
+              className="group overflow-hidden rounded-2xl bg-white shadow-lg border border-sand transition-all hover:shadow-xl hover:-translate-y-1"
             >
               {/* Image */}
               <div className="relative h-64 w-full overflow-hidden">
@@ -53,19 +56,20 @@ export default function FeaturedCabanas() {
                   src={cabana.imagen}
                   alt={cabana.nombre}
                   fill
-                  className="object-cover transition-transform group-hover:scale-110"
+                  className="object-cover transition-transform group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               </div>
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="mb-2 text-2xl font-bold text-[var(--color-earth-dark)]">
+                <h3 className="mb-2 text-xl font-bold text-text-dark font-serif">
                   {cabana.nombre}
                 </h3>
-                <p className="mb-4 text-[var(--color-earth-medium)]">
+                <p className="mb-4 text-text-medium text-sm">
                   {cabana.descripcion}
                 </p>
-                <div className="mb-4 flex items-center text-[var(--color-sage)]">
+                <div className="mb-4 flex items-center text-forest">
                   <svg
                     className="mr-2 h-5 w-5"
                     fill="none"
@@ -79,7 +83,7 @@ export default function FeaturedCabanas() {
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  <span className="font-medium">
+                  <span className="font-medium text-sm">
                     Hasta {cabana.capacidad} personas
                   </span>
                 </div>

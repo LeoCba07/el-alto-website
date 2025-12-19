@@ -114,8 +114,8 @@ export default function ContactForm() {
             onChange={(e) => setCheckIn(e.target.value)}
             min={today}
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.checkIn ? 'border-red-500' : 'border-stone-light'
-            } focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent`}
+              errors.checkIn ? 'border-red-500' : 'border-sand'
+            } bg-cream focus:outline-none focus:ring-2 focus:ring-amber focus:border-transparent`}
           />
           {errors.checkIn && (
             <p className="mt-1 text-sm text-red-500">{errors.checkIn}</p>
@@ -139,8 +139,8 @@ export default function ContactForm() {
             onChange={(e) => setCheckOut(e.target.value)}
             min={minCheckOut}
             className={`w-full px-4 py-3 rounded-lg border ${
-              errors.checkOut ? 'border-red-500' : 'border-stone-light'
-            } focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent`}
+              errors.checkOut ? 'border-red-500' : 'border-sand'
+            } bg-cream focus:outline-none focus:ring-2 focus:ring-amber focus:border-transparent`}
           />
           {errors.checkOut && (
             <p className="mt-1 text-sm text-red-500">{errors.checkOut}</p>
@@ -164,7 +164,7 @@ export default function ContactForm() {
             id="adults"
             value={adults}
             onChange={(e) => setAdults(Number(e.target.value))}
-            className="w-full px-4 py-3 rounded-lg border border-stone-light focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
+            className="w-full px-4 py-3 rounded-lg border border-sand bg-cream focus:outline-none focus:ring-2 focus:ring-amber focus:border-transparent"
           >
             {[1, 2, 3, 4, 5, 6].map((n) => (
               <option key={n} value={n}>
@@ -185,7 +185,7 @@ export default function ContactForm() {
             id="children"
             value={children}
             onChange={(e) => handleChildrenChange(Number(e.target.value))}
-            className="w-full px-4 py-3 rounded-lg border border-stone-light focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
+            className="w-full px-4 py-3 rounded-lg border border-sand bg-cream focus:outline-none focus:ring-2 focus:ring-amber focus:border-transparent"
           >
             {[0, 1, 2, 3, 4].map((n) => (
               <option key={n} value={n}>
@@ -209,7 +209,7 @@ export default function ContactForm() {
                 <select
                   value={age}
                   onChange={(e) => handleChildAgeChange(index, Number(e.target.value))}
-                  className="px-3 py-2 rounded-lg border border-stone-light focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent"
+                  className="px-3 py-2 rounded-lg border border-sand bg-cream focus:outline-none focus:ring-2 focus:ring-amber focus:border-transparent"
                 >
                   {Array.from({ length: 18 }, (_, i) => (
                     <option key={i} value={i}>
@@ -240,7 +240,7 @@ export default function ContactForm() {
           onChange={(e) => setMessage(e.target.value)}
           rows={3}
           placeholder="Ej: ¿Tienen disponibilidad? ¿Cuál es la tarifa? ¿Tienen cuna para bebé?"
-          className="w-full px-4 py-3 rounded-lg border border-stone-light focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent resize-none"
+          className="w-full px-4 py-3 rounded-lg border border-sand bg-cream focus:outline-none focus:ring-2 focus:ring-amber focus:border-transparent resize-none"
         />
       </div>
 

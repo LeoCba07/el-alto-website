@@ -1,28 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  /* Earth Tone Color Palette - Natural & Organic */
-  --color-earth-dark: #3d2817;      /* Deep brown - headers, text */
-  --color-earth-medium: #6b4423;    /* Medium brown - accents */
-  --color-earth-light: #a67c52;     /* Warm tan - highlights */
+  /* Sierras de Córdoba - Warm & Natural Palette */
 
-  --color-sand: #e8dcc4;            /* Light sand - backgrounds */
-  --color-sand-light: #f5f0e8;      /* Very light sand - sections */
+  /* Deep greens - Trust & Nature */
+  --color-forest-dark: #1e3a2f;     /* Deep forest - headers, dark sections */
+  --color-forest: #2d4a3e;          /* Primary green - main accent */
+  --color-forest-light: #3d5c4e;    /* Lighter forest - hover states */
 
-  --color-terracotta: #c86b3c;      /* Warm terracotta - primary CTA */
-  --color-terracotta-dark: #a85530; /* Darker terracotta - hover states */
+  /* Warm neutrals - Homey & Welcoming */
+  --color-cream: #faf6f1;           /* Warm cream - main background */
+  --color-cream-dark: #f0ebe3;      /* Darker cream - cards, sections */
+  --color-sand: #e5ddd2;            /* Warm sand - borders, subtle bg */
 
-  --color-sage: #7a8b6f;            /* Sage green - secondary accent */
-  --color-forest: #4a5d43;          /* Forest green - secondary CTA */
+  /* Amber accent - Sierra sunlight */
+  --color-amber: #c8973e;           /* Golden amber - CTAs, highlights */
+  --color-amber-dark: #a67c2e;      /* Darker amber - hover states */
+  --color-amber-light: #daa94d;     /* Lighter amber - accents */
 
-  --color-stone: #9b9180;           /* Warm gray - borders, dividers */
-  --color-stone-light: #d4cec3;     /* Light stone - subtle backgrounds */
+  /* Text colors */
+  --color-text-dark: #2c2416;       /* Warm dark brown - primary text */
+  --color-text-medium: #5c4d3d;     /* Medium brown - secondary text */
+  --color-text-light: #8a7a68;      /* Light brown - muted text */
+
+  /* Stone accents */
+  --color-stone: #9c8e7c;           /* Warm gray - borders */
+  --color-stone-light: #c4b8a8;     /* Light stone - dividers */
+
+  /* Legacy mappings for compatibility */
+  --color-earth-dark: var(--color-text-dark);
+  --color-earth-medium: var(--color-text-medium);
+  --color-earth-light: var(--color-text-light);
+  --color-sand-light: var(--color-cream);
+  --color-terracotta: var(--color-amber);
+  --color-terracotta-dark: var(--color-amber-dark);
+  --color-sage: var(--color-forest-light);
 
   /* Semantic colors */
-  --background: #ffffff;
-  --foreground: var(--color-earth-dark);
-  --accent-primary: var(--color-terracotta);
-  --accent-secondary: var(--color-forest);
+  --background: var(--color-cream);
+  --foreground: var(--color-text-dark);
+  --accent-primary: var(--color-forest);
+  --accent-secondary: var(--color-amber);
 }
 
 @theme inline {
@@ -30,32 +48,59 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* Earth Tones */
-  --color-earth-dark: #3d2817;
-  --color-earth-medium: #6b4423;
-  --color-earth-light: #a67c52;
-  --color-sand: #e8dcc4;
-  --color-sand-light: #f5f0e8;
+  /* Forest Greens */
+  --color-forest-dark: #1e3a2f;
+  --color-forest: #2d4a3e;
+  --color-forest-light: #3d5c4e;
 
-  /* Accent Colors */
-  --color-terracotta: #c86b3c;
-  --color-terracotta-dark: #a85530;
-  --color-sage: #7a8b6f;
-  --color-forest: #4a5d43;
+  /* Warm Creams */
+  --color-cream: #faf6f1;
+  --color-cream-dark: #f0ebe3;
+  --color-sand: #e5ddd2;
+  --color-sand-light: #faf6f1;
+
+  /* Amber Accents */
+  --color-amber: #c8973e;
+  --color-amber-dark: #a67c2e;
+  --color-amber-light: #daa94d;
+
+  /* Text Colors */
+  --color-text-dark: #2c2416;
+  --color-text-medium: #5c4d3d;
+  --color-text-light: #8a7a68;
+
+  /* Legacy mappings */
+  --color-earth-dark: #2c2416;
+  --color-earth-medium: #5c4d3d;
+  --color-earth-light: #8a7a68;
+  --color-terracotta: #c8973e;
+  --color-terracotta-dark: #a67c2e;
+  --color-sage: #3d5c4e;
 
   /* Neutrals */
-  --color-stone: #9b9180;
-  --color-stone-light: #d4cec3;
+  --color-stone: #9c8e7c;
+  --color-stone-light: #c4b8a8;
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-merriweather);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* Serif headings for traditional feel */
+h1, h2, h3 {
+  font-family: var(--font-merriweather), Georgia, serif;
+}
+
+/* Utility class for serif font */
+.font-serif {
+  font-family: var(--font-merriweather), Georgia, serif;
 }
 
 /* Smooth scrolling for anchor links */

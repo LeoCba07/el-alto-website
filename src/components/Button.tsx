@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ButtonHTMLAttributes, AnchorHTMLAttributes } from 'react'
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline'
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'outline-light'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 interface BaseButtonProps {
@@ -24,11 +24,13 @@ type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--color-terracotta)] text-white hover:bg-[var(--color-terracotta-dark)] transition-all hover:scale-105',
+    'bg-[var(--color-amber)] text-white hover:bg-[var(--color-amber-dark)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02]',
   secondary:
-    'bg-[var(--color-forest)] text-white hover:bg-[var(--color-earth-dark)] transition-all hover:scale-105',
+    'bg-[var(--color-forest)] text-white hover:bg-[var(--color-forest-light)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02]',
   outline:
-    'border-2 border-white bg-transparent text-white hover:bg-white hover:text-[var(--color-earth-dark)] transition-colors',
+    'border-2 border-[var(--color-forest)] bg-transparent text-[var(--color-forest)] hover:bg-[var(--color-forest)] hover:text-white transition-colors',
+  'outline-light':
+    'border-2 border-white bg-transparent text-white hover:bg-white hover:text-[var(--color-forest-dark)] transition-colors',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {

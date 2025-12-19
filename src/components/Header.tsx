@@ -15,13 +15,13 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-cream/95 backdrop-blur-sm border-b border-sand">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link
             href="/"
-            className="text-xl md:text-2xl font-bold text-earth-dark hover:text-terracotta transition-colors"
+            className="text-xl md:text-2xl font-bold text-forest font-serif hover:text-forest-light transition-colors"
           >
             El Alto
           </Link>
@@ -32,7 +32,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-earth-dark hover:text-terracotta transition-colors font-medium"
+                className="text-text-dark hover:text-forest transition-colors font-medium"
               >
                 {link.label}
               </Link>
@@ -53,7 +53,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-earth-dark hover:text-terracotta transition-colors"
+            className="md:hidden p-2 text-text-dark hover:text-forest transition-colors"
             aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
             {isMenuOpen ? (
@@ -93,14 +93,14 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-stone-light">
+        <div className="md:hidden bg-cream border-t border-sand">
           <nav className="flex flex-col px-4 py-4 space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-earth-dark hover:text-terracotta transition-colors font-medium py-2"
+                className="text-text-dark hover:text-forest transition-colors font-medium py-2"
               >
                 {link.label}
               </Link>

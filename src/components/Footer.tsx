@@ -11,33 +11,33 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-earth-dark text-white">
+    <footer className="bg-forest-dark text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand & Description */}
           <div className="lg:col-span-1">
-            <Link href="/" className="text-2xl font-bold text-white">
+            <Link href="/" className="text-2xl font-bold text-cream font-serif hover:text-amber transition-colors">
               El Alto
             </Link>
-            <p className="mt-4 text-stone-light text-sm leading-relaxed">
+            <p className="mt-4 text-cream/80 text-sm leading-relaxed">
               Complejo de cabañas y departamentos en las sierras de Córdoba.
               Más de 28 años brindando tranquilidad y confort a nuestros
               huéspedes.
             </p>
-            <p className="mt-3 text-stone text-xs">
+            <p className="mt-3 text-cream/60 text-xs">
               Legajo N°272/07 — Agencia Córdoba Turismo
             </p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Navegación</h3>
+            <h3 className="text-lg font-semibold mb-4 font-serif text-amber">Navegación</h3>
             <ul className="space-y-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-stone-light hover:text-white transition-colors text-sm"
+                    className="text-cream/80 hover:text-amber transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -48,11 +48,11 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contacto</h3>
-            <ul className="space-y-3 text-sm text-stone-light">
+            <h3 className="text-lg font-semibold mb-4 font-serif text-amber">Contacto</h3>
+            <ul className="space-y-3 text-sm text-cream/80">
               <li className="flex items-start gap-2">
                 <svg
-                  className="w-5 h-5 mt-0.5 flex-shrink-0 text-terracotta"
+                  className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -78,7 +78,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <svg
-                  className="w-5 h-5 flex-shrink-0 text-terracotta"
+                  className="w-5 h-5 flex-shrink-0 text-amber"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -94,7 +94,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <svg
-                  className="w-5 h-5 flex-shrink-0 text-terracotta"
+                  className="w-5 h-5 flex-shrink-0 text-amber"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -108,7 +108,7 @@ export default function Footer() {
                 </svg>
                 <a
                   href="mailto:info@complejoelalto.com.ar"
-                  className="hover:text-white transition-colors"
+                  className="hover:text-amber transition-colors"
                 >
                   info@complejoelalto.com.ar
                 </a>
@@ -118,14 +118,14 @@ export default function Footer() {
 
           {/* Social & Hours */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Seguinos</h3>
+            <h3 className="text-lg font-semibold mb-4 font-serif text-amber">Seguinos</h3>
             <div className="flex gap-4">
               {/* Instagram */}
               <a
                 href="https://instagram.com/complejoelalto"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-earth-medium rounded-full flex items-center justify-center hover:bg-terracotta transition-colors"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber transition-colors"
                 aria-label="Instagram"
               >
                 <svg
@@ -141,7 +141,7 @@ export default function Footer() {
                 href="https://facebook.com/complejoelalto"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-earth-medium rounded-full flex items-center justify-center hover:bg-terracotta transition-colors"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber transition-colors"
                 aria-label="Facebook"
               >
                 <svg
@@ -157,7 +157,7 @@ export default function Footer() {
                 href="https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-earth-medium rounded-full flex items-center justify-center hover:bg-terracotta transition-colors"
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber transition-colors"
                 aria-label="TripAdvisor"
               >
                 <svg
@@ -170,24 +170,24 @@ export default function Footer() {
               </a>
             </div>
             <div className="mt-6">
-              <p className="text-sm text-stone-light">
-                <span className="font-medium text-white">Check-in:</span> 13:00
+              <p className="text-sm text-cream/80">
+                <span className="font-medium text-cream">Check-in:</span> 13:00
                 - 14:00
               </p>
-              <p className="text-sm text-stone-light mt-1">
-                <span className="font-medium text-white">Check-out:</span> 10:00
+              <p className="text-sm text-cream/80 mt-1">
+                <span className="font-medium text-cream">Check-out:</span> 10:00
               </p>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-earth-medium">
+        <div className="mt-12 pt-8 border-t border-cream/20">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-stone">
+            <p className="text-sm text-cream/60">
               © {currentYear} Complejo El Alto. Todos los derechos reservados.
             </p>
-            <p className="text-sm text-stone">
+            <p className="text-sm text-cream/60">
               Atendido por sus dueños desde 1996
             </p>
           </div>
