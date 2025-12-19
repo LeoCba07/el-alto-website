@@ -47,7 +47,7 @@ export default function Button({
   href,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'rounded-full font-semibold inline-block text-center'
+  const baseStyles = 'rounded-full font-semibold inline-flex items-center justify-center gap-2 text-center'
   const combinedStyles = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`
 
   if (href) {
