@@ -2,39 +2,77 @@
 
 import Image from 'next/image'
 import Button from './Button'
+import { HiOutlineChevronDown } from 'react-icons/hi2'
+import { useState, useEffect, useCallback } from 'react'
+
+const heroImages = [
+  '/images/panorama-pileta.jpg',
+  '/images/vista-desde-cabana.JPG',
+  '/images/cabana-con-vista.JPG',
+  '/images/sierras.jpg',
+]
 
 export default function Hero() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % heroImages.length)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 5000)
+    return () => clearInterval(interval)
+  }, [nextSlide])
+
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Background Image */}
-      <Image
-        src="/images/panorama-pileta.jpg"
-        alt="Vista panorámica de la pileta en El Alto"
-        fill
-        className="object-cover"
-        priority
-        quality={90}
-      />
+      {/* Background Images with Crossfade */}
+      {heroImages.map((src, index) => (
+        <div
+          key={src}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <Image
+            src={src}
+            alt="El Alto - Cabañas en las sierras"
+            fill
+            className="object-cover"
+            priority={index === 0}
+            quality={90}
+          />
+        </div>
+      ))}
 
       {/* Gradient overlay for better readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
-      {/* Content */}
-      <div className="relative z-10 flex h-full items-center justify-center">
-        <div className="max-w-4xl px-6 text-center text-white drop-shadow-lg">
-          <p className="mb-2 font-medium tracking-widest uppercase text-sm md:text-base drop-shadow-md">
-            Complejo de cabañas
+      {/* Content - Spread across full height */}
+      <div className="relative z-10 flex h-full flex-col justify-between py-32 md:py-40">
+        {/* Top - Tagline */}
+        <div className="text-center px-6">
+          <p className="font-medium tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
+            Complejo de cabañas en Tanti, Córdoba
           </p>
-          <h1 className="mb-4 text-5xl font-bold leading-tight md:text-6xl lg:text-7xl font-serif drop-shadow-xl">
+        </div>
+
+        {/* Center - Main Title */}
+        <div className="text-center px-6">
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4">
             El Alto
           </h1>
-          <p className="mb-6 text-xl md:text-2xl lg:text-3xl font-normal drop-shadow-md">
+          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white drop-shadow-xl">
             Tu refugio en las sierras
           </p>
-          <p className="mb-10 text-sm md:text-base text-amber-light tracking-wide drop-shadow-md font-medium">
-            Desde 1996 en Tanti, Córdoba · A 10 minutos de Villa Carlos Paz
+        </div>
+
+        {/* Bottom - CTA & Info */}
+        <div className="text-center px-6">
+          <p className="mb-8 text-base md:text-lg text-white tracking-wide font-semibold [text-shadow:_0_2px_8px_rgb(0_0_0_/_90%)]">
+            Desde 1996 · A 10 minutos de Villa Carlos Paz
           </p>
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-center drop-shadow-lg">
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Button href="/cabanas" variant="primary" size="lg" className="shadow-xl">
               Ver alojamientos
             </Button>
@@ -45,15 +83,31 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* Image indicators */}
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+        {heroImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentIndex ? 'bg-white w-6' : 'bg-white/50'
+            }`}
+            aria-label={`Ir a imagen ${index + 1}`}
+          />
+        ))}
+      </div>
+
       {/* Scroll indicator */}
       <button
-        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+        onClick={() => {
+          // Scroll just enough to reveal the next section (account for fixed header)
+          const scrollAmount = window.innerHeight - 100
+          window.scrollTo({ top: scrollAmount, behavior: 'smooth' })
+        }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce cursor-pointer hover:scale-110 transition-transform"
         aria-label="Scroll hacia abajo"
       >
-        <svg className="w-6 h-6 text-white/70 hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
+        <HiOutlineChevronDown className="w-8 h-8 text-white/70 hover:text-white transition-colors" />
       </button>
     </section>
   )

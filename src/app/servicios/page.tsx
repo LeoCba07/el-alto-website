@@ -4,15 +4,15 @@ export default function ServiciosPage() {
   return (
     <main className="min-h-screen bg-cream">
       {/* Hero banner */}
-      <section className="bg-forest-dark text-white py-16 md:py-20 mt-14 md:mt-16">
+      <section className="bg-forest-dark text-white py-12 md:py-16 mt-14 md:mt-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-amber font-medium mb-3 tracking-wide uppercase text-sm">
+          <p className="text-amber font-medium mb-2 tracking-wide uppercase text-sm">
             Comodidad y tranquilidad
           </p>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl font-serif font-bold mb-3">
             Servicios e Instalaciones
           </h1>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">
+          <p className="text-white/80 max-w-2xl mx-auto">
             Todo lo que necesitás para descansar como en casa
           </p>
         </div>
@@ -29,7 +29,7 @@ export default function ServiciosPage() {
           <div className="grid md:grid-cols-3 gap-5">
             <FeatureCard
               image="/images/panorama-pileta.jpg"
-              title="Piscina"
+              title="Pileta al aire libre"
               description="Vista a las sierras. Climatizada en primavera y otoño."
               note="Horario: 9:30 a 22:00 hs"
             />
