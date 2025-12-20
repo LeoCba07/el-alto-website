@@ -1,9 +1,12 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { HiOutlineFire } from 'react-icons/hi2'
 import { FiWifi } from 'react-icons/fi'
 import { MdOutlinePool, MdOutlineLocalParking, MdOutlineKitchen, MdOutlineLandscape } from 'react-icons/md'
-import { HiArrowRight } from 'react-icons/hi2'
+import { HiOutlineArrowRight } from 'react-icons/hi2'
+import { FadeUp, StaggerGrid } from './ScrollAnimations'
 
 const highlights = [
   {
@@ -34,23 +37,25 @@ const amenities = [
 
 export default function ServicesHighlights() {
   return (
-    <section className="bg-cream py-16 md:py-20">
+    <section className="bg-forest-dark py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <p className="text-forest font-medium mb-2 tracking-wide uppercase text-sm">
-            Instalaciones
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-forest-dark font-serif mb-4">
-            Lo que más disfrutan nuestros huéspedes
-          </h2>
-          <p className="text-text-medium max-w-2xl mx-auto">
-            Espacios pensados para tu descanso y disfrute en las sierras
-          </p>
-        </div>
+        <FadeUp>
+          <div className="text-center mb-12">
+            <p className="text-amber font-medium mb-2 tracking-wide uppercase text-sm">
+              Instalaciones
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white font-serif mb-4">
+              Lo que más disfrutan nuestros huéspedes
+            </h2>
+            <p className="text-white/80 max-w-2xl mx-auto">
+              Espacios pensados para tu descanso y disfrute en las sierras
+            </p>
+          </div>
+        </FadeUp>
 
         {/* Feature Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <StaggerGrid className="grid md:grid-cols-3 gap-6 mb-12" staggerDelay={150}>
           {highlights.map((item, index) => (
             <div
               key={index}
@@ -72,13 +77,13 @@ export default function ServicesHighlights() {
               </div>
             </div>
           ))}
-        </div>
+        </StaggerGrid>
 
         {/* Amenities Row */}
         <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-10">
           {amenities.map((amenity, index) => (
-            <div key={index} className="flex items-center gap-2 text-text-dark">
-              <amenity.Icon className="w-5 h-5 text-forest" />
+            <div key={index} className="flex items-center gap-2 text-white/80">
+              <amenity.Icon className="w-5 h-5 text-amber" />
               <span className="text-sm font-medium">{amenity.label}</span>
             </div>
           ))}
@@ -88,10 +93,10 @@ export default function ServicesHighlights() {
         <div className="text-center">
           <Link
             href="/servicios"
-            className="inline-flex items-center gap-2 text-forest font-medium hover:text-forest-dark transition-colors"
+            className="inline-flex items-center gap-2 text-white font-medium hover:text-amber transition-colors group"
           >
             Ver todos los servicios
-            <HiArrowRight className="w-4 h-4" />
+            <HiOutlineArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>

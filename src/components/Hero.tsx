@@ -8,7 +8,6 @@ import { useState, useEffect, useCallback } from 'react'
 const heroImages = [
   '/images/panorama-pileta.jpg',
   '/images/vista-desde-cabana.JPG',
-  '/images/cabana-con-vista.JPG',
   '/images/sierras.jpg',
 ]
 
@@ -51,7 +50,7 @@ export default function Hero() {
       {/* Content - Spread across full height */}
       <div className="relative z-10 flex h-full flex-col justify-between py-32 md:py-40">
         {/* Top - Tagline */}
-        <div className="text-center px-6">
+        <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
           <p className="font-medium tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
             Complejo de cabañas en Tanti, Córdoba
           </p>
@@ -59,16 +58,16 @@ export default function Hero() {
 
         {/* Center - Main Title */}
         <div className="text-center px-6">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4">
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
             El Alto
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white drop-shadow-xl">
+          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
             Tu refugio en las sierras
           </p>
         </div>
 
         {/* Bottom - CTA & Info */}
-        <div className="text-center px-6">
+        <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
           <p className="mb-8 text-base md:text-lg text-white tracking-wide font-semibold [text-shadow:_0_2px_8px_rgb(0_0_0_/_90%)]">
             Desde 1996 · A 10 minutos de Villa Carlos Paz
           </p>

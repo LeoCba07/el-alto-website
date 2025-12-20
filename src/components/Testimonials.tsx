@@ -1,8 +1,11 @@
+'use client'
+
 import Link from 'next/link'
 import { HiStar } from 'react-icons/hi2'
 import { FiExternalLink } from 'react-icons/fi'
 import { SiTripadvisor, SiGoogle } from 'react-icons/si'
 import { RiDoubleQuotesL } from 'react-icons/ri'
+import { FadeUp, StaggerGrid } from './ScrollAnimations'
 
 const testimonials = [
   {
@@ -46,21 +49,23 @@ export default function Testimonials() {
     <section className="bg-forest-dark py-16 md:py-20 overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 overflow-hidden">
         {/* Section Header */}
-        <div className="text-center mb-10">
-          <p className="text-amber font-medium mb-2 tracking-wide uppercase text-sm">
-            Testimonios
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white font-serif mb-4">
-            Lo que dicen nuestros huéspedes
-          </h2>
-          <div className="flex items-center justify-center gap-2 text-white/80">
-            <SiTripadvisor className="w-5 h-5 text-amber" />
-            <span>4.6/5 en TripAdvisor · Travelers&apos; Choice Top 10%</span>
+        <FadeUp>
+          <div className="text-center mb-10">
+            <p className="text-amber font-medium mb-2 tracking-wide uppercase text-sm">
+              Testimonios
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white font-serif mb-4">
+              Lo que dicen nuestros huéspedes
+            </h2>
+            <div className="flex items-center justify-center gap-2 text-white/80">
+              <SiTripadvisor className="w-5 h-5 text-amber" />
+              <span>4.6/5 en TripAdvisor · Travelers&apos; Choice Top 10%</span>
+            </div>
           </div>
-        </div>
+        </FadeUp>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-5 mb-8">
+        <StaggerGrid className="grid md:grid-cols-3 gap-5 mb-8" staggerDelay={150}>
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
@@ -87,21 +92,23 @@ export default function Testimonials() {
               </div>
             </div>
           ))}
-        </div>
+        </StaggerGrid>
 
         {/* TripAdvisor CTA */}
-        <div className="text-center">
-          <Link
-            href="https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-white font-medium hover:text-amber transition-colors"
-          >
-            <SiTripadvisor className="w-5 h-5" />
-            Ver todas las reseñas en TripAdvisor
-            <FiExternalLink className="w-4 h-4" />
-          </Link>
-        </div>
+        <FadeUp delay={300}>
+          <div className="text-center">
+            <Link
+              href="https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-white font-medium hover:text-amber transition-colors"
+            >
+              <SiTripadvisor className="w-5 h-5" />
+              Ver todas las reseñas en TripAdvisor
+              <FiExternalLink className="w-4 h-4" />
+            </Link>
+          </div>
+        </FadeUp>
       </div>
     </section>
   )

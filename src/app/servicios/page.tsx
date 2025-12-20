@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
 
 export default function ServiciosPage() {
   return (
@@ -96,7 +98,7 @@ export default function ServiciosPage() {
                 Servicios opcionales
               </h3>
               <div className="space-y-3">
-                <div className="bg-white rounded-lg p-4 border border-sand/50">
+                <div className="bg-white rounded-2xl p-4 border border-sand">
                   <div className="flex justify-between items-start mb-1">
                     <span className="font-medium text-text-dark">Aire acondicionado</span>
                     <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">$2.500/día</span>
@@ -105,7 +107,7 @@ export default function ServiciosPage() {
                     Opcional para mantener tarifas accesibles.
                   </p>
                 </div>
-                <div className="bg-white rounded-lg p-4 border border-sand/50">
+                <div className="bg-white rounded-2xl p-4 border border-sand">
                   <div className="flex justify-between items-start mb-1">
                     <span className="font-medium text-text-dark">Desayuno</span>
                     <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
@@ -115,7 +117,7 @@ export default function ServiciosPage() {
                   </p>
                   <p className="text-xs text-text-light mt-1">Disponibilidad limitada</p>
                 </div>
-                <div className="bg-white rounded-lg p-4 border border-sand/50">
+                <div className="bg-white rounded-2xl p-4 border border-sand">
                   <div className="flex justify-between items-start mb-1">
                     <span className="font-medium text-text-dark">Masajes</span>
                     <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
@@ -134,18 +136,37 @@ export default function ServiciosPage() {
         </section>
 
       </div>
+
+      {/* CTA Section */}
+      <section className="py-12 md:py-16 bg-forest">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white font-serif mb-4">
+            ¿Querés saber más?
+          </h2>
+          <p className="text-white/80 mb-8">
+            Consultanos sobre disponibilidad y servicios
+          </p>
+          <Link
+            href="/contacto"
+            className="inline-flex items-center gap-2 bg-amber text-white px-8 py-4 rounded-full font-semibold hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25"
+          >
+            <HiOutlineChatBubbleLeftRight className="w-5 h-5" />
+            Contactanos
+          </Link>
+        </div>
+      </section>
     </main>
   )
 }
 
 function FeatureCard({ image, title, description, note }: { image: string; title: string; description: string; note?: string }) {
   return (
-    <div className="relative rounded-xl overflow-hidden shadow-sm group aspect-[4/3]">
+    <div className="relative rounded-2xl overflow-hidden shadow-lg group aspect-[4/3]">
       <Image
         src={image}
         alt={title}
         fill
-        className="object-cover group-hover:scale-105 transition-transform duration-300"
+        className="object-cover group-hover:scale-105 transition-transform duration-500"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
