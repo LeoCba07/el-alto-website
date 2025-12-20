@@ -4,12 +4,15 @@ export default function ServiciosPage() {
   return (
     <main className="min-h-screen bg-cream">
       {/* Hero banner */}
-      <section className="bg-forest-dark text-white py-10 mt-14 md:mt-16">
+      <section className="bg-forest-dark text-white py-16 md:py-20 mt-14 md:mt-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">
+          <p className="text-amber font-medium mb-3 tracking-wide uppercase text-sm">
+            Comodidad y tranquilidad
+          </p>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
             Servicios e Instalaciones
           </h1>
-          <p className="text-white/80">
+          <p className="text-lg text-white/80 max-w-2xl mx-auto">
             Todo lo que necesitás para descansar como en casa
           </p>
         </div>
@@ -28,6 +31,7 @@ export default function ServiciosPage() {
               image="/images/panorama-pileta.jpg"
               title="Piscina"
               description="Vista a las sierras. Climatizada en primavera y otoño."
+              note="Horario: 9:30 a 22:00 hs"
             />
             <FeatureCard
               image="/images/asador.jpg"
@@ -174,7 +178,7 @@ function AmenityRow({ icon, label, pill, pillVariant }: { icon: string; label: s
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
     ),
     hairdryer: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
     ),
     car: (
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 17h.01M16 17h.01M3 11l1.5-5.5A2 2 0 016.4 4h11.2a2 2 0 011.9 1.5L21 11M3 11v6a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-6M3 11h18" />
