@@ -63,7 +63,7 @@ const defaultCabanas: CabanaType[] = [
     photos: [
       '/images/cabana1-interior.jpg',
       '/images/cabana1-cocina.jpg',
-      '/images/cabana1-habitacion.jpg',
+      '/images/cabana2-habitacion.jpg',
     ],
   },
   {

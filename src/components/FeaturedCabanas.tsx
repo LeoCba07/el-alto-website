@@ -15,7 +15,7 @@ const featuredPhotos = [
   '/images/cabana2-interior.jpg',
   '/images/cabana1-cocina.jpg',
   '/images/cabana2-cocina.jpg',
-  '/images/cabana1-habitacion.jpg',
+  '/images/cabana3-interior.jpg',
   '/images/cabana2-habitacion.jpg',
 ]
 
