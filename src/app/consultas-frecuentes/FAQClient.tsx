@@ -148,14 +148,14 @@ export default function FAQClient({ categories }: FAQClientProps) {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                     activeCategory === cat.id
                       ? 'bg-forest-dark text-white'
                       : 'bg-white text-forest-dark border border-sand hover:border-forest'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm">{cat.label}</span>
+                  <Icon className="w-4 h-4 hidden sm:block" />
+                  <span>{cat.label}</span>
                 </button>
               )
             })}
