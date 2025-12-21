@@ -34,7 +34,7 @@ export default function FinalCTA() {
 
         <Link
           href="/contacto"
-          className="inline-flex items-center justify-center gap-2 bg-amber text-forest-dark px-8 py-4 rounded-full font-semibold text-lg hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25 hover:scale-105"
+          className="inline-flex items-center justify-center gap-2 bg-amber text-text-dark px-8 py-4 rounded-full font-semibold text-lg hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25 hover:scale-105"
         >
           <HiOutlineCalendarDays className="w-5 h-5" />
           Consultar disponibilidad

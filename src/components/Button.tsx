@@ -24,7 +24,7 @@ type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--color-amber)] text-[var(--color-forest-dark)] hover:bg-[var(--color-amber-dark)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[var(--color-amber)] focus:ring-offset-2',
+    'bg-[var(--color-amber)] text-[var(--color-text-dark)] hover:bg-[var(--color-amber-dark)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[var(--color-amber)] focus:ring-offset-2',
   secondary:
     'bg-[var(--color-forest)] text-white hover:bg-[var(--color-forest-light)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[var(--color-forest)] focus:ring-offset-2',
   outline:

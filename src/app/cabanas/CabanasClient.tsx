@@ -236,7 +236,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
 
               <Link
                 href="/contacto"
-                className="flex items-center justify-center gap-2 w-full bg-amber text-forest-dark py-4 rounded-full font-semibold hover:bg-amber-dark transition-colors"
+                className="flex items-center justify-center gap-2 w-full bg-amber text-text-dark py-4 rounded-full font-semibold hover:bg-amber-dark transition-colors"
               >
                 <SiWhatsapp className="w-5 h-5" />
                 Consultar disponibilidad
@@ -264,7 +264,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
               >
                 <div className={`px-5 py-4 ${
                   temporada.nombre === 'Temporada Alta'
-                    ? 'bg-amber text-forest-dark'
+                    ? 'bg-amber text-text-dark'
                     : temporada.nombre === 'Temporada Media'
                     ? 'bg-forest text-white'
                     : 'bg-forest-dark text-white'
@@ -318,21 +318,21 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <span className="w-8 h-8 bg-amber text-forest-dark rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+                    <span className="w-8 h-8 bg-amber text-text-dark rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
                     <div className="pt-0.5">
                       <p className="font-semibold text-forest-dark">Consultá disponibilidad</p>
                       <p className="text-sm text-text-medium">Contactanos por WhatsApp o teléfono con tus fechas y cantidad de personas</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <span className="w-8 h-8 bg-amber text-forest-dark rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+                    <span className="w-8 h-8 bg-amber text-text-dark rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
                     <div className="pt-0.5">
                       <p className="font-semibold text-forest-dark">Confirmá con seña</p>
                       <p className="text-sm text-text-medium">30% del total (50% para estadías de 2 noches o menos). Transferencia o Mercado Pago</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <span className="w-8 h-8 bg-amber text-forest-dark rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+                    <span className="w-8 h-8 bg-amber text-text-dark rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
                     <div className="pt-0.5">
                       <p className="font-semibold text-forest-dark">¡Listo para disfrutar!</p>
                       <p className="text-sm text-text-medium">El saldo restante lo abonás al momento del check-in</p>
@@ -439,7 +439,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
           </p>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 bg-amber text-forest-dark px-8 py-4 rounded-full font-semibold text-lg hover:bg-amber-dark transition-colors shadow-lg"
+            className="inline-flex items-center gap-2 bg-amber text-text-dark px-8 py-4 rounded-full font-semibold text-lg hover:bg-amber-dark transition-colors shadow-lg"
           >
             <SiWhatsapp className="w-5 h-5" />
             Consultar disponibilidad
