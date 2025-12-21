@@ -197,7 +197,7 @@ export default function ContactoPage() {
             <div className="flex flex-col gap-4">
               <div className="flex-1 min-h-[200px] rounded-2xl overflow-hidden shadow-lg border border-sand">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3404.8!2d-64.59019!3d-31.35838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x942d7e1c8e1e8e8d%3A0x1e8e8e8e8e8e8e8e!2sComplejo%20El%20Alto!5e0!3m2!1ses!2sar!4v1"
+                  src="https://maps.google.com/maps?q=Complejo+El+Alto,+Tanti,+Cordoba,+Argentina&t=&z=15&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
