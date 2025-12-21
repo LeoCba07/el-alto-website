@@ -10,7 +10,7 @@ export default function FinalCTA() {
     <section className="relative py-20 md:py-28 overflow-hidden">
       {/* Background Image */}
       <Image
-        src="/images/panorama-escaleras-a-pileta.JPG"
+        src="/images/panorama-escaleras-a-pileta.jpg"
         alt="Vista del complejo"
         fill
         className="object-cover"

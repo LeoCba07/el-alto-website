@@ -21,7 +21,7 @@ interface HeroProps {
 
 const defaultImages = [
   '/images/panorama-pileta.jpg',
-  '/images/vista-desde-cabana.JPG',
+  '/images/vista-desde-cabana.jpg',
   '/images/sierras.jpg',
 ]
 

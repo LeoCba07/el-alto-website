@@ -209,7 +209,7 @@ export default function ContactoPage() {
               </div>
               <div className="relative aspect-[3/1] rounded-2xl overflow-hidden shadow-lg">
                 <Image
-                  src="/images/cartel-entrada.JPG"
+                  src="/images/cartel-entrada.jpg"
                   alt="Entrada a Complejo El Alto"
                   fill
                   className="object-cover"

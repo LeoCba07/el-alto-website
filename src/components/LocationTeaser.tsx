@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { HiOutlineMapPin, HiOutlineShoppingBag, HiOutlineBuildingStorefront, HiOutlineSparkles, HiOutlineChevronRight } from 'react-icons/hi2'
+import { HiOutlineMapPin, HiOutlineBuildingStorefront, HiOutlineSparkles, HiOutlineChevronRight } from 'react-icons/hi2'
 import { MdOutlineDirectionsBus, MdOutlinePool, MdOutlineTheaterComedy } from 'react-icons/md'
 import { TbMountain, TbTrees } from 'react-icons/tb'
 import { IconType } from 'react-icons'

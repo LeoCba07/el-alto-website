@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   HiXMark,
   HiOutlineCalendarDays,
@@ -15,7 +16,7 @@ import {
 } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { PiPawPrint } from 'react-icons/pi'
-import { SITE_CONFIG, ANIMATION_TIMING } from '@/lib/constants'
+import { SITE_CONFIG } from '@/lib/constants'
 
 export interface ChatbotRespuesta {
   clave: string
@@ -111,6 +112,7 @@ type BookingData = {
 }
 
 export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
+  const router = useRouter()
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
   const [messages, setMessages] = useState<Message[]>([])
   const [bookingData, setBookingData] = useState<BookingData>({
@@ -145,8 +147,22 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
 
   // Handle opening animation: closed → bar → open
   const handleOpen = () => {
+    setShowPulse(false)
     setAnimationStage('bar')
-    setTimeout(() => setAnimationStage('open'), 250)
+    setTimeout(() => {
+      setAnimationStage('open')
+      // Initialize welcome message when opening for first time
+      if (messages.length === 0) {
+        setMessages([
+          {
+            id: 1,
+            type: 'bot',
+            text: 'Bienvenido al Complejo de Cabañas El Alto. ¿En qué podemos ayudarte?',
+            options: ['disponibilidad', 'cabanas', 'tarifas', 'servicios', 'ubicacion', 'checkin', 'pago', 'mascotas'],
+          },
+        ])
+      }
+    }, 250)
   }
 
   // Handle closing animation: open → bar → closed
@@ -155,29 +171,10 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
     setTimeout(() => setAnimationStage('closed'), 250)
   }
 
-  // Initialize chat with welcome message
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      setMessages([
-        {
-          id: 1,
-          type: 'bot',
-          text: 'Bienvenido al Complejo de Cabañas El Alto. ¿En qué podemos ayudarte?',
-          options: ['disponibilidad', 'cabanas', 'tarifas', 'servicios', 'ubicacion', 'checkin', 'pago', 'mascotas'],
-        },
-      ])
-    }
-  }, [isOpen, messages.length])
-
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
-
-  // Hide pulse after first open
-  useEffect(() => {
-    if (animationStage !== 'closed') setShowPulse(false)
-  }, [animationStage])
 
   const addMessage = (message: Omit<Message, 'id'>) => {
     setMessages((prev) => [...prev, { ...message, id: Date.now() }])
@@ -189,11 +186,11 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
 
     // Handle special actions
     if (option === 'ver_tarifas') {
-      window.location.href = '/cabanas#tarifas'
+      router.push('/cabanas#tarifas')
       return
     }
     if (option === 'ver_cabanas') {
-      window.location.href = '/cabanas'
+      router.push('/cabanas')
       return
     }
     if (option === 'ver_mapa') {

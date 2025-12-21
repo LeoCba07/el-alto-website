@@ -9,7 +9,7 @@ import {
   HiOutlineUserGroup,
   HiOutlineChatBubbleBottomCenterText
 } from 'react-icons/hi2'
-import { SITE_CONFIG, formatDateAR, TIME_CONSTANTS } from '@/lib/constants'
+import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
 
 export default function ContactForm() {
   const [nombre, setNombre] = useState('')
@@ -73,7 +73,7 @@ export default function ContactForm() {
 
     if (children > 0) {
       const agesText = childrenAges
-        .map((age, i) => `${age} ${age === 1 ? 'año' : 'años'}`)
+        .map((age) => `${age} ${age === 1 ? 'año' : 'años'}`)
         .join(', ')
       msg += `Menores: ${children} (${agesText})\n`
     }

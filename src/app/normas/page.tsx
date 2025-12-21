@@ -5,8 +5,6 @@ import {
   HiOutlineArrowLeftOnRectangle,
   HiOutlineCreditCard,
   HiOutlineUserGroup,
-  HiOutlineCheckCircle,
-  HiOutlineXCircle,
   HiOutlineChatBubbleLeftRight,
   HiOutlineUserMinus,
   HiOutlineSpeakerWave,

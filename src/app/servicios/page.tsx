@@ -39,8 +39,6 @@ export default async function ServiciosPage() {
   const enComplejo = serviciosData?.filter(s => s.categoria === 'complejo') || []
   const opcionales = serviciosData?.filter(s => s.categoria === 'opcional') || []
 
-  // Use Sanity data if available, otherwise use hardcoded fallbacks
-  const useHardcoded = !serviciosData?.length
   return (
     <main className="min-h-screen bg-cream">
       {/* Hero banner */}
@@ -92,7 +90,7 @@ export default async function ServiciosPage() {
                   note="Reservá en recepción"
                 />
                 <FeatureCard
-                  image="/images/vista-desde-cabana.JPG"
+                  image="/images/vista-desde-cabana.jpg"
                   title="Vistas a la montaña"
                   description="Predio escalonado con jardín y panorámicas."
                 />
