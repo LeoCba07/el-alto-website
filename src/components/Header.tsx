@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { HiOutlineHome, HiOutlineHomeModern, HiOutlineSquares2X2, HiOutlineChatBubbleBottomCenterText, HiOutlineClipboardDocumentList, HiBars3, HiXMark, HiOutlineChevronRight } from 'react-icons/hi2'
 
@@ -44,11 +45,15 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="group flex items-center gap-2"
+            className="group flex items-center gap-2.5"
           >
-            <span className="w-8 h-8 bg-forest rounded-lg flex items-center justify-center group-hover:bg-forest-dark group-hover:scale-110 transition-all duration-300 shadow-md">
-              <span className="text-white font-bold text-sm">EA</span>
-            </span>
+            <Image
+              src="/icon-512.png"
+              alt="Complejo El Alto"
+              width={44}
+              height={44}
+              className="rounded-full shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300"
+            />
             <span className="text-xl font-bold text-forest-dark font-serif group-hover:text-forest transition-colors duration-300">
               El Alto
             </span>

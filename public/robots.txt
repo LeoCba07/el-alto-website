@@ -1,0 +1,9 @@
+# Complejo El Alto - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://complejoelalto.com.ar/sitemap.xml
+
+# Disallow admin/studio paths
+Disallow: /studio

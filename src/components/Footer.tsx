@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { HiOutlineMapPin, HiOutlinePhone, HiOutlineEnvelope } from 'react-icons/hi2'
+import Image from 'next/image'
+import { HiOutlineMapPin, HiOutlinePhone, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
 import { SiInstagram, SiFacebook, SiTripadvisor } from 'react-icons/si'
 
 const navLinks = [
@@ -28,10 +29,14 @@ export default function Footer() {
         {/* Top row: Brand + Nav + Social */}
         <div className="flex flex-col items-center lg:flex-row lg:justify-between gap-6 pb-6 border-b border-cream/10">
           {/* Brand */}
-          <Link href="/" className="group inline-flex items-center gap-2">
-            <span className="w-8 h-8 bg-amber rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <span className="text-white font-bold text-xs">EA</span>
-            </span>
+          <Link href="/" className="group flex items-center gap-2.5">
+            <Image
+              src="/icon-512.png"
+              alt="Complejo El Alto"
+              width={44}
+              height={44}
+              className="rounded-full ring-2 ring-white/20 group-hover:ring-amber group-hover:scale-110 transition-all duration-300"
+            />
             <span className="text-xl font-bold text-white font-serif group-hover:text-amber transition-colors">
               El Alto
             </span>
@@ -81,6 +86,10 @@ export default function Footer() {
           <a href="tel:+5403541498970" className="flex items-center gap-2 hover:text-amber transition-colors">
             <HiOutlinePhone className="w-4 h-4 text-amber" />
             (03541) 498970
+          </a>
+          <a href="tel:+5493572501030" className="flex items-center gap-2 hover:text-amber transition-colors">
+            <HiOutlineDevicePhoneMobile className="w-4 h-4 text-amber" />
+            (3572) 501030
           </a>
           <a href="mailto:info@complejoelalto.com.ar" className="flex items-center gap-2 hover:text-amber transition-colors">
             <HiOutlineEnvelope className="w-4 h-4 text-amber" />

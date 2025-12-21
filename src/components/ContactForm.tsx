@@ -129,7 +129,7 @@ export default function ContactForm() {
           } bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors`}
         />
         {errors.nombre && (
-          <p className="mt-1.5 text-sm text-red-500">{errors.nombre}</p>
+          <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.nombre}</p>
         )}
       </div>
 
@@ -152,7 +152,7 @@ export default function ContactForm() {
               } bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors`}
             />
             {errors.checkIn && (
-              <p className="mt-1.5 text-sm text-red-500">{errors.checkIn}</p>
+              <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkIn}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
               Entrada · desde 13:30 hs
@@ -171,7 +171,7 @@ export default function ContactForm() {
               } bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors`}
             />
             {errors.checkOut && (
-              <p className="mt-1.5 text-sm text-red-500">{errors.checkOut}</p>
+              <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkOut}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
               Salida · hasta 10:00 hs
