@@ -132,11 +132,11 @@ export default function Header() {
                 </Link>
               )
             })}
-            <div className="pt-3">
+            <div className="pt-3 flex justify-center">
               <Link
                 href="/contacto"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white px-5 py-3.5 rounded-full font-semibold transition-all duration-300 w-full hover:shadow-lg hover:shadow-amber/25 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
               >
                 Consultar
               </Link>

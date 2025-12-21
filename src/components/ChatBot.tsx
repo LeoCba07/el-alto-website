@@ -344,7 +344,7 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
 
   return (
     <div
-      className={`fixed bottom-4 right-4 md:right-6 z-50 transition-all duration-300 ease-in-out shadow-xl ${getDimensions()}`}
+      className={`fixed bottom-4 right-4 md:right-6 z-50 transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''}`}
       style={{
         background: animationStage === 'closed' ? 'var(--color-forest)' : 'white'
       }}
