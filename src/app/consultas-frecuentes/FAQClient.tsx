@@ -45,7 +45,7 @@ const defaultCategories: FAQCategory[] = [
       { pregunta: '¿Cuánto es la seña?', respuesta: '30% del total. Para estadías de 2 noches o menos, es el 50%.' },
       { pregunta: '¿Hay estadía mínima?', respuesta: 'En temporada alta/media sí. En temporada baja podés reservar una sola noche.' },
       { pregunta: '¿Aceptan tarjeta?', respuesta: 'Sí, todas las tarjetas vía Mercado Pago.' },
-      { pregunta: '¿Puedo cancelar mi reserva?', respuesta: 'Depende de la temporada. En baja, hasta 72hs antes. En alta/media, hasta 30 días antes para reembolso total. Entre 15-29 días antes se cobra 1 noche.' },
+      { pregunta: '¿Puedo cancelar mi reserva?', respuesta: 'Depende de la temporada. En alta/media, hasta 30 días antes para reembolso total (entre 15-29 días se cobra 1 noche). En baja, hasta 72hs antes.' },
       { pregunta: '¿Puedo modificar las fechas?', respuesta: 'Una vez confirmada la reserva, no es posible modificar las fechas.' },
     ],
   },

@@ -7,7 +7,7 @@ import { FadeUp } from './ScrollAnimations'
 
 export default function FinalCTA() {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section className="relative py-32 md:py-44 overflow-hidden">
       {/* Background Image */}
       <Image
         src="/images/panorama-escaleras-a-pileta.jpg"

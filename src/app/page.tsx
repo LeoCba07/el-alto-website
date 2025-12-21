@@ -5,6 +5,7 @@ import ServicesHighlights from '@/components/ServicesHighlights'
 import LocationTeaser from '@/components/LocationTeaser'
 import Testimonials from '@/components/Testimonials'
 import FinalCTA from '@/components/FinalCTA'
+import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
 import { heroSectionQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
@@ -52,13 +53,28 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen">
-      <Hero {...heroProps} />
-      <TrustSignals />
-      <FeaturedCabanas />
-      <ServicesHighlights />
-      <LocationTeaser />
-      <Testimonials />
-      <FinalCTA />
+      <SectionIndicator />
+      <section id="hero">
+        <Hero {...heroProps} />
+      </section>
+      <section id="trust-signals">
+        <TrustSignals />
+      </section>
+      <section id="cabanas">
+        <FeaturedCabanas />
+      </section>
+      <section id="servicios">
+        <ServicesHighlights />
+      </section>
+      <section id="ubicacion">
+        <LocationTeaser />
+      </section>
+      <section id="testimonios">
+        <Testimonials />
+      </section>
+      <section id="contacto">
+        <FinalCTA />
+      </section>
     </div>
   )
 }

@@ -29,7 +29,7 @@ const defaultImages = [
 export default function Hero({
   subtitulo = 'Complejo de cabañas en Tanti, Córdoba',
   titulo = 'El Alto',
-  descripcion = 'Naturaleza a tu puerta, comodidad adentro',
+  descripcion = 'Tranquilidad serrana con calidez familiar',
   imagenes,
   textoBoton = 'Ver alojamientos',
   linkBoton = '/cabanas',
@@ -43,7 +43,7 @@ export default function Hero({
   }, [heroImages.length])
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000)
+    const interval = setInterval(nextSlide, 8000) // Slower transition
     return () => clearInterval(interval)
   }, [nextSlide])
 
@@ -104,20 +104,6 @@ export default function Hero({
             </Button>
           </div>
         </div>
-      </div>
-
-      {/* Image indicators */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex gap-2.5">
-        {heroImages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`h-3 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${
-              index === currentIndex ? 'bg-white w-8' : 'bg-white/50 w-3 hover:bg-white/70'
-            }`}
-            aria-label={`Ir a imagen ${index + 1}`}
-          />
-        ))}
       </div>
 
       {/* Scroll indicator */}

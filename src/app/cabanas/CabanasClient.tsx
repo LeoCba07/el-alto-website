@@ -347,16 +347,16 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
                   Cancelá sin cargo dentro de los siguientes plazos para recibir reembolso completo de tu seña
                 </p>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between bg-cream rounded-xl px-4 py-3">
-                    <span className="text-text-dark font-medium">Temporada Baja</span>
-                    <span className="text-forest-dark font-bold">72 hs antes del check-in</span>
-                  </div>
                   <div className="bg-cream rounded-xl px-4 py-3">
                     <div className="flex items-center justify-between">
                       <span className="text-text-dark font-medium">Temporada Alta/Media</span>
                       <span className="text-forest-dark font-bold">30 días antes del check-in</span>
                     </div>
                     <p className="text-text-medium text-sm mt-1">Entre 15-29 días antes se cobra 1 noche</p>
+                  </div>
+                  <div className="flex items-center justify-between bg-cream rounded-xl px-4 py-3">
+                    <span className="text-text-dark font-medium">Temporada Baja</span>
+                    <span className="text-forest-dark font-bold">72 hs antes del check-in</span>
                   </div>
                   <div className="flex items-center justify-between bg-cream rounded-xl px-4 py-3">
                     <span className="text-text-dark font-medium">Promociones</span>
