@@ -18,8 +18,6 @@ interface SanityHeroSection {
     asset: { _ref: string }
     alt?: string
   }>
-  textoBoton?: string
-  linkBoton?: string
 }
 
 async function getHeroData() {
@@ -47,8 +45,6 @@ export default async function Home() {
       url: urlFor(img).url(),
       alt: img.alt
     })),
-    textoBoton: heroData.textoBoton,
-    linkBoton: heroData.linkBoton,
   } : {}
 
   return (

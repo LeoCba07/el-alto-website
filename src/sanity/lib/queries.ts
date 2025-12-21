@@ -7,14 +7,7 @@ export const heroSectionQuery = groq`
     titulo,
     descripcion,
     imagenes[] {
-      asset->,
-      alt
-    },
-    textoBoton,
-    linkBoton,
-    badges[] {
-      texto,
-      icono
+      asset->
     }
   }
 `
