@@ -1,7 +1,7 @@
 import { client } from '@/sanity/lib/client'
-import { cabanasQuery, tarifasQuery } from '@/sanity/lib/queries'
+import { cabanasQuery, tarifasTemporadaQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
-import CabanasClient, { CabanaType } from './CabanasClient'
+import CabanasClient, { CabanaType, TarifasData } from './CabanasClient'
 
 interface SanityCabana {
   _id: string
@@ -19,16 +19,16 @@ interface SanityCabana {
   }>
 }
 
-interface SanityTarifa {
+interface SanityTarifaTemporada {
   _id: string
+  temporada: 'alta' | 'media' | 'baja'
   nombre: string
-  temporada: string
-  fechaInicio?: string
-  fechaFin?: string
-  precios?: Array<{
-    tipoCabana: string
-    precioNoche: number
+  periodo: string
+  precios: Array<{
+    capacidad: string
+    precio: number
   }>
+  orden: number
 }
 
 async function getCabanasData() {
@@ -42,19 +42,39 @@ async function getCabanasData() {
   }
 }
 
-async function getTarifasData() {
+async function getTarifasData(): Promise<TarifasData | null> {
   try {
-    const tarifas = await client.fetch<SanityTarifa[]>(tarifasQuery, {}, {
+    const tarifas = await client.fetch<SanityTarifaTemporada[]>(tarifasTemporadaQuery, {}, {
       next: { revalidate: 60 }
     })
-    return tarifas
+
+    if (!tarifas || tarifas.length === 0) {
+      return null
+    }
+
+    // Transform array into the expected object structure
+    const tarifasData: Partial<TarifasData> = {}
+    for (const tarifa of tarifas) {
+      tarifasData[tarifa.temporada] = {
+        nombre: tarifa.nombre,
+        periodo: tarifa.periodo,
+        precios: tarifa.precios,
+      }
+    }
+
+    // Verify all temporadas are present
+    if (!tarifasData.alta || !tarifasData.media || !tarifasData.baja) {
+      return null
+    }
+
+    return tarifasData as TarifasData
   } catch {
     return null
   }
 }
 
 export default async function CabanasPage() {
-  const [cabanasData] = await Promise.all([
+  const [cabanasData, tarifasData] = await Promise.all([
     getCabanasData(),
     getTarifasData()
   ])
@@ -82,9 +102,5 @@ export default async function CabanasPage() {
       }))
     : undefined
 
-  // Transform tarifas data if available
-  // For now, we'll use the default tarifas since the structure is complex
-  // and would need specific Sanity data to be populated
-
-  return <CabanasClient cabanas={cabanas} />
+  return <CabanasClient cabanas={cabanas} tarifas={tarifasData} />
 }

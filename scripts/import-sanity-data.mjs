@@ -176,18 +176,15 @@ const serviciosUnidad = [
 const serviciosComplejo = [
   { _type: 'servicio', nombre: 'Cochera techada', icono: 'car', categoria: 'complejo', detalle: '1 por unidad', orden: 1 },
   { _type: 'servicio', nombre: 'Sala de juegos para chicos', icono: 'kids', categoria: 'complejo', orden: 2 },
-  { _type: 'servicio', nombre: 'Gimnasio', icono: 'gym', categoria: 'complejo', orden: 3 },
-  { _type: 'servicio', nombre: 'Restaurant en el predio', icono: 'restaurant', categoria: 'complejo', orden: 4 },
-  { _type: 'servicio', nombre: 'Info turística y excursiones', icono: 'map', categoria: 'complejo', orden: 5 },
-  { _type: 'servicio', nombre: 'Guardado de equipaje', icono: 'luggage', categoria: 'complejo', orden: 6 },
-  { _type: 'servicio', nombre: 'Recepción', icono: 'reception', categoria: 'complejo', detalle: '9 a 19 hs', orden: 7 }
+  { _type: 'servicio', nombre: 'Info turística y excursiones', icono: 'map', categoria: 'complejo', orden: 3 },
+  { _type: 'servicio', nombre: 'Guardado de equipaje', icono: 'luggage', categoria: 'complejo', orden: 4 },
+  { _type: 'servicio', nombre: 'Recepción', icono: 'reception', categoria: 'complejo', detalle: '9 a 19 hs', orden: 5 }
 ]
 
 // Servicios Opcionales
 const serviciosOpcionales = [
   { _type: 'servicio', nombre: 'Aire acondicionado', descripcion: 'Opcional para mantener tarifas accesibles.', icono: 'ac', categoria: 'opcional', precio: '$2.500/día', orden: 1 },
-  { _type: 'servicio', nombre: 'Desayuno', descripcion: 'Desayuno seco servido en tu unidad.', icono: 'breakfast', categoria: 'opcional', precio: 'Consultar', detalle: 'Disponibilidad limitada', orden: 2 },
-  { _type: 'servicio', nombre: 'Masajes', descripcion: 'Facial, reflexología, piedras calientes.', icono: 'spa', categoria: 'opcional', precio: 'Consultar', detalle: 'Disponibilidad limitada', orden: 3 }
+  { _type: 'servicio', nombre: 'Desayuno', descripcion: 'Desayuno seco servido en tu unidad.', icono: 'breakfast', categoria: 'opcional', precio: 'Consultar', detalle: 'Disponibilidad limitada', orden: 2 }
 ]
 
 // Testimonios

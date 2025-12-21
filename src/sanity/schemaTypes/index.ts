@@ -6,6 +6,7 @@ import testimonio from './testimonio'
 import preguntaFrecuente from './preguntaFrecuente'
 import chatbotRespuesta from './chatbotRespuesta'
 import configuracionSitio from './configuracionSitio'
+import tarifaTemporada from './tarifaTemporada'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -16,5 +17,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     preguntaFrecuente,
     chatbotRespuesta,
     configuracionSitio,
+    tarifaTemporada,
   ],
 }

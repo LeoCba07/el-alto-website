@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatBot from "@/components/ChatBot";
 import { client } from "@/sanity/lib/client";
-import { chatbotRespuestasQuery, configuracionSitioQuery } from "@/sanity/lib/queries";
+import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
 import { SITE_CONFIG, CACHE_CONFIG } from "@/lib/constants";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -144,15 +144,51 @@ interface SiteConfig {
   numeroWhatsapp?: string;
 }
 
+interface SanityTarifaTemporada {
+  _id: string;
+  temporada: 'alta' | 'media' | 'baja';
+  nombre: string;
+  periodo: string;
+  precios: Array<{
+    capacidad: string;
+    precio: number;
+  }>;
+  orden: number;
+}
+
+export interface TarifasData {
+  alta: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
+  media: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
+  baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
+}
+
 async function getChatbotData() {
   try {
-    const [respuestas, config] = await Promise.all([
+    const [respuestas, config, tarifasRaw] = await Promise.all([
       client.fetch<ChatbotData[]>(chatbotRespuestasQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
       client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
+      client.fetch<SanityTarifaTemporada[]>(tarifasTemporadaQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
     ]);
-    return { respuestas, whatsappNumber: config?.numeroWhatsapp };
+
+    // Transform tarifas array into the expected structure
+    let tarifas: TarifasData | undefined = undefined;
+    if (tarifasRaw && tarifasRaw.length > 0) {
+      const tarifasMap: Partial<TarifasData> = {};
+      for (const t of tarifasRaw) {
+        tarifasMap[t.temporada] = {
+          nombre: t.nombre,
+          periodo: t.periodo,
+          precios: t.precios,
+        };
+      }
+      if (tarifasMap.alta && tarifasMap.media && tarifasMap.baja) {
+        tarifas = tarifasMap as TarifasData;
+      }
+    }
+
+    return { respuestas, whatsappNumber: config?.numeroWhatsapp, tarifas };
   } catch {
-    return { respuestas: undefined, whatsappNumber: undefined };
+    return { respuestas: undefined, whatsappNumber: undefined, tarifas: undefined };
   }
 }
 
@@ -161,7 +197,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { respuestas, whatsappNumber } = await getChatbotData();
+  const { respuestas, whatsappNumber, tarifas } = await getChatbotData();
 
   return (
     <html lang="es">
@@ -199,7 +235,7 @@ export default async function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
-        <ChatBot respuestas={respuestas} whatsappNumber={whatsappNumber} />
+        <ChatBot respuestas={respuestas} whatsappNumber={whatsappNumber} tarifas={tarifas} />
       </body>
     </html>
   );

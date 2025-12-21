@@ -31,16 +31,13 @@ const servicios = [
   // En el complejo
   { _id: 'servicio-cochera', nombre: 'Cochera techada', icono: 'car', categoria: 'complejo', detalle: '1 por unidad', orden: 1 },
   { _id: 'servicio-juegos', nombre: 'Sala de juegos para chicos', icono: 'kids', categoria: 'complejo', orden: 2 },
-  { _id: 'servicio-gym', nombre: 'Gimnasio', icono: 'gym', categoria: 'complejo', orden: 3 },
-  { _id: 'servicio-restaurant', nombre: 'Restaurant en el predio', icono: 'restaurant', categoria: 'complejo', orden: 4 },
-  { _id: 'servicio-turismo', nombre: 'Info turística y excursiones', icono: 'map', categoria: 'complejo', orden: 5 },
-  { _id: 'servicio-equipaje', nombre: 'Guardado de equipaje', icono: 'luggage', categoria: 'complejo', orden: 6 },
-  { _id: 'servicio-recepcion', nombre: 'Recepción', icono: 'reception', categoria: 'complejo', detalle: '9 a 19 hs', orden: 7 },
+  { _id: 'servicio-turismo', nombre: 'Info turística y excursiones', icono: 'map', categoria: 'complejo', orden: 3 },
+  { _id: 'servicio-equipaje', nombre: 'Guardado de equipaje', icono: 'luggage', categoria: 'complejo', orden: 4 },
+  { _id: 'servicio-recepcion', nombre: 'Recepción', icono: 'reception', categoria: 'complejo', detalle: '9 a 19 hs', orden: 5 },
 
   // Servicios opcionales
   { _id: 'servicio-ac', nombre: 'Aire acondicionado', icono: 'ac', categoria: 'opcional', descripcion: 'Opcional para mantener tarifas accesibles.', precio: '$2.500/día', orden: 1 },
   { _id: 'servicio-desayuno', nombre: 'Desayuno', icono: 'breakfast', categoria: 'opcional', descripcion: 'Desayuno seco servido en tu unidad.', detalle: 'Disponibilidad limitada', precio: 'Consultar', orden: 2 },
-  { _id: 'servicio-masajes', nombre: 'Masajes', icono: 'spa', categoria: 'opcional', descripcion: 'Facial, reflexología, piedras calientes.', detalle: 'Disponibilidad limitada', precio: 'Consultar', orden: 3 },
 
   // Destacados (fotos principales)
   { _id: 'servicio-pileta', nombre: 'Pileta al aire libre', categoria: 'destacado', descripcion: 'Vista a las sierras. Climatizada en primavera y otoño.', detalle: 'Horario: 9:30 a 22:00 hs', orden: 1 },

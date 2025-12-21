@@ -161,19 +161,18 @@ export const atraccionesCercanasQuery = groq`
   }
 `
 
-// Tarifas
-export const tarifasQuery = groq`
-  *[_type == "tarifa"] | order(orden asc) {
+// Tarifas por Temporada (new structure matching the UI)
+export const tarifasTemporadaQuery = groq`
+  *[_type == "tarifaTemporada"] | order(orden asc) {
     _id,
-    nombre,
     temporada,
-    fechaInicio,
-    fechaFin,
+    nombre,
+    periodo,
     precios[] {
-      tipoCabana,
-      precioNoche,
-      precioSemana
-    }
+      capacidad,
+      precio
+    },
+    orden
   }
 `
 

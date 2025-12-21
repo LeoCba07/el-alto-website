@@ -86,3 +86,7 @@ export const formatDateAR = (dateStr: string): string => {
 export const formatTimeDisplay = (time: string): string => {
   return time.replace(' hs', '').replace('hs', '')
 }
+
+// Tarifas are now managed exclusively in Sanity Studio
+// See: src/sanity/schemaTypes/tarifaTemporada.ts
+// To seed initial data: node scripts/seed-tarifas.mjs

@@ -24,15 +24,47 @@ export interface ChatbotRespuesta {
   opcionesSeguimiento?: string[]
 }
 
+// Tarifas data structure (matches what comes from Sanity)
+export interface TarifasData {
+  alta: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
+  media: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
+  baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
+}
+
 export interface ChatBotProps {
   respuestas?: ChatbotRespuesta[]
   whatsappNumber?: string
+  tarifas?: TarifasData
+}
+
+// Generate tarifas summary from Sanity data
+function getTarifasSummaryFromData(tarifas?: TarifasData): string {
+  if (!tarifas) {
+    return 'Consultá las tarifas actualizadas por WhatsApp o en nuestra página de cabañas.'
+  }
+  const minBaja = Math.min(...tarifas.baja.precios.map(p => p.precio))
+  const maxAlta = Math.max(...tarifas.alta.precios.map(p => p.precio))
+  return `Las tarifas varían según temporada y capacidad. Temporada baja: desde $${minBaja.toLocaleString('es-AR')}/noche. Temporada alta: hasta $${maxAlta.toLocaleString('es-AR')}/noche (para 6 personas).`
+}
+
+// Links to pages for "Para más información"
+const INFO_LINKS: Record<string, { url: string; label: string }> = {
+  tarifas: { url: '/cabanas#tarifas', label: 'ver todas las tarifas' },
+  servicios: { url: '/servicios', label: 'ver todos los servicios' },
+  mas_servicios: { url: '/servicios', label: 'ver servicios' },
+  ubicacion: { url: '/contacto', label: 'ver ubicación' },
+  como_llegar: { url: '/contacto', label: 'ver mapa' },
+  checkin: { url: '/normas', label: 'ver horarios y normas' },
+  cabanas: { url: '/cabanas', label: 'ver cabañas' },
+  mascotas: { url: '/normas', label: 'ver normas' },
+  pago: { url: '/cabanas', label: 'ver info de reservas' },
 }
 
 // Default FAQ Data - answers to common questions
+// Note: tarifas answer is generated dynamically from Sanity data in the component
 const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> = {
   tarifas: {
-    answer: 'Las tarifas varían según la temporada y el tipo de cabaña. Temporada alta (dic-feb, Semana Santa, vacaciones de invierno): desde $45.000/noche. Temporada media: desde $35.000/noche. Temporada baja: desde $28.000/noche.',
+    answer: '', // Will be set dynamically from Sanity tarifas
     followUp: ['ver_tarifas', 'consultar_disponibilidad', 'otra_pregunta']
   },
   disponibilidad: {
@@ -103,6 +135,8 @@ type Message = {
   text: string
   options?: string[]
   isInput?: 'dates' | 'guests'
+  infoLink?: { url: string; label: string }
+  followUpText?: string // Text shown after the info link
 }
 
 type BookingData = {
@@ -113,7 +147,7 @@ type BookingData = {
   childrenAges: number[]
 }
 
-export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
+export default function ChatBot({ respuestas, whatsappNumber, tarifas }: ChatBotProps) {
   const router = useRouter()
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
   const [messages, setMessages] = useState<Message[]>([])
@@ -130,19 +164,31 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
   const [showPulse, setShowPulse] = useState(true)
 
   // Build FAQ data from Sanity or use defaults
+  // Tarifas answer comes from Sanity tarifas data (single source of truth)
   const FAQ_DATA = React.useMemo(() => {
-    if (!respuestas?.length) return DEFAULT_FAQ_DATA
+    // Start with defaults, but set tarifas answer dynamically from Sanity
+    const baseData = {
+      ...DEFAULT_FAQ_DATA,
+      tarifas: {
+        ...DEFAULT_FAQ_DATA.tarifas,
+        answer: getTarifasSummaryFromData(tarifas),
+      },
+    }
+
+    if (!respuestas?.length) return baseData
 
     const sanityData: Record<string, { answer: string; followUp: string[] }> = {}
     respuestas.forEach((r) => {
+      // Skip tarifas from chatbotRespuesta - we use Sanity tarifas data instead
+      if (r.clave === 'tarifas') return
       sanityData[r.clave] = {
         answer: r.respuesta,
         followUp: r.opcionesSeguimiento || ['consultar_disponibilidad', 'otra_pregunta']
       }
     })
-    // Merge with defaults for any missing keys
-    return { ...DEFAULT_FAQ_DATA, ...sanityData }
-  }, [respuestas])
+    // Merge with base (tarifas answer is already set from Sanity tarifas)
+    return { ...baseData, ...sanityData }
+  }, [respuestas, tarifas])
 
   const WHATSAPP_NUMBER = whatsappNumber || SITE_CONFIG.WHATSAPP_NUMBER
 
@@ -232,11 +278,14 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
     const faqItem = FAQ_DATA[option as keyof typeof FAQ_DATA]
     if (faqItem) {
       setTimeout(() => {
-        // Show answer + follow-up in a single message so the answer stays visible
+        // Show answer, then info link, then follow-up question
+        const infoLink = INFO_LINKS[option]
         addMessage({
           type: 'bot',
-          text: faqItem.answer + '\n\n¿Hay algo más en lo que pueda ayudarte?',
+          text: faqItem.answer,
           options: MAIN_MENU_OPTIONS,
+          infoLink: infoLink,
+          followUpText: '¿Hay algo más en lo que pueda ayudarte?',
         })
       }, 500)
     }
@@ -411,6 +460,18 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
                 {message.type === 'bot' && (
                   <div className="bg-white rounded-2xl rounded-bl-sm px-4 py-2.5 shadow-sm border border-sand">
                     <p className="text-text-dark text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
+                    {message.infoLink && (
+                      <a
+                        href={message.infoLink.url}
+                        className="inline-flex items-center gap-1 text-forest text-sm font-medium mt-2 hover:text-forest-dark hover:underline transition-colors"
+                      >
+                        Para más información, {message.infoLink.label}
+                        <HiOutlineArrowTopRightOnSquare className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {message.followUpText && (
+                      <p className="text-text-dark text-sm leading-relaxed mt-3">{message.followUpText}</p>
+                    )}
                   </div>
                 )}
                 {message.type === 'user' && <p className="text-sm">{message.text}</p>}

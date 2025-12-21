@@ -29,19 +29,22 @@ export interface CabanaType {
   photos: string[]
 }
 
+// Tarifas types - data comes from Sanity only
 export interface TarifaTemporada {
   nombre: string
   periodo: string
   precios: { capacidad: string; precio: number }[]
 }
 
+export interface TarifasData {
+  alta: TarifaTemporada
+  media: TarifaTemporada
+  baja: TarifaTemporada
+}
+
 export interface CabanasClientProps {
   cabanas?: CabanaType[]
-  tarifas?: {
-    alta: TarifaTemporada
-    media: TarifaTemporada
-    baja: TarifaTemporada
-  }
+  tarifas?: TarifasData | null
 }
 
 const iconMap: Record<string, IconType> = {
@@ -108,44 +111,8 @@ const defaultCabanas: CabanaType[] = [
   },
 ]
 
-const defaultTarifas = {
-  alta: {
-    nombre: 'Temporada Alta',
-    periodo: 'Dic 28 - Feb, Carnaval, Semana Santa',
-    precios: [
-      { capacidad: '2 personas', precio: 60000 },
-      { capacidad: '2 + 1 menor', precio: 75000 },
-      { capacidad: '2 a 4 personas', precio: 90000 },
-      { capacidad: '4 a 5 personas', precio: 110000 },
-      { capacidad: '5 a 6 personas', precio: 129000 },
-    ],
-  },
-  media: {
-    nombre: 'Temporada Media',
-    periodo: 'Marzo, Diciembre, fines de semana largos, vacaciones de Julio',
-    precios: [
-      { capacidad: '2 personas', precio: 55000 },
-      { capacidad: '2 + 1 menor', precio: 68000 },
-      { capacidad: '2 a 4 personas', precio: 85000 },
-      { capacidad: '4 a 5 personas', precio: 90000 },
-      { capacidad: '5 a 6 personas', precio: 99000 },
-    ],
-  },
-  baja: {
-    nombre: 'Temporada Baja',
-    periodo: 'Resto del año',
-    precios: [
-      { capacidad: '2 personas', precio: 49000 },
-      { capacidad: '2 + 1 menor', precio: 60000 },
-      { capacidad: '2 a 4 personas', precio: 75000 },
-      { capacidad: '5 a 6 personas', precio: 89000 },
-    ],
-  },
-}
-
 export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) {
   const unitTypes = cabanas?.length ? cabanas : defaultCabanas
-  const tarifasData = tarifas || defaultTarifas
   const [activeUnit, setActiveUnit] = useState(unitTypes[0])
 
   return (
@@ -247,7 +214,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
       </section>
 
       {/* Tarifas */}
-      <section className="py-12 md:py-16 bg-cream-dark">
+      <section id="tarifas" className="py-12 md:py-16 bg-cream-dark">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif text-center mb-3">
             Tarifas por noche
@@ -256,49 +223,66 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
             Temporada 2025/26 · Precios en pesos argentinos · No incluye desayuno
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {Object.values(tarifasData).map((temporada) => (
-              <div
-                key={temporada.nombre}
-                className="bg-white rounded-2xl border border-sand overflow-hidden"
-              >
-                <div className={`px-5 py-4 ${
-                  temporada.nombre === 'Temporada Alta'
-                    ? 'bg-amber text-text-dark'
-                    : temporada.nombre === 'Temporada Media'
-                    ? 'bg-forest text-white'
-                    : 'bg-forest-dark text-white'
-                }`}>
-                  <h3 className="font-bold font-serif">{temporada.nombre}</h3>
-                  <p className="text-xs mt-1 opacity-90">
-                    {temporada.periodo}
-                  </p>
-                </div>
-                <div className="p-5 space-y-3">
-                  {temporada.precios.map((item) => (
-                    <div key={item.capacidad} className="flex justify-between items-center">
-                      <span className="text-sm text-text-medium">{item.capacidad}</span>
-                      <span className="font-semibold text-forest-dark">
-                        ${item.precio.toLocaleString('es-AR')}
-                      </span>
+          {tarifas ? (
+            <>
+              <div className="grid md:grid-cols-3 gap-6">
+                {Object.values(tarifas).map((temporada: TarifaTemporada) => (
+                  <div
+                    key={temporada.nombre}
+                    className="bg-white rounded-2xl border border-sand overflow-hidden"
+                  >
+                    <div className={`px-5 py-4 ${
+                      temporada.nombre === 'Temporada Alta'
+                        ? 'bg-amber text-text-dark'
+                        : temporada.nombre === 'Temporada Media'
+                        ? 'bg-forest text-white'
+                        : 'bg-forest-dark text-white'
+                    }`}>
+                      <h3 className="font-bold font-serif">{temporada.nombre}</h3>
+                      <p className="text-xs mt-1 opacity-90">
+                        {temporada.periodo}
+                      </p>
                     </div>
-                  ))}
-                </div>
+                    <div className="p-5 space-y-3">
+                      {temporada.precios.map((item: { capacidad: string; precio: number }) => (
+                        <div key={item.capacidad} className="flex justify-between items-center">
+                          <span className="text-sm text-text-medium">{item.capacidad}</span>
+                          <span className="font-semibold text-forest-dark">
+                            ${item.precio.toLocaleString('es-AR')}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="mt-8 text-center space-y-2">
-            <p className="text-sm text-text-medium">
-              <span className="font-medium text-forest-dark">Aire acondicionado:</span> $2.500/día
-            </p>
-            <p className="text-sm text-text-light">
-              Pileta, quincho y cochera incluidos · Descuentos por pago en efectivo
-            </p>
-            <p className="text-xs text-text-light mt-4 italic">
-              * Precios de referencia, sujetos a confirmación al momento de reservar
-            </p>
-          </div>
+              <div className="mt-8 text-center space-y-2">
+                <p className="text-sm text-text-medium">
+                  <span className="font-medium text-forest-dark">Aire acondicionado:</span> $2.500/día
+                </p>
+                <p className="text-sm text-text-light">
+                  Pileta, quincho y cochera incluidos · Descuentos por pago en efectivo
+                </p>
+                <p className="text-xs text-text-light mt-4 italic">
+                  * Precios de referencia, sujetos a confirmación al momento de reservar
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-text-medium">
+                Tarifas no disponibles. Consultá por WhatsApp para conocer los precios actuales.
+              </p>
+              <Link
+                href="/contacto"
+                className="inline-flex items-center gap-2 bg-amber text-text-dark px-6 py-3 rounded-full font-semibold mt-4 hover:bg-amber-dark transition-colors"
+              >
+                <SiWhatsapp className="w-5 h-5" />
+                Consultar tarifas
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
