@@ -70,6 +70,11 @@ export const RESERVATION_POLICIES = {
   paymentMethods: ['Transferencia bancaria', 'Mercado Pago'],
 } as const
 
+// Optional services pricing (fallbacks)
+export const OPTIONAL_SERVICES = {
+  acPricePerDay: '$2.500/día',
+} as const
+
 // Trust signals / stats
 export const TRUST_STATS = {
   yearsExperience: 28,

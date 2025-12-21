@@ -20,7 +20,10 @@ import {
   HiOutlinePlus
 } from 'react-icons/hi2'
 import { MdOutlineDirectionsBus } from 'react-icons/md'
-import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
+import { BUSINESS_HOURS, RESERVATION_POLICIES, TRUST_STATS } from '@/lib/constants'
+import { client } from '@/sanity/lib/client'
+import { configuracionSitioQuery } from '@/sanity/lib/queries'
+import { SiteConfig } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: 'Contacto',
@@ -28,14 +31,45 @@ export const metadata: Metadata = {
     'Consultá disponibilidad y reservá tu estadía en Complejo El Alto, Tanti, Córdoba. Te respondemos por WhatsApp con toda la información.',
 }
 
-export default function ContactoPage() {
+async function getConfig() {
+  try {
+    return await client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } })
+  } catch {
+    return null
+  }
+}
+
+export default async function ContactoPage() {
+  const config = await getConfig()
+
+  // Extract config values with fallbacks
+  const horarios = config?.horarios
+  const politicas = config?.politicasReserva
+  const stats = config?.estadisticas
+
+  const checkIn = horarios?.checkIn || BUSINESS_HOURS.checkIn
+  const checkOut = horarios?.checkOut || BUSINESS_HOURS.checkOut
+  const lateCheckOut = horarios?.lateCheckOut || BUSINESS_HOURS.lateCheckOut
+  const lateCheckOutFee = horarios?.lateCheckOutRecargo ?? BUSINESS_HOURS.lateCheckOutFee
+  const latestArrival = horarios?.llegadaMaxima || BUSINESS_HOURS.latestArrival
+
+  const depositPercent = politicas?.senaPorcentaje ?? RESERVATION_POLICIES.depositPercent
+  const depositPercentShort = politicas?.senaPorcentajeCorta ?? RESERVATION_POLICIES.depositPercentShortStay
+  const shortStayMaxNights = politicas?.estadiaCortaMaxNoches ?? RESERVATION_POLICIES.shortStayMaxNights
+  const paymentMethods = politicas?.mediosDePago || RESERVATION_POLICIES.paymentMethods
+
+  const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
+
+  const email = config?.email || 'info@complejoelalto.com.ar'
+  const telefonoFijo = config?.telefonoFijo || '+5403541498970'
+  const telefonoFijoDisplay = telefonoFijo.replace('+54', '').replace(/(\d{4})(\d{6})/, '($1) $2')
   return (
     <div className="min-h-screen bg-cream">
       {/* Header Section */}
       <section className="bg-forest-dark text-white py-12 md:py-16 mt-14 md:mt-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-amber font-medium mb-2 tracking-wide uppercase text-sm">
-            28 años de tradición familiar
+            {yearsExperience} años de tradición familiar
           </p>
           <h1 className="text-3xl md:text-4xl font-serif font-bold mb-3">
             Planificá tu escapada a las sierras
@@ -67,8 +101,8 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Check-in</p>
-                      <p className="text-white/80 text-sm">Desde las {BUSINESS_HOURS.checkIn} hs</p>
-                      <p className="text-white/60 text-sm mt-0.5">Llegada máxima {BUSINESS_HOURS.latestArrival} hs</p>
+                      <p className="text-white/80 text-sm">Desde las {checkIn} hs</p>
+                      <p className="text-white/60 text-sm mt-0.5">Llegada máxima {latestArrival} hs</p>
                     </div>
                   </div>
 
@@ -78,8 +112,8 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Check-out</p>
-                      <p className="text-white/80 text-sm">Hasta las {BUSINESS_HOURS.checkOut} hs</p>
-                      <p className="text-white/60 text-sm mt-0.5">Late check-out hasta {BUSINESS_HOURS.lateCheckOut} hs (+{BUSINESS_HOURS.lateCheckOutFee}%)</p>
+                      <p className="text-white/80 text-sm">Hasta las {checkOut} hs</p>
+                      <p className="text-white/60 text-sm mt-0.5">Late check-out hasta {lateCheckOut} hs (+{lateCheckOutFee}%)</p>
                     </div>
                   </div>
 
@@ -90,8 +124,8 @@ export default function ContactoPage() {
                       </div>
                       <div>
                         <p className="font-semibold">Seña para reservar</p>
-                        <p className="text-white/80 text-sm">{RESERVATION_POLICIES.depositPercent}% del total</p>
-                        <p className="text-white/60 text-sm mt-0.5">{RESERVATION_POLICIES.depositPercentShortStay}% para estadías de {RESERVATION_POLICIES.shortStayMaxNights} noches o menos</p>
+                        <p className="text-white/80 text-sm">{depositPercent}% del total</p>
+                        <p className="text-white/60 text-sm mt-0.5">{depositPercentShort}% para estadías de {shortStayMaxNights} noches o menos</p>
                       </div>
                     </div>
                   </div>
@@ -102,7 +136,7 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Medios de pago</p>
-                      <p className="text-white/80 text-sm">{RESERVATION_POLICIES.paymentMethods.join(' o ')}</p>
+                      <p className="text-white/80 text-sm">{paymentMethods.join(' o ')}</p>
                     </div>
                   </div>
 
@@ -131,17 +165,17 @@ export default function ContactoPage() {
                 <div className="mt-6 pt-5 border-t border-white/10">
                   <p className="text-white/80 text-sm font-medium mb-3">También podés contactarnos</p>
                   <div className="space-y-3">
-                    <a href="tel:+5403541498970" className="flex items-center gap-3 text-white hover:text-amber transition-colors">
+                    <a href={`tel:${telefonoFijo}`} className="flex items-center gap-3 text-white hover:text-amber transition-colors">
                       <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
                         <HiOutlinePhone className="w-4 h-4 text-amber" />
                       </div>
-                      <span>(03541) 498970</span>
+                      <span>{telefonoFijoDisplay}</span>
                     </a>
-                    <a href="mailto:info@complejoelalto.com.ar" className="flex items-center gap-3 text-white hover:text-amber transition-colors">
+                    <a href={`mailto:${email}`} className="flex items-center gap-3 text-white hover:text-amber transition-colors">
                       <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
                         <HiOutlineEnvelope className="w-4 h-4 text-amber" />
                       </div>
-                      <span className="text-sm">info@complejoelalto.com.ar</span>
+                      <span className="text-sm">{email}</span>
                     </a>
                   </div>
                 </div>

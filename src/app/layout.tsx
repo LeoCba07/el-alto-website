@@ -7,7 +7,8 @@ import Footer from "@/components/Footer";
 import ChatBot from "@/components/ChatBot";
 import { client } from "@/sanity/lib/client";
 import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
-import { SITE_CONFIG, CACHE_CONFIG, TRUST_STATS } from "@/lib/constants";
+import { SITE_CONFIG, CACHE_CONFIG, TRUST_STATS, BUSINESS_HOURS, RESERVATION_POLICIES } from "@/lib/constants";
+import { SiteConfig } from "@/lib/types";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -84,64 +85,70 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "LodgingBusiness",
-  name: "Complejo El Alto",
-  description:
-    "Cabañas y departamentos en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti.",
-  url: baseUrl,
-  logo: `${baseUrl}/icon-512.png`,
-  image: `${baseUrl}/og-image.png`,
-  telephone: ["+54 3541 498970", "+54 9 3572 501030"],
-  email: "info@complejoelalto.com.ar",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Ruta Provincial N°28 y San Martín 1130",
-    addressLocality: "Tanti",
-    addressRegion: "Córdoba",
-    postalCode: "5155",
-    addressCountry: "AR",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: -31.3607,
-    longitude: -64.5876,
-  },
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    opens: "08:00",
-    closes: "22:00",
-  },
-  amenityFeature: [
-    { "@type": "LocationFeatureSpecification", name: "Pileta", value: true },
-    { "@type": "LocationFeatureSpecification", name: "Wi-Fi", value: true },
-    { "@type": "LocationFeatureSpecification", name: "Estacionamiento", value: true },
-    { "@type": "LocationFeatureSpecification", name: "Quincho", value: true },
-  ],
-  priceRange: "$$",
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: String(TRUST_STATS.tripAdvisorRating),
-    reviewCount: String(TRUST_STATS.reviewCount),
-    bestRating: String(TRUST_STATS.tripAdvisorMaxRating),
-  },
-  sameAs: [
-    "https://instagram.com/complejoelalto",
-    "https://facebook.com/complejoelalto",
-    "https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html",
-  ],
-};
+// Generate JSON-LD with config from Sanity (with fallbacks)
+function generateJsonLd(config: SiteConfig | null) {
+  const stats = config?.estadisticas;
+  const direccion = config?.direccion;
+  const redes = config?.redesSociales;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    name: "Complejo El Alto",
+    description:
+      "Cabañas y departamentos en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti.",
+    url: baseUrl,
+    logo: `${baseUrl}/icon-512.png`,
+    image: `${baseUrl}/og-image.png`,
+    telephone: [
+      config?.telefonoFijo || "+54 3541 498970",
+      config?.telefonoMovil || "+54 9 3572 501030"
+    ],
+    email: config?.email || "info@complejoelalto.com.ar",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: direccion?.calle || "Ruta Provincial N°28 y San Martín 1130",
+      addressLocality: direccion?.ciudad || "Tanti",
+      addressRegion: direccion?.provincia || "Córdoba",
+      postalCode: direccion?.codigoPostal || "5155",
+      addressCountry: "AR",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: direccion?.ubicacion?.lat || -31.3607,
+      longitude: direccion?.ubicacion?.lng || -64.5876,
+    },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      opens: config?.horarios?.recepcion?.apertura || "09:00",
+      closes: config?.horarios?.recepcion?.cierre || "19:00",
+    },
+    amenityFeature: [
+      { "@type": "LocationFeatureSpecification", name: "Pileta", value: true },
+      { "@type": "LocationFeatureSpecification", name: "Wi-Fi", value: true },
+      { "@type": "LocationFeatureSpecification", name: "Estacionamiento", value: true },
+      { "@type": "LocationFeatureSpecification", name: "Quincho", value: true },
+    ],
+    priceRange: "$$",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: String(stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating),
+      reviewCount: String(stats?.cantidadResenas ?? TRUST_STATS.reviewCount),
+      bestRating: String(stats?.tripAdvisorMaxRating ?? TRUST_STATS.tripAdvisorMaxRating),
+    },
+    sameAs: [
+      redes?.instagram || "https://instagram.com/complejoelalto",
+      redes?.facebook || "https://facebook.com/complejoelalto",
+      redes?.tripadvisor || "https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html",
+    ].filter(Boolean),
+  };
+}
 
 interface ChatbotData {
   clave: string;
   respuesta: string;
   opcionesSeguimiento?: string[];
-}
-
-interface SiteConfig {
-  numeroWhatsapp?: string;
 }
 
 interface SanityTarifaTemporada {
@@ -162,7 +169,7 @@ export interface TarifasData {
   baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
 }
 
-async function getChatbotData() {
+async function getSiteData() {
   try {
     const [respuestas, config, tarifasRaw] = await Promise.all([
       client.fetch<ChatbotData[]>(chatbotRespuestasQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
@@ -186,9 +193,9 @@ async function getChatbotData() {
       }
     }
 
-    return { respuestas, whatsappNumber: config?.numeroWhatsapp, tarifas };
+    return { respuestas, config, tarifas };
   } catch {
-    return { respuestas: undefined, whatsappNumber: undefined, tarifas: undefined };
+    return { respuestas: undefined, config: null, tarifas: undefined };
   }
 }
 
@@ -197,7 +204,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { respuestas, whatsappNumber, tarifas } = await getChatbotData();
+  const { respuestas, config, tarifas } = await getSiteData();
+  const jsonLd = generateJsonLd(config);
 
   return (
     <html lang="es">
@@ -235,7 +243,7 @@ export default async function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
-        <ChatBot respuestas={respuestas} whatsappNumber={whatsappNumber} tarifas={tarifas} />
+        <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
       </body>
     </html>
   );

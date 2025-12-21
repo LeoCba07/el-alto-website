@@ -17,6 +17,7 @@ import {
 import { SiWhatsapp } from 'react-icons/si'
 import { PiPawPrint } from 'react-icons/pi'
 import { SITE_CONFIG, BUSINESS_HOURS, RESERVATION_POLICIES, formatDateAR } from '@/lib/constants'
+import { SiteConfig } from '@/lib/types'
 
 export interface ChatbotRespuesta {
   clave: string
@@ -33,7 +34,7 @@ export interface TarifasData {
 
 export interface ChatBotProps {
   respuestas?: ChatbotRespuesta[]
-  whatsappNumber?: string
+  siteConfig?: SiteConfig | null
   tarifas?: TarifasData
 }
 
@@ -147,7 +148,7 @@ type BookingData = {
   childrenAges: number[]
 }
 
-export default function ChatBot({ respuestas, whatsappNumber, tarifas }: ChatBotProps) {
+export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProps) {
   const router = useRouter()
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
   const [messages, setMessages] = useState<Message[]>([])
@@ -163,19 +164,42 @@ export default function ChatBot({ respuestas, whatsappNumber, tarifas }: ChatBot
   const lastMessageRef = useRef<HTMLDivElement>(null)
   const [showPulse, setShowPulse] = useState(true)
 
+  // Extract config values with fallbacks to constants
+  const horarios = siteConfig?.horarios
+  const politicas = siteConfig?.politicasReserva
+
+  const checkInTime = horarios?.checkIn || BUSINESS_HOURS.checkIn
+  const checkOutTime = horarios?.checkOut || BUSINESS_HOURS.checkOut
+  const lateCheckOut = horarios?.lateCheckOut || BUSINESS_HOURS.lateCheckOut
+  const lateCheckOutFee = horarios?.lateCheckOutRecargo ?? BUSINESS_HOURS.lateCheckOutFee
+  const latestArrival = horarios?.llegadaMaxima || BUSINESS_HOURS.latestArrival
+
+  const depositPercent = politicas?.senaPorcentaje ?? RESERVATION_POLICIES.depositPercent
+  const depositPercentShort = politicas?.senaPorcentajeCorta ?? RESERVATION_POLICIES.depositPercentShortStay
+  const shortStayMaxNights = politicas?.estadiaCortaMaxNoches ?? RESERVATION_POLICIES.shortStayMaxNights
+  const paymentMethods = politicas?.mediosDePago || RESERVATION_POLICIES.paymentMethods
+
   // Build FAQ data from Sanity or use defaults
   // Tarifas answer comes from Sanity tarifas data (single source of truth)
   const FAQ_DATA = React.useMemo(() => {
-    // Start with defaults, but set tarifas answer dynamically from Sanity
-    const baseData = {
+    // Dynamic answers based on config
+    const dynamicDefaults: Record<string, { answer: string; followUp: string[] }> = {
       ...DEFAULT_FAQ_DATA,
       tarifas: {
         ...DEFAULT_FAQ_DATA.tarifas,
         answer: getTarifasSummaryFromData(tarifas),
       },
+      checkin: {
+        answer: `Check-in: desde las ${checkInTime} hs (llegada máxima ${latestArrival} hs). Check-out: hasta las ${checkOutTime} hs. Late check-out hasta ${lateCheckOut} hs con ${lateCheckOutFee}% adicional.`,
+        followUp: ['consultar_disponibilidad', 'otra_pregunta']
+      },
+      pago: {
+        answer: `Para reservar se requiere una seña del ${depositPercent}% (${depositPercentShort}% para estadías de ${shortStayMaxNights} noches o menos). Aceptamos ${paymentMethods.join(' y ')}.`,
+        followUp: ['consultar_disponibilidad', 'otra_pregunta']
+      },
     }
 
-    if (!respuestas?.length) return baseData
+    if (!respuestas?.length) return dynamicDefaults
 
     const sanityData: Record<string, { answer: string; followUp: string[] }> = {}
     respuestas.forEach((r) => {
@@ -187,10 +211,10 @@ export default function ChatBot({ respuestas, whatsappNumber, tarifas }: ChatBot
       }
     })
     // Merge with base (tarifas answer is already set from Sanity tarifas)
-    return { ...baseData, ...sanityData }
-  }, [respuestas, tarifas])
+    return { ...dynamicDefaults, ...sanityData }
+  }, [respuestas, tarifas, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights, paymentMethods])
 
-  const WHATSAPP_NUMBER = whatsappNumber || SITE_CONFIG.WHATSAPP_NUMBER
+  const WHATSAPP_NUMBER = siteConfig?.numeroWhatsapp || SITE_CONFIG.WHATSAPP_NUMBER
 
   const isOpen = animationStage === 'open'
 

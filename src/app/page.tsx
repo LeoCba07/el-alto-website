@@ -7,8 +7,9 @@ import Testimonials from '@/components/Testimonials'
 import FinalCTA from '@/components/FinalCTA'
 import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
-import { heroSectionQuery } from '@/sanity/lib/queries'
+import { heroSectionQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
+import { SiteConfig } from '@/lib/types'
 
 interface SanityHeroSection {
   subtitulo?: string
@@ -20,22 +21,23 @@ interface SanityHeroSection {
   }>
 }
 
-async function getHeroData() {
+async function getHomeData() {
   try {
-    const data = await client.fetch<SanityHeroSection | null>(heroSectionQuery, {}, {
-      next: { revalidate: 60 }
-    })
-    return data
+    const [heroData, config] = await Promise.all([
+      client.fetch<SanityHeroSection | null>(heroSectionQuery, {}, { next: { revalidate: 60 } }),
+      client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } }),
+    ])
+    return { heroData, config }
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      console.error('Failed to fetch hero data:', error)
+      console.error('Failed to fetch home data:', error)
     }
-    return null
+    return { heroData: null, config: null }
   }
 }
 
 export default async function Home() {
-  const heroData = await getHeroData()
+  const { heroData, config } = await getHomeData()
 
   const heroProps = heroData ? {
     subtitulo: heroData.subtitulo,
@@ -54,7 +56,7 @@ export default async function Home() {
         <Hero {...heroProps} />
       </section>
       <section id="trust-signals">
-        <TrustSignals />
+        <TrustSignals stats={config?.estadisticas} />
       </section>
       <section id="cabanas">
         <FeaturedCabanas />

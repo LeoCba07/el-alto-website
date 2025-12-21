@@ -186,7 +186,37 @@ export const configuracionSitioQuery = groq`
     horarios {
       checkIn,
       checkOut,
-      atencionTelefonica
+      lateCheckOut,
+      lateCheckOutRecargo,
+      llegadaMaxima,
+      pileta {
+        apertura,
+        cierre
+      },
+      recepcion {
+        apertura,
+        cierre
+      }
+    },
+    politicasReserva {
+      senaPorcentaje,
+      senaPorcentajeCorta,
+      estadiaCortaMaxNoches,
+      cancelacionAltaMedia {
+        reembolsoTotalDias,
+        reembolsoParcialDias
+      },
+      cancelacionBaja {
+        reembolsoTotalHoras
+      },
+      mediosDePago
+    },
+    estadisticas {
+      anosExperiencia,
+      tripAdvisorRating,
+      tripAdvisorMaxRating,
+      cantidadResenas,
+      rankingEnTanti
     },
     redesSociales {
       facebook,

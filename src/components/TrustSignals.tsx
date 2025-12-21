@@ -7,6 +7,16 @@ import { TbCalendarCheck, TbHomeHeart } from 'react-icons/tb'
 import { useInView } from './ScrollAnimations'
 import { ANIMATION_TIMING, TRUST_STATS } from '@/lib/constants'
 
+export interface TrustSignalsProps {
+  stats?: {
+    anosExperiencia?: number
+    tripAdvisorRating?: number
+    tripAdvisorMaxRating?: number
+    cantidadResenas?: number
+    rankingEnTanti?: number
+  }
+}
+
 function useCountUp(end: number, duration: number = 2000, start: number = 0, decimals: number = 0) {
   const [count, setCount] = useState(start)
   const [hasStarted, setHasStarted] = useState(false)
@@ -78,9 +88,15 @@ function AnimatedStat({
   )
 }
 
-export default function TrustSignals() {
+export default function TrustSignals({ stats }: TrustSignalsProps) {
   const { ref, isInView } = useInView(0.5)
   const [showShine, setShowShine] = useState(false)
+
+  // Use stats from Sanity with fallbacks to constants
+  const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
+  const tripAdvisorRating = stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating
+  const tripAdvisorMaxRating = stats?.tripAdvisorMaxRating ?? TRUST_STATS.tripAdvisorMaxRating
+  const rankingInTanti = stats?.rankingEnTanti ?? TRUST_STATS.rankingInTanti
 
   useEffect(() => {
     if (isInView) {
@@ -99,22 +115,22 @@ export default function TrustSignals() {
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
           <AnimatedStat
-            end={TRUST_STATS.yearsExperience}
+            end={yearsExperience}
             suffix="+"
             label="años de experiencia"
             Icon={TbCalendarCheck}
             isInView={isInView}
           />
           <AnimatedStat
-            end={TRUST_STATS.tripAdvisorRating}
-            suffix={`/${TRUST_STATS.tripAdvisorMaxRating}`}
+            end={tripAdvisorRating}
+            suffix={`/${tripAdvisorMaxRating}`}
             label="en TripAdvisor"
             Icon={SiTripadvisor}
             decimals={1}
             isInView={isInView}
           />
           <AnimatedStat
-            end={TRUST_STATS.rankingInTanti}
+            end={rankingInTanti}
             start={20}
             prefix="#"
             label="en Tanti"

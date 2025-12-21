@@ -17,7 +17,7 @@ import { MdOutlinePool } from 'react-icons/md'
 import { SiWhatsapp } from 'react-icons/si'
 import { IconType } from 'react-icons'
 import PhotoCarousel from '@/components/PhotoCarousel'
-import { RESERVATION_POLICIES } from '@/lib/constants'
+import { RESERVATION_POLICIES, OPTIONAL_SERVICES } from '@/lib/constants'
 
 export interface CabanaType {
   id: string
@@ -260,7 +260,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
 
               <div className="mt-8 text-center space-y-2">
                 <p className="text-sm text-text-medium">
-                  <span className="font-medium text-forest-dark">Aire acondicionado:</span> $2.500/día
+                  <span className="font-medium text-forest-dark">Aire acondicionado:</span> {OPTIONAL_SERVICES.acPricePerDay}
                 </p>
                 <p className="text-sm text-text-light">
                   Pileta, quincho y cochera incluidos · Descuentos por pago en efectivo

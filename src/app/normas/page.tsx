@@ -15,6 +15,7 @@ import { GiTowel } from 'react-icons/gi'
 import { client } from '@/sanity/lib/client'
 import { normasQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
 import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
+import { SiteConfig } from '@/lib/types'
 
 export const metadata: Metadata = {
   title: 'Normas del Complejo | El Alto',
@@ -32,18 +33,11 @@ interface SanityNorma {
   detalle?: string
 }
 
-interface SanityConfig {
-  horarios?: {
-    checkIn?: string
-    checkOut?: string
-  }
-}
-
 async function getNormasData() {
   try {
     const [normas, config] = await Promise.all([
       client.fetch<SanityNorma[]>(normasQuery, {}, { next: { revalidate: 60 } }),
-      client.fetch<SanityConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } })
+      client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } })
     ])
     return { normas, config }
   } catch {
@@ -54,9 +48,19 @@ async function getNormasData() {
 export default async function NormasPage() {
   const { config } = await getNormasData()
 
-  // Use config data for check-in/check-out times if available
-  const checkInTime = config?.horarios?.checkIn || BUSINESS_HOURS.checkIn
-  const checkOutTime = config?.horarios?.checkOut || BUSINESS_HOURS.checkOut
+  // Extract config values with fallbacks
+  const horarios = config?.horarios
+  const politicas = config?.politicasReserva
+
+  const checkInTime = horarios?.checkIn || BUSINESS_HOURS.checkIn
+  const checkOutTime = horarios?.checkOut || BUSINESS_HOURS.checkOut
+  const latestArrival = horarios?.llegadaMaxima || BUSINESS_HOURS.latestArrival
+  const poolOpen = horarios?.pileta?.apertura || BUSINESS_HOURS.poolOpen
+  const poolClose = horarios?.pileta?.cierre || BUSINESS_HOURS.poolClose
+
+  const cancelHighMidFullDays = politicas?.cancelacionAltaMedia?.reembolsoTotalDias ?? RESERVATION_POLICIES.cancellationHighMid.fullRefundDays
+  const cancelHighMidPartialDays = politicas?.cancelacionAltaMedia?.reembolsoParcialDias ?? RESERVATION_POLICIES.cancellationHighMid.partialRefundDays
+  const cancelLowHours = politicas?.cancelacionBaja?.reembolsoTotalHoras ?? RESERVATION_POLICIES.cancellationLow.fullRefundHours
   return (
     <div className="min-h-screen bg-cream">
       {/* Header Section */}
@@ -89,7 +93,7 @@ export default async function NormasPage() {
                   <HiOutlineArrowRightOnRectangle className="w-8 h-8 text-forest mx-auto mb-2" />
                   <p className="text-2xl font-bold text-forest-dark">{checkInTime.replace(' hs', '')}</p>
                   <p className="text-sm text-text-medium">Check-In</p>
-                  <p className="text-sm text-text-light mt-1">Llegada hasta las 20:00</p>
+                  <p className="text-sm text-text-light mt-1">Llegada hasta las {latestArrival}</p>
                 </div>
                 <div className="text-center p-4 bg-cream rounded-xl">
                   <HiOutlineArrowLeftOnRectangle className="w-8 h-8 text-forest mx-auto mb-2" />
@@ -99,7 +103,7 @@ export default async function NormasPage() {
                 </div>
                 <div className="text-center p-4 bg-cream rounded-xl">
                   <MdOutlinePool className="w-8 h-8 text-forest mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-forest-dark">{BUSINESS_HOURS.poolOpen} - {BUSINESS_HOURS.poolClose}</p>
+                  <p className="text-2xl font-bold text-forest-dark">{poolOpen} - {poolClose}</p>
                   <p className="text-sm text-text-medium">Pileta</p>
                   <p className="text-sm text-text-light mt-1">Niños con adultos</p>
                 </div>
@@ -193,13 +197,13 @@ export default async function NormasPage() {
               <div className="grid sm:grid-cols-3 gap-4">
                 <div className="bg-white/10 rounded-xl p-5">
                   <p className="text-amber font-medium text-sm mb-2">Temporada Alta/Media</p>
-                  <p className="text-2xl font-bold mb-1">{RESERVATION_POLICIES.cancellationHighMid.fullRefundDays} días</p>
-                  <p className="text-sm text-white/70">Reembolso total. Entre {RESERVATION_POLICIES.cancellationHighMid.partialRefundDays}-{RESERVATION_POLICIES.cancellationHighMid.fullRefundDays - 1} días se cobra 1 noche.</p>
+                  <p className="text-2xl font-bold mb-1">{cancelHighMidFullDays} días</p>
+                  <p className="text-sm text-white/70">Reembolso total. Entre {cancelHighMidPartialDays}-{cancelHighMidFullDays - 1} días se cobra 1 noche.</p>
                 </div>
                 <div className="bg-white/10 rounded-xl p-5">
                   <p className="text-amber font-medium text-sm mb-2">Temporada Baja</p>
-                  <p className="text-2xl font-bold mb-1">{RESERVATION_POLICIES.cancellationLow.fullRefundHours} hs</p>
-                  <p className="text-sm text-white/70">Cancelación gratuita hasta {RESERVATION_POLICIES.cancellationLow.fullRefundHours} hs antes del check-in.</p>
+                  <p className="text-2xl font-bold mb-1">{cancelLowHours} hs</p>
+                  <p className="text-sm text-white/70">Cancelación gratuita hasta {cancelLowHours} hs antes del check-in.</p>
                 </div>
                 <div className="bg-white/10 rounded-xl p-5">
                   <p className="text-amber font-medium text-sm mb-2">Promociones</p>
