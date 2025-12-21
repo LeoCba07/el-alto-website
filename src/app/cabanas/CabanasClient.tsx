@@ -203,7 +203,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
           <div className="grid lg:grid-cols-5 gap-8 items-start">
             {/* Photo Gallery - Takes more space */}
             <div className="lg:col-span-3">
-              <PhotoCarousel photos={activeUnit.photos} altPrefix={`Cabaña ${activeUnit.nombre}`} />
+              <PhotoCarousel key={activeUnit.id} photos={activeUnit.photos} altPrefix={`Cabaña ${activeUnit.nombre}`} />
             </div>
 
             {/* Unit Info */}
