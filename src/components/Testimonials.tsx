@@ -88,7 +88,7 @@ export default function Testimonials() {
               {/* Author section */}
               <div className="flex items-center justify-between p-5 border-t border-sand bg-cream/50">
                 <p className="font-semibold text-forest-dark">{testimonial.author}</p>
-                <span className="text-xs text-text-light">{testimonial.source}</span>
+                <span className="text-sm text-text-light">{testimonial.source}</span>
               </div>
             </div>
           ))}

@@ -179,7 +179,7 @@ export default async function ServiciosPage() {
                         <p className="text-sm text-text-medium">{s.descripcion}</p>
                       )}
                       {s.detalle && (
-                        <p className="text-xs text-text-light mt-1">{s.detalle}</p>
+                        <p className="text-sm text-text-light mt-1">{s.detalle}</p>
                       )}
                     </div>
                   ))
@@ -202,7 +202,7 @@ export default async function ServiciosPage() {
                       <p className="text-sm text-text-medium">
                         Desayuno seco servido en tu unidad.
                       </p>
-                      <p className="text-xs text-text-light mt-1">Disponibilidad limitada</p>
+                      <p className="text-sm text-text-light mt-1">Disponibilidad limitada</p>
                     </div>
                     <div className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
@@ -212,7 +212,7 @@ export default async function ServiciosPage() {
                       <p className="text-sm text-text-medium">
                         Facial, reflexología, piedras calientes.
                       </p>
-                      <p className="text-xs text-text-light mt-1">Disponibilidad limitada</p>
+                      <p className="text-sm text-text-light mt-1">Disponibilidad limitada</p>
                     </div>
                   </>
                 )}
@@ -261,7 +261,7 @@ function FeatureCard({ image, title, description, note }: { image: string; title
       <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
         <h3 className="font-bold text-lg mb-0.5">{title}</h3>
         <p className="text-sm text-white/90">{description}</p>
-        {note && <p className="text-xs text-white/60 mt-1">{note}</p>}
+        {note && <p className="text-sm text-white/70 mt-1">{note}</p>}
       </div>
     </div>
   )

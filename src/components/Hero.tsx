@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Button from './Button'
 import { HiOutlineChevronDown } from 'react-icons/hi2'
 import { useState, useEffect, useCallback } from 'react'
+import { ANIMATION_TIMING } from '@/lib/constants'
 
 interface HeroImage {
   url: string
@@ -28,7 +29,7 @@ const defaultImages = [
 export default function Hero({
   subtitulo = 'Complejo de cabañas en Tanti, Córdoba',
   titulo = 'El Alto',
-  descripcion = 'Tu refugio en las sierras',
+  descripcion = 'Naturaleza a tu puerta, comodidad adentro',
   imagenes,
   textoBoton = 'Ver alojamientos',
   linkBoton = '/cabanas',
@@ -73,7 +74,7 @@ export default function Hero({
       {/* Content - Spread across full height */}
       <div className="relative z-10 flex h-full flex-col justify-between py-32 md:py-40">
         {/* Top - Tagline */}
-        <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+        <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
           <p className="font-medium tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
             {subtitulo}
           </p>
@@ -81,24 +82,24 @@ export default function Hero({
 
         {/* Center - Main Title */}
         <div className="text-center px-6">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
             {titulo}
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
+          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
             {descripcion}
           </p>
         </div>
 
         {/* Bottom - CTA & Info */}
-        <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
+        <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
           <p className="mb-8 text-base md:text-lg text-white tracking-wide font-semibold [text-shadow:_0_2px_8px_rgb(0_0_0_/_90%)]">
             Desde 1996 · A 10 minutos de Villa Carlos Paz
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Button href={linkBoton} variant="primary" size="lg" className="shadow-xl">
+            <Button href={linkBoton} variant="primary" size="lg" className="shadow-xl hover:shadow-amber/25">
               {textoBoton}
             </Button>
-            <Button href="/contacto" variant="outline-light" size="lg" className="shadow-xl backdrop-blur-sm bg-white/10">
+            <Button href="/contacto" variant="secondary" size="lg" className="shadow-xl">
               Consultar disponibilidad
             </Button>
           </div>
@@ -106,13 +107,13 @@ export default function Hero({
       </div>
 
       {/* Image indicators */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex gap-2.5">
         {heroImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === currentIndex ? 'bg-white w-6' : 'bg-white/50'
+            className={`h-3 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${
+              index === currentIndex ? 'bg-white w-8' : 'bg-white/50 w-3 hover:bg-white/70'
             }`}
             aria-label={`Ir a imagen ${index + 1}`}
           />

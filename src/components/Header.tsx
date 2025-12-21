@@ -45,7 +45,7 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="group flex items-center gap-2.5"
+            className="group flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2 rounded-lg"
           >
             <Image
               src="/icon-512.png"
@@ -67,7 +67,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`group relative flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${
+                  className={`group relative flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2 ${
                     isActive
                       ? 'text-forest bg-forest/10'
                       : 'text-text-dark hover:text-forest hover:bg-forest/5'
@@ -87,7 +87,7 @@ export default function Header() {
           <div className="hidden md:block">
             <Link
               href="/contacto"
-              className="group relative inline-flex items-center gap-1.5 bg-amber text-white px-5 py-2.5 rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 hover:scale-105"
+              className="group relative inline-flex items-center gap-1.5 bg-amber text-white px-5 py-2.5 rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
             >
               <span className="absolute inset-0 bg-amber-dark translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <span className="relative">Consultar</span>
@@ -98,7 +98,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-text-dark hover:text-forest hover:bg-forest/10 rounded-lg transition-all duration-300"
+            className="md:hidden p-2 text-text-dark hover:text-forest hover:bg-forest/10 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2"
             aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
             <div className="relative w-6 h-6">
@@ -120,7 +120,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center gap-3 font-medium py-3 px-3 rounded-xl transition-all duration-300 ${
+                  className={`flex items-center gap-3 font-medium py-3 px-3 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-inset ${
                     isActive
                       ? 'text-forest bg-forest/10'
                       : 'text-text-dark hover:text-forest hover:bg-forest/5'
@@ -136,7 +136,7 @@ export default function Header() {
               <Link
                 href="/contacto"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white px-5 py-3.5 rounded-full font-semibold transition-all duration-300 w-full hover:shadow-lg hover:shadow-amber/25"
+                className="flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white px-5 py-3.5 rounded-full font-semibold transition-all duration-300 w-full hover:shadow-lg hover:shadow-amber/25 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
               >
                 Consultar
               </Link>

@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { HiOutlineTrophy } from 'react-icons/hi2'
 import { SiTripadvisor } from 'react-icons/si'
 import { TbCalendarCheck, TbHomeHeart } from 'react-icons/tb'
+import { useInView } from './ScrollAnimations'
+import { ANIMATION_TIMING } from '@/lib/constants'
 
 function useCountUp(end: number, duration: number = 2000, start: number = 0, decimals: number = 0) {
   const [count, setCount] = useState(start)
@@ -32,31 +34,6 @@ function useCountUp(end: number, duration: number = 2000, start: number = 0, dec
   }
 
   return { count, startCounting, hasStarted }
-}
-
-function useInView(threshold = 0.5) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isInView, setIsInView] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-          observer.disconnect()
-        }
-      },
-      { threshold }
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { ref, isInView }
 }
 
 function AnimatedStat({
@@ -95,7 +72,7 @@ function AnimatedStat({
         <span className="font-bold text-white text-lg">
           {prefix}{count}<span className="text-white/50 font-normal">{suffix}</span>
         </span>
-        <p className="text-white/70 text-xs">{label}</p>
+        <p className="text-white/70 text-sm">{label}</p>
       </div>
     </div>
   )
@@ -107,7 +84,7 @@ export default function TrustSignals() {
 
   useEffect(() => {
     if (isInView) {
-      const timer = setTimeout(() => setShowShine(true), 2100)
+      const timer = setTimeout(() => setShowShine(true), ANIMATION_TIMING.trustSignalsInterval)
       return () => clearTimeout(timer)
     }
   }, [isInView])
@@ -115,7 +92,7 @@ export default function TrustSignals() {
   return (
     <section ref={ref} className="bg-forest-dark py-6 border-b border-white/10">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 lg:gap-14">
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
           <AnimatedStat
             end={28}
             suffix="+"
@@ -144,10 +121,10 @@ export default function TrustSignals() {
               <TbHomeHeart className="w-5 h-5 text-amber" />
             </div>
             <div>
-              <span className={`font-bold text-lg inline-block relative overflow-hidden ${showShine ? 'text-shine' : 'text-white'}`}>
+              <span className={`font-bold text-white text-lg inline-block relative overflow-hidden ${showShine ? 'text-shine' : ''}`}>
                 Familiar
               </span>
-              <p className="text-white/70 text-xs">atendido por sus dueños</p>
+              <p className="text-white/70 text-sm">atendido por dueños</p>
             </div>
           </div>
         </div>

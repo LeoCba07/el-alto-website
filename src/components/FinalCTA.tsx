@@ -7,7 +7,7 @@ import { FadeUp } from './ScrollAnimations'
 
 export default function FinalCTA() {
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-24 md:py-32 overflow-hidden">
       {/* Background Image */}
       <Image
         src="/images/panorama-escaleras-a-pileta.jpg"
@@ -40,7 +40,7 @@ export default function FinalCTA() {
         </Link>
 
         <p className="mt-8 text-sm text-white/60">
-          Respondemos en menos de 2 horas
+          Horarios de atención: 9 a 19 hs
         </p>
       </FadeUp>
     </section>

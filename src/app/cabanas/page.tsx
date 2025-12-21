@@ -54,11 +54,10 @@ async function getTarifasData() {
 }
 
 export default async function CabanasPage() {
-  const [cabanasData, _tarifasData] = await Promise.all([
+  const [cabanasData] = await Promise.all([
     getCabanasData(),
     getTarifasData()
   ])
-  // Note: _tarifasData fetched for future use when tarifa display is implemented
 
   const cabanas: CabanaType[] | undefined = cabanasData?.length
     ? cabanasData.map((cabana) => ({

@@ -5,18 +5,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {
   HiOutlineUserGroup,
-  HiOutlineChevronLeft,
   HiOutlineChevronRight,
-  HiOutlineArrowRight,
   HiOutlineHome,
   HiOutlineHeart,
   HiOutlineBuildingOffice,
   HiOutlineSquare3Stack3D,
   HiOutlineClipboardDocumentList,
+  HiOutlineChatBubbleLeftRight,
 } from 'react-icons/hi2'
 import { MdOutlinePool } from 'react-icons/md'
 import { SiWhatsapp } from 'react-icons/si'
 import { IconType } from 'react-icons'
+import PhotoCarousel from '@/components/PhotoCarousel'
 
 export interface CabanaType {
   id: string
@@ -61,9 +61,9 @@ const defaultCabanas: CabanaType[] = [
     descripcion: 'Dos plantas amplias con living-comedor abajo y dormitorios arriba. Ideales para familias o grupos.',
     destacado: 'Máxima capacidad',
     photos: [
-      '/images/cabana1-interior.JPG',
-      '/images/cabana1-cocina.JPG',
-      '/images/cabana1-habitacion.JPG',
+      '/images/cabana1-interior.jpg',
+      '/images/cabana1-cocina.jpg',
+      '/images/cabana1-habitacion.jpg',
     ],
   },
   {
@@ -75,9 +75,9 @@ const defaultCabanas: CabanaType[] = [
     descripcion: 'Amplias y completas, con todo lo necesario para una estadía confortable.',
     destacado: 'Las más populares',
     photos: [
-      '/images/cabana2-interior.JPG',
-      '/images/cabana2-cocina.JPG',
-      '/images/cabana2-habitacion.JPG',
+      '/images/cabana2-interior.jpg',
+      '/images/cabana2-cocina.jpg',
+      '/images/cabana2-habitacion.jpg',
     ],
   },
   {
@@ -89,8 +89,8 @@ const defaultCabanas: CabanaType[] = [
     descripcion: 'Funcionales y acogedoras, con excelente relación precio-calidad.',
     destacado: 'Mejor precio',
     photos: [
-      '/images/cabana3-interior.JPG',
-      '/images/cabana-con-vista.JPG',
+      '/images/cabana3-interior.jpg',
+      '/images/cabana-con-vista.jpg',
     ],
   },
   {
@@ -102,8 +102,8 @@ const defaultCabanas: CabanaType[] = [
     descripcion: 'Íntimas y románticas, perfectas para una escapada en pareja.',
     destacado: 'Románticas',
     photos: [
-      '/images/vista-desde-cabana.JPG',
-      '/images/cabana-con-vista.JPG',
+      '/images/vista-desde-cabana.jpg',
+      '/images/cabana-con-vista.jpg',
     ],
   },
 ]
@@ -141,54 +141,6 @@ const defaultTarifas = {
       { capacidad: '5 a 6 personas', precio: 89000 },
     ],
   },
-}
-
-function PhotoCarousel({ photos, unitName }: { photos: string[]; unitName: string }) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const nextPhoto = () => setCurrentIndex((prev) => (prev + 1) % photos.length)
-  const prevPhoto = () => setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length)
-
-  return (
-    <div className="relative aspect-[16/10] rounded-xl overflow-hidden">
-      <Image
-        src={photos[currentIndex]}
-        alt={`${unitName} - foto ${currentIndex + 1}`}
-        fill
-        className="object-cover"
-      />
-      {photos.length > 1 && (
-        <>
-          <button
-            onClick={prevPhoto}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-colors"
-            aria-label="Foto anterior"
-          >
-            <HiOutlineChevronLeft className="w-5 h-5 text-forest-dark" />
-          </button>
-          <button
-            onClick={nextPhoto}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-colors"
-            aria-label="Foto siguiente"
-          >
-            <HiOutlineChevronRight className="w-5 h-5 text-forest-dark" />
-          </button>
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {photos.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                  index === currentIndex ? 'bg-white' : 'bg-white/50'
-                }`}
-                aria-label={`Ir a foto ${index + 1}`}
-              />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  )
 }
 
 export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) {
@@ -251,7 +203,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
           <div className="grid lg:grid-cols-5 gap-8 items-start">
             {/* Photo Gallery - Takes more space */}
             <div className="lg:col-span-3">
-              <PhotoCarousel photos={activeUnit.photos} unitName={activeUnit.nombre} />
+              <PhotoCarousel photos={activeUnit.photos} altPrefix={`Cabaña ${activeUnit.nombre}`} />
             </div>
 
             {/* Unit Info */}
@@ -314,12 +266,10 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
                     ? 'bg-amber text-white'
                     : temporada.nombre === 'Temporada Media'
                     ? 'bg-forest text-white'
-                    : 'bg-forest-dark/10 text-forest-dark'
+                    : 'bg-forest-dark text-white'
                 }`}>
                   <h3 className="font-bold font-serif">{temporada.nombre}</h3>
-                  <p className={`text-xs mt-1 ${
-                    temporada.nombre === 'Temporada Baja' ? 'text-text-medium' : 'opacity-90'
-                  }`}>
+                  <p className="text-xs mt-1 opacity-90">
                     {temporada.periodo}
                   </p>
                 </div>
@@ -351,55 +301,128 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
         </div>
       </section>
 
-      {/* Links to Servicios and Normas */}
-      <section className="py-10 border-t border-sand bg-cream">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Link
-              href="/servicios"
-              className="group bg-white rounded-2xl border border-sand p-6 hover:border-forest hover:shadow-lg transition-all"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-forest/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-forest/20 transition-colors">
-                  <MdOutlinePool className="w-6 h-6 text-forest" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-forest-dark font-serif text-lg group-hover:text-forest transition-colors">
-                    Servicios e instalaciones
-                  </h3>
-                  <p className="text-text-medium text-sm mt-1">
-                    Pileta climatizada, quincho, espacios verdes y más
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-forest font-medium text-sm mt-3 group-hover:gap-2 transition-all">
-                    Ver servicios
-                    <HiOutlineArrowRight className="w-4 h-4" />
-                  </span>
+      {/* Booking, Cancellation & Links */}
+      <section className="py-12 md:py-16 bg-cream border-t border-sand">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid lg:grid-cols-5 gap-6">
+            {/* Left: Booking + Cancellation */}
+            <div className="lg:col-span-3 bg-white rounded-2xl border border-sand p-6 md:p-8">
+              {/* Booking Steps */}
+              <div className="mb-8">
+                <h2 className="text-xl font-bold text-forest-dark font-serif mb-2">
+                  Cómo reservar
+                </h2>
+                <p className="text-text-medium text-sm mb-5">
+                  Reservá tu estadía en 3 simples pasos
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <span className="w-8 h-8 bg-amber text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">1</span>
+                    <div className="pt-0.5">
+                      <p className="font-semibold text-forest-dark">Consultá disponibilidad</p>
+                      <p className="text-sm text-text-medium">Contactanos por WhatsApp o teléfono con tus fechas y cantidad de personas</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <span className="w-8 h-8 bg-amber text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
+                    <div className="pt-0.5">
+                      <p className="font-semibold text-forest-dark">Confirmá con seña</p>
+                      <p className="text-sm text-text-medium">30% del total (50% para estadías de 2 noches o menos). Transferencia o Mercado Pago</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <span className="w-8 h-8 bg-amber text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
+                    <div className="pt-0.5">
+                      <p className="font-semibold text-forest-dark">¡Listo para disfrutar!</p>
+                      <p className="text-sm text-text-medium">El saldo restante lo abonás al momento del check-in</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </Link>
 
-            <Link
-              href="/normas"
-              className="group bg-white rounded-2xl border border-sand p-6 hover:border-forest hover:shadow-lg transition-all"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-forest/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-forest/20 transition-colors">
-                  <HiOutlineClipboardDocumentList className="w-6 h-6 text-forest" />
+              {/* Cancellation */}
+              <div className="border-t border-sand pt-6">
+                <h3 className="text-lg font-bold text-forest-dark font-serif mb-2">Política de cancelación</h3>
+                <p className="text-text-medium text-sm mb-4">
+                  Cancelá sin cargo dentro de los siguientes plazos para recibir reembolso completo de tu seña
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between bg-cream rounded-xl px-4 py-3">
+                    <span className="text-text-dark font-medium">Temporada Baja</span>
+                    <span className="text-forest-dark font-bold">72 hs antes del check-in</span>
+                  </div>
+                  <div className="bg-cream rounded-xl px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-text-dark font-medium">Temporada Alta/Media</span>
+                      <span className="text-forest-dark font-bold">30 días antes del check-in</span>
+                    </div>
+                    <p className="text-text-medium text-sm mt-1">Entre 15-29 días antes se cobra 1 noche</p>
+                  </div>
+                  <div className="flex items-center justify-between bg-cream rounded-xl px-4 py-3">
+                    <span className="text-text-dark font-medium">Promociones</span>
+                    <span className="text-forest-dark font-bold">No reembolsable</span>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-forest-dark font-serif text-lg group-hover:text-forest transition-colors">
-                    Horarios y normas
-                  </h3>
-                  <p className="text-text-medium text-sm mt-1">
-                    Check-in, check-out, políticas de reserva y más
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-forest font-medium text-sm mt-3 group-hover:gap-2 transition-all">
-                    Ver normas
-                    <HiOutlineArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
+                <p className="text-text-light text-sm text-center mt-4">Una vez confirmada la reserva, no es posible modificar las fechas de estadía.</p>
               </div>
-            </Link>
+            </div>
+
+            {/* Right: Links stacked */}
+            <div className="lg:col-span-2 flex flex-col gap-4">
+              <Link
+                href="/servicios"
+                className="group bg-white rounded-2xl border border-sand p-6 hover:border-forest hover:shadow-lg transition-all flex-1 flex items-center"
+              >
+                <div className="flex items-center gap-4 w-full">
+                  <div className="w-14 h-14 bg-forest/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-forest/20 transition-colors">
+                    <MdOutlinePool className="w-7 h-7 text-forest" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-forest-dark group-hover:text-forest transition-colors">
+                      Servicios e instalaciones
+                    </h3>
+                    <p className="text-text-medium">Pileta, quincho, cochera y más</p>
+                  </div>
+                  <HiOutlineChevronRight className="w-6 h-6 text-forest/50 group-hover:text-forest group-hover:translate-x-1 transition-all" />
+                </div>
+              </Link>
+
+              <Link
+                href="/normas"
+                className="group bg-white rounded-2xl border border-sand p-6 hover:border-forest hover:shadow-lg transition-all flex-1 flex items-center"
+              >
+                <div className="flex items-center gap-4 w-full">
+                  <div className="w-14 h-14 bg-forest/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-forest/20 transition-colors">
+                    <HiOutlineClipboardDocumentList className="w-7 h-7 text-forest" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-forest-dark group-hover:text-forest transition-colors">
+                      Horarios y normas
+                    </h3>
+                    <p className="text-text-medium">Check-in, check-out y reglas</p>
+                  </div>
+                  <HiOutlineChevronRight className="w-6 h-6 text-forest/50 group-hover:text-forest group-hover:translate-x-1 transition-all" />
+                </div>
+              </Link>
+
+              <Link
+                href="/consultas-frecuentes"
+                className="group bg-white rounded-2xl border border-sand p-6 hover:border-forest hover:shadow-lg transition-all flex-1 flex items-center"
+              >
+                <div className="flex items-center gap-4 w-full">
+                  <div className="w-14 h-14 bg-forest/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-forest/20 transition-colors">
+                    <HiOutlineChatBubbleLeftRight className="w-7 h-7 text-forest" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-forest-dark group-hover:text-forest transition-colors">
+                      Preguntas frecuentes
+                    </h3>
+                    <p className="text-text-medium">Dudas comunes resueltas</p>
+                  </div>
+                  <HiOutlineChevronRight className="w-6 h-6 text-forest/50 group-hover:text-forest group-hover:translate-x-1 transition-all" />
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

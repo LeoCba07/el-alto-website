@@ -67,7 +67,7 @@ export default function ContactoPage() {
                     <div>
                       <p className="font-semibold">Check-in</p>
                       <p className="text-white/80 text-sm">Desde las 13:30 hs</p>
-                      <p className="text-white/60 text-xs mt-0.5">Llegada máxima 20:00 hs</p>
+                      <p className="text-white/60 text-sm mt-0.5">Llegada máxima 20:00 hs</p>
                     </div>
                   </div>
 
@@ -78,7 +78,7 @@ export default function ContactoPage() {
                     <div>
                       <p className="font-semibold">Check-out</p>
                       <p className="text-white/80 text-sm">Hasta las 10:00 hs</p>
-                      <p className="text-white/60 text-xs mt-0.5">Late check-out hasta 18:00 hs (+50%)</p>
+                      <p className="text-white/60 text-sm mt-0.5">Late check-out hasta 18:00 hs (+50%)</p>
                     </div>
                   </div>
 
@@ -90,7 +90,7 @@ export default function ContactoPage() {
                       <div>
                         <p className="font-semibold">Seña para reservar</p>
                         <p className="text-white/80 text-sm">30% del total</p>
-                        <p className="text-white/60 text-xs mt-0.5">50% para estadías de 2 noches o menos</p>
+                        <p className="text-white/60 text-sm mt-0.5">50% para estadías de 2 noches o menos</p>
                       </div>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ export default function ContactoPage() {
       {/* Location Section */}
       <section id="ubicacion" className="py-12 md:py-16 bg-cream-dark">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <p className="text-forest font-medium mb-2 tracking-wide uppercase text-sm">
               Ubicación
             </p>
@@ -197,7 +197,7 @@ export default function ContactoPage() {
             <div className="flex flex-col gap-4">
               <div className="flex-1 min-h-[200px] rounded-2xl overflow-hidden shadow-lg border border-sand">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3404.8!2d-64.5876!3d-31.3607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDIxJzM4LjUiUyA2NMKwMzUnMTUuNCJX!5e0!3m2!1ses!2sar!4v1"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3404.8!2d-64.59019!3d-31.35838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x942d7e1c8e1e8e8d%3A0x1e8e8e8e8e8e8e8e!2sComplejo%20El%20Alto!5e0!3m2!1ses!2sar!4v1"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -273,7 +273,7 @@ export default function ContactoPage() {
               {/* Directions Link */}
               <div className="text-center">
                 <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=-31.3607,-64.5876"
+                  href="https://www.google.com/maps/dir/?api=1&destination=-31.35838,-64.59019"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 bg-forest text-white px-8 py-3.5 rounded-full font-semibold hover:bg-forest-dark shadow-md hover:shadow-lg transition-all"

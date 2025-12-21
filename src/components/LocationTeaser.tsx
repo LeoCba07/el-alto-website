@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { HiOutlineMapPin, HiOutlineBuildingStorefront, HiOutlineSparkles, HiOutlineChevronRight } from 'react-icons/hi2'
+import { HiOutlineBuildingStorefront, HiOutlineChevronRight, HiOutlineClock } from 'react-icons/hi2'
 import { MdOutlineDirectionsBus, MdOutlinePool, MdOutlineTheaterComedy } from 'react-icons/md'
 import { TbMountain, TbTrees } from 'react-icons/tb'
 import { IconType } from 'react-icons'
@@ -18,13 +18,13 @@ const conveniences: { place: string; distance: string; Icon: IconType }[] = [
 const nearbyAttractions = [
   {
     name: 'Cascada Los Helechos',
-    distance: '2 km',
+    distance: '5 min',
     image: '/images/cascada-los-helechos.jpg',
     tag: 'Naturaleza',
   },
   {
     name: 'Reserva Los Chorrillos',
-    distance: '3.5 km',
+    distance: '10 min',
     image: '/images/senderismo.jpg',
     tag: 'Aventura',
   },
@@ -36,7 +36,7 @@ const nearbyAttractions = [
   },
   {
     name: 'Los Gigantes',
-    distance: '50 min en auto',
+    distance: '50 min',
     image: '/images/los-gigantes.jpg',
     tag: 'Senderismo',
   },
@@ -74,8 +74,8 @@ export default function LocationTeaser() {
                     <item.Icon className="w-5 h-5 text-amber" />
                   </div>
                   <div>
-                    <p className="text-white font-semibold text-sm">{item.distance}</p>
-                    <p className="text-white/60 text-xs">{item.place}</p>
+                    <p className="text-white font-semibold">{item.distance}</p>
+                    <p className="text-white/70 text-sm">{item.place}</p>
                   </div>
                 </div>
               ))}
@@ -99,7 +99,7 @@ export default function LocationTeaser() {
             {nearbyAttractions.map((attraction, index) => (
               <div
                 key={index}
-                className="group relative rounded-2xl overflow-hidden aspect-[3/4] shadow-lg cursor-pointer"
+                className="group relative rounded-2xl overflow-hidden aspect-[3/4] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 <Image
                   src={attraction.image}
@@ -111,27 +111,19 @@ export default function LocationTeaser() {
 
                 {/* Tag */}
                 <div className="absolute top-3 left-3">
-                  <span className="text-[10px] font-medium text-white bg-amber/80 backdrop-blur-sm px-2 py-1 rounded-full">
+                  <span className="text-xs font-medium text-white bg-amber/80 backdrop-blur-sm px-2.5 py-1 rounded-full">
                     {attraction.tag}
                   </span>
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                  <h4 className="font-bold text-sm leading-tight mb-1 group-hover:text-amber transition-colors duration-300">
+                  <h4 className="font-bold leading-tight mb-1">
                     {attraction.name}
                   </h4>
-                  <p className="text-white/70 text-xs flex items-center gap-1">
-                    <HiOutlineMapPin className="w-3 h-3" />
+                  <p className="text-white/80 text-sm flex items-center gap-1">
+                    <HiOutlineClock className="w-3.5 h-3.5" />
                     {attraction.distance}
                   </p>
-                </div>
-
-                {/* Hover overlay */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-4 py-2 rounded-full">
-                    <HiOutlineSparkles className="w-4 h-4 inline mr-1" />
-                    Explorar
-                  </span>
                 </div>
               </div>
             ))}

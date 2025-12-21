@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, ReactNode } from 'react'
 
-// Hook to detect when element is in view
-function useInView(threshold = 0.1) {
+// Hook to detect when element is in view - exported for reuse
+export function useInView(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
 

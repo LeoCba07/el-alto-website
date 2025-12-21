@@ -24,13 +24,13 @@ type ButtonProps = ButtonAsButton | ButtonAsLink
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--color-amber)] text-white hover:bg-[var(--color-amber-dark)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02]',
+    'bg-[var(--color-amber)] text-white hover:bg-[var(--color-amber-dark)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[var(--color-amber)] focus:ring-offset-2',
   secondary:
-    'bg-[var(--color-forest)] text-white hover:bg-[var(--color-forest-light)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02]',
+    'bg-[var(--color-forest)] text-white hover:bg-[var(--color-forest-light)] shadow-md hover:shadow-lg transition-all hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[var(--color-forest)] focus:ring-offset-2',
   outline:
-    'border-2 border-[var(--color-forest)] bg-transparent text-[var(--color-forest)] hover:bg-[var(--color-forest)] hover:text-white transition-colors',
+    'border-2 border-[var(--color-forest)] bg-transparent text-[var(--color-forest)] hover:bg-[var(--color-forest)] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-forest)] focus:ring-offset-2',
   'outline-light':
-    'border-2 border-white bg-transparent text-white hover:bg-white hover:text-[var(--color-forest-dark)] transition-colors',
+    'border-2 border-white bg-transparent text-white hover:bg-white hover:text-[var(--color-forest-dark)] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[var(--color-forest-dark)]',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {

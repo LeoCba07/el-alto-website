@@ -45,7 +45,7 @@ const defaultCategories: FAQCategory[] = [
       { pregunta: '¿Cuánto es la seña?', respuesta: '30% del total. Para estadías de 2 noches o menos, es el 50%.' },
       { pregunta: '¿Hay estadía mínima?', respuesta: 'En temporada alta/media sí. En temporada baja podés reservar una sola noche.' },
       { pregunta: '¿Aceptan tarjeta?', respuesta: 'Sí, todas las tarjetas vía Mercado Pago.' },
-      { pregunta: '¿Puedo cancelar mi reserva?', respuesta: 'Depende de la temporada. En baja, hasta 72hs antes. En alta/media, hasta 30 días antes para reembolso total.' },
+      { pregunta: '¿Puedo cancelar mi reserva?', respuesta: 'Depende de la temporada. En baja, hasta 72hs antes. En alta/media, hasta 30 días antes para reembolso total. Entre 15-29 días antes se cobra 1 noche.' },
       { pregunta: '¿Puedo modificar las fechas?', respuesta: 'Una vez confirmada la reserva, no es posible modificar las fechas.' },
     ],
   },
@@ -101,14 +101,14 @@ function QuestionItem({ q, a }: { q: string; a: string }) {
     <div className="border-b border-sand last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 text-left group"
+        className="w-full flex items-center justify-between py-4 text-left group focus:outline-none focus:ring-2 focus:ring-forest focus:ring-inset rounded-lg"
       >
         <span className="font-medium text-forest-dark group-hover:text-forest pr-4">{q}</span>
         <HiOutlineChevronDown
           className={`w-5 h-5 text-amber flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
-      <div className={`overflow-hidden transition-all ${isOpen ? 'max-h-40 pb-4' : 'max-h-0'}`}>
+      <div className={`overflow-hidden transition-all ${isOpen ? 'max-h-96 pb-4' : 'max-h-0'}`}>
         <p className="text-text-medium">{a}</p>
       </div>
     </div>
@@ -121,7 +121,7 @@ export default function FAQClient({ categories }: FAQClientProps) {
   const active = faqCategories.find((c) => c.id === activeCategory)!
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="bg-cream min-h-screen flex flex-col">
       {/* Header Section */}
       <section className="bg-forest-dark text-white py-12 md:py-16 mt-14 md:mt-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
@@ -138,7 +138,7 @@ export default function FAQClient({ categories }: FAQClientProps) {
       </section>
 
       {/* FAQ Content */}
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 flex-1">
         <div className="max-w-3xl mx-auto px-4">
           {/* Category Tabs */}
           <div className="flex flex-wrap justify-center gap-2 mb-8">

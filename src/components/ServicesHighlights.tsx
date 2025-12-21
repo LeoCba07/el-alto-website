@@ -22,7 +22,7 @@ const highlights = [
     Icon: HiOutlineFire,
   },
   {
-    image: '/images/vista-desde-cabana.JPG',
+    image: '/images/vista-desde-cabana.jpg',
     title: 'Vistas a la montaña',
     description: 'Predio escalonado con jardín y panorámicas de las sierras.',
     Icon: MdOutlineLandscape,

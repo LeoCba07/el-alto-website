@@ -54,7 +54,7 @@ export default async function NormasPage() {
   const { config } = await getNormasData()
 
   // Use config data for check-in/check-out times if available
-  const checkInTime = config?.horarios?.checkIn || '13:00'
+  const checkInTime = config?.horarios?.checkIn || '13:30'
   const checkOutTime = config?.horarios?.checkOut || '10:00'
   return (
     <div className="min-h-screen bg-cream">
@@ -88,19 +88,19 @@ export default async function NormasPage() {
                   <HiOutlineArrowRightOnRectangle className="w-8 h-8 text-forest mx-auto mb-2" />
                   <p className="text-2xl font-bold text-forest-dark">{checkInTime.replace(' hs', '')}</p>
                   <p className="text-sm text-text-medium">Check-In</p>
-                  <p className="text-xs text-text-light mt-1">Llegada hasta las 20:00</p>
+                  <p className="text-sm text-text-light mt-1">Llegada hasta las 20:00</p>
                 </div>
                 <div className="text-center p-4 bg-cream rounded-xl">
                   <HiOutlineArrowLeftOnRectangle className="w-8 h-8 text-forest mx-auto mb-2" />
                   <p className="text-2xl font-bold text-forest-dark">{checkOutTime.replace(' hs', '')}</p>
                   <p className="text-sm text-text-medium">Check-Out</p>
-                  <p className="text-xs text-text-light mt-1">Late check-out disponible</p>
+                  <p className="text-sm text-text-light mt-1">Late check-out disponible</p>
                 </div>
                 <div className="text-center p-4 bg-cream rounded-xl">
                   <MdOutlinePool className="w-8 h-8 text-forest mx-auto mb-2" />
                   <p className="text-2xl font-bold text-forest-dark">9:30 - 22:00</p>
                   <p className="text-sm text-text-medium">Pileta</p>
-                  <p className="text-xs text-text-light mt-1">Niños con adultos</p>
+                  <p className="text-sm text-text-light mt-1">Niños con adultos</p>
                 </div>
               </div>
             </div>
@@ -178,40 +178,6 @@ export default async function NormasPage() {
                     <p className="font-medium text-forest-dark">Agua potable</p>
                     <p className="text-text-medium text-sm">Podés tomar del grifo sin problemas.</p>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Proceso de Reserva */}
-          <div className="bg-white rounded-2xl border border-sand overflow-hidden">
-            <div className="bg-forest-dark px-6 py-4">
-              <h2 className="text-lg font-bold text-white">Proceso de Reserva</h2>
-            </div>
-            <div className="p-6">
-              <div className="grid sm:grid-cols-3 gap-4">
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="w-8 h-8 bg-amber text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
-                    <h3 className="font-semibold text-forest-dark">Consultá</h3>
-                  </div>
-                  <p className="text-sm text-text-medium pl-11">Contactanos por WhatsApp o teléfono y te confirmamos disponibilidad.</p>
-                  <div className="hidden sm:block absolute top-4 -right-2 w-4 h-0.5 bg-sand" />
-                </div>
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="w-8 h-8 bg-amber text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
-                    <h3 className="font-semibold text-forest-dark">Señá</h3>
-                  </div>
-                  <p className="text-sm text-text-medium pl-11">Transferí el 30% en 24hs hábiles para confirmar (50% si son 2 noches o menos).</p>
-                  <div className="hidden sm:block absolute top-4 -right-2 w-4 h-0.5 bg-sand" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="w-8 h-8 bg-amber text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
-                    <h3 className="font-semibold text-forest-dark">¡Listo!</h3>
-                  </div>
-                  <p className="text-sm text-text-medium pl-11">Te enviamos la confirmación. El resto lo abonás al llegar.</p>
                 </div>
               </div>
             </div>

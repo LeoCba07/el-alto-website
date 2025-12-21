@@ -1,74 +1,23 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
 import {
-  HiOutlineChevronLeft,
-  HiOutlineChevronRight,
   HiOutlineUserGroup,
   HiOutlineArrowRight,
   HiOutlineSparkles,
 } from 'react-icons/hi2'
 import { FadeUp } from './ScrollAnimations'
+import PhotoCarousel from './PhotoCarousel'
 
 // Featured photos from our best cabins
 const featuredPhotos = [
-  '/images/cabana1-interior.JPG',
-  '/images/cabana2-interior.JPG',
-  '/images/cabana1-cocina.JPG',
-  '/images/cabana2-cocina.JPG',
-  '/images/cabana1-habitacion.JPG',
-  '/images/cabana2-habitacion.JPG',
+  '/images/cabana1-interior.jpg',
+  '/images/cabana2-interior.jpg',
+  '/images/cabana1-cocina.jpg',
+  '/images/cabana2-cocina.jpg',
+  '/images/cabana1-habitacion.jpg',
+  '/images/cabana2-habitacion.jpg',
 ]
-
-function PhotoCarousel({ photos }: { photos: string[] }) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const nextPhoto = () => setCurrentIndex((prev) => (prev + 1) % photos.length)
-  const prevPhoto = () => setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length)
-
-  return (
-    <div className="relative aspect-[16/10] rounded-xl overflow-hidden">
-      <Image
-        src={photos[currentIndex]}
-        alt={`Interior de cabaña - foto ${currentIndex + 1}`}
-        fill
-        className="object-cover"
-      />
-      {photos.length > 1 && (
-        <>
-          <button
-            onClick={prevPhoto}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-colors"
-            aria-label="Foto anterior"
-          >
-            <HiOutlineChevronLeft className="w-5 h-5 text-forest-dark" />
-          </button>
-          <button
-            onClick={nextPhoto}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-colors"
-            aria-label="Foto siguiente"
-          >
-            <HiOutlineChevronRight className="w-5 h-5 text-forest-dark" />
-          </button>
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {photos.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                  index === currentIndex ? 'bg-white' : 'bg-white/50'
-                }`}
-                aria-label={`Ir a foto ${index + 1}`}
-              />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  )
-}
 
 export default function FeaturedCabanas() {
   return (
@@ -93,7 +42,7 @@ export default function FeaturedCabanas() {
         <div className="grid lg:grid-cols-5 gap-8 items-start">
           {/* Photo Carousel */}
           <div className="lg:col-span-3">
-            <PhotoCarousel photos={featuredPhotos} />
+            <PhotoCarousel photos={featuredPhotos} altPrefix="Interior de cabaña" />
           </div>
 
           {/* Summary Info */}

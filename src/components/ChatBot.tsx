@@ -9,14 +9,14 @@ import {
   HiOutlineMapPin,
   HiOutlineClock,
   HiOutlineCreditCard,
-  HiOutlineQuestionMarkCircle,
   HiOutlineArrowPath,
   HiOutlineArrowTopRightOnSquare,
-  HiOutlineSquares2X2
+  HiOutlineSquares2X2,
+  HiOutlineChatBubbleLeftRight
 } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { PiPawPrint } from 'react-icons/pi'
-import { SITE_CONFIG } from '@/lib/constants'
+import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
 
 export interface ChatbotRespuesta {
   clave: string
@@ -73,6 +73,9 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
   },
 }
 
+// Main menu options - shown after each answer
+const MAIN_MENU_OPTIONS = ['disponibilidad', 'cabanas', 'tarifas', 'servicios', 'ubicacion', 'checkin', 'pago', 'mascotas']
+
 // Quick reply button options with icons (matching site-wide icon usage)
 const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<{ className?: string }> }> = {
   tarifas: { label: 'Tarifas', icon: HiOutlineCreditCard },
@@ -84,7 +87,6 @@ const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<
   mascotas: { label: 'Mascotas', icon: PiPawPrint },
   pago: { label: 'Formas de pago', icon: HiOutlineCreditCard },
   consultar_disponibilidad: { label: 'Consultar disponibilidad', icon: HiOutlineCalendarDays },
-  otra_pregunta: { label: 'Otra pregunta', icon: HiOutlineQuestionMarkCircle },
   ver_tarifas: { label: 'Ver tarifas', icon: HiOutlineArrowTopRightOnSquare },
   ver_cabanas: { label: 'Ver cabañas', icon: HiOutlineArrowTopRightOnSquare },
   mas_servicios: { label: 'Más servicios', icon: HiOutlineSquares2X2 },
@@ -124,6 +126,7 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
   })
   const [currentStep, setCurrentStep] = useState<'initial' | 'dates' | 'guests' | 'confirm'>('initial')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const lastMessageRef = useRef<HTMLDivElement>(null)
   const [showPulse, setShowPulse] = useState(true)
 
   // Build FAQ data from Sanity or use defaults
@@ -158,7 +161,7 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
             id: 1,
             type: 'bot',
             text: 'Bienvenido al Complejo de Cabañas El Alto. ¿En qué podemos ayudarte?',
-            options: ['disponibilidad', 'cabanas', 'tarifas', 'servicios', 'ubicacion', 'checkin', 'pago', 'mascotas'],
+            options: MAIN_MENU_OPTIONS,
           },
         ])
       }
@@ -171,9 +174,11 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
     setTimeout(() => setAnimationStage('closed'), 250)
   }
 
-  // Auto-scroll to bottom
+  // Auto-scroll to show the start of the last message (not the bottom)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
   }, [messages])
 
   const addMessage = (message: Omit<Message, 'id'>) => {
@@ -197,12 +202,12 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
       window.open('https://www.google.com/maps/dir/?api=1&destination=-31.3607,-64.5876', '_blank')
       return
     }
-    if (option === 'otra_pregunta' || option === 'volver_inicio') {
+    if (option === 'volver_inicio') {
       setTimeout(() => {
         addMessage({
           type: 'bot',
           text: '¿Qué más te gustaría saber?',
-          options: ['tarifas', 'disponibilidad', 'cabanas', 'servicios', 'ubicacion', 'checkin', 'pago', 'mascotas'],
+          options: MAIN_MENU_OPTIONS,
         })
       }, 500)
       return
@@ -227,10 +232,11 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
     const faqItem = FAQ_DATA[option as keyof typeof FAQ_DATA]
     if (faqItem) {
       setTimeout(() => {
+        // Show answer + follow-up in a single message so the answer stays visible
         addMessage({
           type: 'bot',
-          text: faqItem.answer,
-          options: faqItem.followUp,
+          text: faqItem.answer + '\n\n¿Hay algo más en lo que pueda ayudarte?',
+          options: MAIN_MENU_OPTIONS,
         })
       }, 500)
     }
@@ -261,14 +267,9 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
       return
     }
 
-    const formatDate = (dateStr: string) => {
-      const date = new Date(dateStr + 'T00:00:00')
-      return date.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
-    }
-
     addMessage({
       type: 'user',
-      text: `${formatDate(bookingData.checkIn)} → ${formatDate(bookingData.checkOut)}`,
+      text: `${formatDateAR(bookingData.checkIn)} → ${formatDateAR(bookingData.checkOut)}`,
     })
 
     setCurrentStep('guests')
@@ -292,21 +293,16 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
     setTimeout(() => {
       addMessage({
         type: 'bot',
-        text: '¡Perfecto! Tengo todos los datos. Te conecto con WhatsApp para confirmar disponibilidad.',
+        text: '¡Perfecto! Tengo todos los datos. Te conecto con WhatsApp para confirmar disponibilidad. Horario de atención: 9 a 19 hs.',
         options: ['enviar_whatsapp', 'volver_inicio'],
       })
     }, 500)
   }
 
   const sendToWhatsApp = () => {
-    const formatDate = (dateStr: string) => {
-      const date = new Date(dateStr + 'T00:00:00')
-      return date.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
-    }
-
     let msg = `Hola! Quisiera consultar disponibilidad:\n\n`
-    msg += `Entrada: ${formatDate(bookingData.checkIn)}\n`
-    msg += `Salida: ${formatDate(bookingData.checkOut)}\n`
+    msg += `Entrada: ${formatDateAR(bookingData.checkIn)}\n`
+    msg += `Salida: ${formatDateAR(bookingData.checkOut)}\n`
     msg += `Adultos: ${bookingData.adults}\n`
 
     if (bookingData.children > 0) {
@@ -348,10 +344,10 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
     <div
       className={`fixed bottom-4 right-4 md:right-6 z-50 transition-all duration-300 ease-in-out shadow-xl ${getDimensions()}`}
       style={{
-        background: animationStage === 'closed' ? '#25D366' : 'white'
+        background: animationStage === 'closed' ? 'var(--color-forest)' : 'white'
       }}
     >
-      {/* Closed state - WhatsApp button */}
+      {/* Closed state - Chat help button */}
       <button
         onClick={() => animationStage === 'closed' && handleOpen()}
         aria-label="Abrir chat de consultas"
@@ -360,9 +356,9 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
           animationStage === 'closed' ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
-        <SiWhatsapp className="w-7 h-7 text-white" />
+        <HiOutlineChatBubbleLeftRight className="w-7 h-7 text-white" />
         {showPulse && (
-          <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-white rounded-full border-2 border-[#25D366]" />
+          <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-amber rounded-full border-2 border-forest animate-pulse" />
         )}
       </button>
 
@@ -397,8 +393,12 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-cream">
-          {messages.map((message) => (
-            <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+          {messages.map((message, index) => (
+            <div
+              key={message.id}
+              ref={index === messages.length - 1 ? lastMessageRef : null}
+              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
               <div
                 className={`max-w-[85%] ${
                   message.type === 'user'
@@ -408,7 +408,7 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
               >
                 {message.type === 'bot' && (
                   <div className="bg-white rounded-2xl rounded-bl-sm px-4 py-2.5 shadow-sm border border-sand">
-                    <p className="text-text-dark text-sm leading-relaxed">{message.text}</p>
+                    <p className="text-text-dark text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
                   </div>
                 )}
                 {message.type === 'user' && <p className="text-sm">{message.text}</p>}
