@@ -163,8 +163,6 @@ export default async function ServiciosPage() {
                     <>
                       <AmenityRow icon="car" label="Cochera techada" pill="1 por unidad" />
                       <AmenityRow icon="kids" label="Sala de juegos para chicos" />
-                      <AmenityRow icon="gym" label="Gimnasio" />
-                      <AmenityRow icon="restaurant" label="Restaurant en el predio" />
                       <AmenityRow icon="map" label="Info turística y excursiones" />
                       <AmenityRow icon="luggage" label="Guardado de equipaje" />
                       <AmenityRow icon="reception" label="Recepción" pill="9 a 19 hs" />
@@ -226,19 +224,6 @@ export default async function ServiciosPage() {
                       </div>
                       <p className="text-sm text-text-medium ml-7">
                         Desayuno seco servido en tu unidad.
-                      </p>
-                      <p className="text-sm text-text-light mt-1 ml-7">Disponibilidad limitada</p>
-                    </div>
-                    <div className="bg-white rounded-2xl p-4 border border-sand">
-                      <div className="flex justify-between items-start mb-1">
-                        <div className="flex items-center gap-2">
-                          <ServiceIcon icon="spa" className="w-5 h-5 text-forest" />
-                          <span className="font-medium text-text-dark">Masajes</span>
-                        </div>
-                        <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
-                      </div>
-                      <p className="text-sm text-text-medium ml-7">
-                        Facial, reflexología, piedras calientes.
                       </p>
                       <p className="text-sm text-text-light mt-1 ml-7">Disponibilidad limitada</p>
                     </div>
