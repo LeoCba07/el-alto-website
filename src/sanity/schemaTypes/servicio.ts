@@ -42,7 +42,7 @@ export default defineType({
           { title: 'Spa/Masajes', value: 'spa' },
         ],
       },
-      hidden: ({ document }) => document?.categoria === 'destacado' || document?.categoria === 'opcional',
+      hidden: ({ document }) => document?.categoria === 'destacado',
     }),
     defineField({
       name: 'categoria',

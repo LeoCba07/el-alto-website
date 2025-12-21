@@ -38,9 +38,9 @@ const servicios = [
   { _id: 'servicio-recepcion', nombre: 'Recepción', icono: 'reception', categoria: 'complejo', detalle: '9 a 19 hs', orden: 7 },
 
   // Servicios opcionales
-  { _id: 'servicio-ac', nombre: 'Aire acondicionado', categoria: 'opcional', descripcion: 'Opcional para mantener tarifas accesibles.', precio: '$2.500/día', orden: 1 },
-  { _id: 'servicio-desayuno', nombre: 'Desayuno', categoria: 'opcional', descripcion: 'Desayuno seco servido en tu unidad.', detalle: 'Disponibilidad limitada', precio: 'Consultar', orden: 2 },
-  { _id: 'servicio-masajes', nombre: 'Masajes', categoria: 'opcional', descripcion: 'Facial, reflexología, piedras calientes.', detalle: 'Disponibilidad limitada', precio: 'Consultar', orden: 3 },
+  { _id: 'servicio-ac', nombre: 'Aire acondicionado', icono: 'ac', categoria: 'opcional', descripcion: 'Opcional para mantener tarifas accesibles.', precio: '$2.500/día', orden: 1 },
+  { _id: 'servicio-desayuno', nombre: 'Desayuno', icono: 'breakfast', categoria: 'opcional', descripcion: 'Desayuno seco servido en tu unidad.', detalle: 'Disponibilidad limitada', precio: 'Consultar', orden: 2 },
+  { _id: 'servicio-masajes', nombre: 'Masajes', icono: 'spa', categoria: 'opcional', descripcion: 'Facial, reflexología, piedras calientes.', detalle: 'Disponibilidad limitada', precio: 'Consultar', orden: 3 },
 
   // Destacados (fotos principales)
   { _id: 'servicio-pileta', nombre: 'Pileta al aire libre', categoria: 'destacado', descripcion: 'Vista a las sierras. Climatizada en primavera y otoño.', detalle: 'Horario: 9:30 a 22:00 hs', orden: 1 },
