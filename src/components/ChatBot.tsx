@@ -300,16 +300,16 @@ export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
   }
 
   const sendToWhatsApp = () => {
-    let msg = `¡Hola! 👋\n\nMe interesa reservar en El Alto 🏡\n\n`
-    msg += `📅 Entrada: ${formatDateAR(bookingData.checkIn)}\n`
-    msg += `📅 Salida: ${formatDateAR(bookingData.checkOut)}\n`
-    msg += `👥 Adultos: ${bookingData.adults}\n`
+    let msg = `Hola!\n\nMe interesa reservar en El Alto:\n\n`
+    msg += `Entrada: ${formatDateAR(bookingData.checkIn)}\n`
+    msg += `Salida: ${formatDateAR(bookingData.checkOut)}\n`
+    msg += `Adultos: ${bookingData.adults}\n`
 
     if (bookingData.children > 0) {
-      msg += `👶 Menores: ${bookingData.children}\n`
+      msg += `Menores: ${bookingData.children}\n`
     }
 
-    msg += `\n¿Tienen disponibilidad? ¡Gracias!`
+    msg += `\nTienen disponibilidad? Gracias!`
 
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`
     window.open(whatsappUrl, '_blank')

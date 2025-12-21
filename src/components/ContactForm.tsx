@@ -66,23 +66,23 @@ export default function ContactForm() {
   }
 
   const generateWhatsAppMessage = () => {
-    let msg = `¡Hola! 👋 Soy ${nombre.trim()}\n\nMe interesa reservar en El Alto 🏡\n\n`
-    msg += `📅 Entrada: ${formatDate(checkIn)}\n`
-    msg += `📅 Salida: ${formatDate(checkOut)}\n`
-    msg += `👥 Adultos: ${adults}\n`
+    let msg = `Hola! Soy ${nombre.trim()}\n\nMe interesa reservar en El Alto:\n\n`
+    msg += `Entrada: ${formatDate(checkIn)}\n`
+    msg += `Salida: ${formatDate(checkOut)}\n`
+    msg += `Adultos: ${adults}\n`
 
     if (children > 0) {
       const agesText = childrenAges
         .map((age) => `${age} ${age === 1 ? 'año' : 'años'}`)
         .join(', ')
-      msg += `👶 Menores: ${children} (${agesText})\n`
+      msg += `Menores: ${children} (${agesText})\n`
     }
 
     if (message.trim()) {
-      msg += `\n💬 ${message.trim()}`
+      msg += `\nConsulta: ${message.trim()}`
     }
 
-    msg += `\n\n¿Tienen disponibilidad? ¡Gracias!`
+    msg += `\n\nTienen disponibilidad? Gracias!`
 
     return encodeURIComponent(msg)
   }
