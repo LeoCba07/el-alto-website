@@ -20,6 +20,7 @@ import {
   HiOutlinePlus
 } from 'react-icons/hi2'
 import { MdOutlineDirectionsBus } from 'react-icons/md'
+import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Contacto',
@@ -66,8 +67,8 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Check-in</p>
-                      <p className="text-white/80 text-sm">Desde las 13:30 hs</p>
-                      <p className="text-white/60 text-sm mt-0.5">Llegada máxima 20:00 hs</p>
+                      <p className="text-white/80 text-sm">Desde las {BUSINESS_HOURS.checkIn} hs</p>
+                      <p className="text-white/60 text-sm mt-0.5">Llegada máxima {BUSINESS_HOURS.latestArrival} hs</p>
                     </div>
                   </div>
 
@@ -77,8 +78,8 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Check-out</p>
-                      <p className="text-white/80 text-sm">Hasta las 10:00 hs</p>
-                      <p className="text-white/60 text-sm mt-0.5">Late check-out hasta 18:00 hs (+50%)</p>
+                      <p className="text-white/80 text-sm">Hasta las {BUSINESS_HOURS.checkOut} hs</p>
+                      <p className="text-white/60 text-sm mt-0.5">Late check-out hasta {BUSINESS_HOURS.lateCheckOut} hs (+{BUSINESS_HOURS.lateCheckOutFee}%)</p>
                     </div>
                   </div>
 
@@ -89,8 +90,8 @@ export default function ContactoPage() {
                       </div>
                       <div>
                         <p className="font-semibold">Seña para reservar</p>
-                        <p className="text-white/80 text-sm">30% del total</p>
-                        <p className="text-white/60 text-sm mt-0.5">50% para estadías de 2 noches o menos</p>
+                        <p className="text-white/80 text-sm">{RESERVATION_POLICIES.depositPercent}% del total</p>
+                        <p className="text-white/60 text-sm mt-0.5">{RESERVATION_POLICIES.depositPercentShortStay}% para estadías de {RESERVATION_POLICIES.shortStayMaxNights} noches o menos</p>
                       </div>
                     </div>
                   </div>
@@ -101,7 +102,7 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-semibold">Medios de pago</p>
-                      <p className="text-white/80 text-sm">Transferencia o Mercado Pago</p>
+                      <p className="text-white/80 text-sm">{RESERVATION_POLICIES.paymentMethods.join(' o ')}</p>
                     </div>
                   </div>
 

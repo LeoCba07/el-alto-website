@@ -5,7 +5,7 @@ import { HiOutlineTrophy } from 'react-icons/hi2'
 import { SiTripadvisor } from 'react-icons/si'
 import { TbCalendarCheck, TbHomeHeart } from 'react-icons/tb'
 import { useInView } from './ScrollAnimations'
-import { ANIMATION_TIMING } from '@/lib/constants'
+import { ANIMATION_TIMING, TRUST_STATS } from '@/lib/constants'
 
 function useCountUp(end: number, duration: number = 2000, start: number = 0, decimals: number = 0) {
   const [count, setCount] = useState(start)
@@ -99,22 +99,22 @@ export default function TrustSignals() {
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
           <AnimatedStat
-            end={28}
+            end={TRUST_STATS.yearsExperience}
             suffix="+"
             label="años de experiencia"
             Icon={TbCalendarCheck}
             isInView={isInView}
           />
           <AnimatedStat
-            end={4.6}
-            suffix="/5"
+            end={TRUST_STATS.tripAdvisorRating}
+            suffix={`/${TRUST_STATS.tripAdvisorMaxRating}`}
             label="en TripAdvisor"
             Icon={SiTripadvisor}
             decimals={1}
             isInView={isInView}
           />
           <AnimatedStat
-            end={1}
+            end={TRUST_STATS.rankingInTanti}
             start={20}
             prefix="#"
             label="en Tanti"

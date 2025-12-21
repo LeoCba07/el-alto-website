@@ -17,6 +17,7 @@ import { MdOutlinePool } from 'react-icons/md'
 import { SiWhatsapp } from 'react-icons/si'
 import { IconType } from 'react-icons'
 import PhotoCarousel from '@/components/PhotoCarousel'
+import { RESERVATION_POLICIES } from '@/lib/constants'
 
 export interface CabanaType {
   id: string
@@ -312,7 +313,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
                     <span className="w-8 h-8 bg-amber text-text-dark rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">2</span>
                     <div className="pt-0.5">
                       <p className="font-semibold text-forest-dark">Confirmá con seña</p>
-                      <p className="text-sm text-text-medium">30% del total (50% para estadías de 2 noches o menos). Transferencia o Mercado Pago</p>
+                      <p className="text-sm text-text-medium">{RESERVATION_POLICIES.depositPercent}% del total ({RESERVATION_POLICIES.depositPercentShortStay}% para estadías de {RESERVATION_POLICIES.shortStayMaxNights} noches o menos). {RESERVATION_POLICIES.paymentMethods.join(' o ')}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">

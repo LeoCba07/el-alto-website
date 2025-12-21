@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import ChatBot from "@/components/ChatBot";
 import { client } from "@/sanity/lib/client";
 import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
-import { SITE_CONFIG, CACHE_CONFIG } from "@/lib/constants";
+import { SITE_CONFIG, CACHE_CONFIG, TRUST_STATS } from "@/lib/constants";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -123,9 +123,9 @@ const jsonLd = {
   priceRange: "$$",
   aggregateRating: {
     "@type": "AggregateRating",
-    ratingValue: "4.5",
-    reviewCount: "150",
-    bestRating: "5",
+    ratingValue: String(TRUST_STATS.tripAdvisorRating),
+    reviewCount: String(TRUST_STATS.reviewCount),
+    bestRating: String(TRUST_STATS.tripAdvisorMaxRating),
   },
   sameAs: [
     "https://instagram.com/complejoelalto",

@@ -14,6 +14,7 @@ import { PiPawPrint } from 'react-icons/pi'
 import { GiTowel } from 'react-icons/gi'
 import { client } from '@/sanity/lib/client'
 import { normasQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
+import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Normas del Complejo | El Alto',
@@ -54,8 +55,8 @@ export default async function NormasPage() {
   const { config } = await getNormasData()
 
   // Use config data for check-in/check-out times if available
-  const checkInTime = config?.horarios?.checkIn || '13:30'
-  const checkOutTime = config?.horarios?.checkOut || '10:00'
+  const checkInTime = config?.horarios?.checkIn || BUSINESS_HOURS.checkIn
+  const checkOutTime = config?.horarios?.checkOut || BUSINESS_HOURS.checkOut
   return (
     <div className="min-h-screen bg-cream">
       {/* Header Section */}
@@ -98,7 +99,7 @@ export default async function NormasPage() {
                 </div>
                 <div className="text-center p-4 bg-cream rounded-xl">
                   <MdOutlinePool className="w-8 h-8 text-forest mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-forest-dark">9:30 - 22:00</p>
+                  <p className="text-2xl font-bold text-forest-dark">{BUSINESS_HOURS.poolOpen} - {BUSINESS_HOURS.poolClose}</p>
                   <p className="text-sm text-text-medium">Pileta</p>
                   <p className="text-sm text-text-light mt-1">Niños con adultos</p>
                 </div>
@@ -192,13 +193,13 @@ export default async function NormasPage() {
               <div className="grid sm:grid-cols-3 gap-4">
                 <div className="bg-white/10 rounded-xl p-5">
                   <p className="text-amber font-medium text-sm mb-2">Temporada Alta/Media</p>
-                  <p className="text-2xl font-bold mb-1">30 días</p>
-                  <p className="text-sm text-white/70">Reembolso total. Entre 15-29 días se cobra 1 noche.</p>
+                  <p className="text-2xl font-bold mb-1">{RESERVATION_POLICIES.cancellationHighMid.fullRefundDays} días</p>
+                  <p className="text-sm text-white/70">Reembolso total. Entre {RESERVATION_POLICIES.cancellationHighMid.partialRefundDays}-{RESERVATION_POLICIES.cancellationHighMid.fullRefundDays - 1} días se cobra 1 noche.</p>
                 </div>
                 <div className="bg-white/10 rounded-xl p-5">
                   <p className="text-amber font-medium text-sm mb-2">Temporada Baja</p>
-                  <p className="text-2xl font-bold mb-1">72 hs</p>
-                  <p className="text-sm text-white/70">Cancelación gratuita hasta 72 hs antes del check-in.</p>
+                  <p className="text-2xl font-bold mb-1">{RESERVATION_POLICIES.cancellationLow.fullRefundHours} hs</p>
+                  <p className="text-sm text-white/70">Cancelación gratuita hasta {RESERVATION_POLICIES.cancellationLow.fullRefundHours} hs antes del check-in.</p>
                 </div>
                 <div className="bg-white/10 rounded-xl p-5">
                   <p className="text-amber font-medium text-sm mb-2">Promociones</p>

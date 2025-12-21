@@ -12,6 +12,7 @@ import {
   HiOutlineMapPin,
 } from 'react-icons/hi2'
 import { IconType } from 'react-icons'
+import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
 
 export interface FAQQuestion {
   pregunta: string
@@ -42,10 +43,10 @@ const defaultCategories: FAQCategory[] = [
     label: 'Reservas',
     questions: [
       { pregunta: '¿Cómo hago mi reserva?', respuesta: 'Contactanos por WhatsApp o teléfono. Te tomamos la reserva provisoria y te enviamos los datos bancarios para confirmar con la seña.' },
-      { pregunta: '¿Cuánto es la seña?', respuesta: '30% del total. Para estadías de 2 noches o menos, es el 50%.' },
+      { pregunta: '¿Cuánto es la seña?', respuesta: `${RESERVATION_POLICIES.depositPercent}% del total. Para estadías de ${RESERVATION_POLICIES.shortStayMaxNights} noches o menos, es el ${RESERVATION_POLICIES.depositPercentShortStay}%.` },
       { pregunta: '¿Hay estadía mínima?', respuesta: 'En temporada alta/media sí. En temporada baja podés reservar una sola noche.' },
       { pregunta: '¿Aceptan tarjeta?', respuesta: 'Sí, todas las tarjetas vía Mercado Pago.' },
-      { pregunta: '¿Puedo cancelar mi reserva?', respuesta: 'Depende de la temporada. En alta/media, hasta 30 días antes para reembolso total (entre 15-29 días se cobra 1 noche). En baja, hasta 72hs antes.' },
+      { pregunta: '¿Puedo cancelar mi reserva?', respuesta: `Depende de la temporada. En alta/media, hasta ${RESERVATION_POLICIES.cancellationHighMid.fullRefundDays} días antes para reembolso total (entre ${RESERVATION_POLICIES.cancellationHighMid.partialRefundDays}-${RESERVATION_POLICIES.cancellationHighMid.fullRefundDays - 1} días se cobra 1 noche). En baja, hasta ${RESERVATION_POLICIES.cancellationLow.fullRefundHours}hs antes.` },
       { pregunta: '¿Puedo modificar las fechas?', respuesta: 'Una vez confirmada la reserva, no es posible modificar las fechas.' },
     ],
   },
@@ -53,11 +54,11 @@ const defaultCategories: FAQCategory[] = [
     id: 'horarios',
     label: 'Horarios',
     questions: [
-      { pregunta: '¿Check-in y check-out?', respuesta: 'Check-in desde las 13:30 hs. Check-out hasta las 10:00 hs.' },
-      { pregunta: '¿Puedo llegar tarde?', respuesta: 'Hasta las 20:00 sin aviso. Más tarde avisanos porque no hay sereno nocturno.' },
-      { pregunta: '¿Late check-out?', respuesta: 'Sí, hasta las 18:00 con 50% de recargo, sujeto a disponibilidad.' },
+      { pregunta: '¿Check-in y check-out?', respuesta: `Check-in desde las ${BUSINESS_HOURS.checkIn} hs. Check-out hasta las ${BUSINESS_HOURS.checkOut} hs.` },
+      { pregunta: '¿Puedo llegar tarde?', respuesta: `Hasta las ${BUSINESS_HOURS.latestArrival} sin aviso. Más tarde avisanos porque no hay sereno nocturno.` },
+      { pregunta: '¿Late check-out?', respuesta: `Sí, hasta las ${BUSINESS_HOURS.lateCheckOut} con ${BUSINESS_HOURS.lateCheckOutFee}% de recargo, sujeto a disponibilidad.` },
       { pregunta: '¿Dónde dejo el equipaje si me voy tarde?', respuesta: 'En administración, sin cargo, hasta tu partida.' },
-      { pregunta: '¿Horario de la pileta?', respuesta: 'De 9:30 a 22:00 hs. Niños siempre acompañados por un adulto.' },
+      { pregunta: '¿Horario de la pileta?', respuesta: `De ${BUSINESS_HOURS.poolOpen} a ${BUSINESS_HOURS.poolClose} hs. Niños siempre acompañados por un adulto.` },
     ],
   },
   {

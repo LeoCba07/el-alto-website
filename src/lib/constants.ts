@@ -34,15 +34,49 @@ export const SITE_CONFIG = {
   },
 } as const
 
-// Business hours (fallbacks)
+// Business hours (fallbacks - prefer Sanity configuracionSitio when available)
 export const BUSINESS_HOURS = {
   checkIn: '13:30',
   checkOut: '10:00',
+  lateCheckOut: '18:00',
+  lateCheckOutFee: 50, // percentage
   poolOpen: '9:30',
   poolClose: '22:00',
   receptionOpen: '9:00',
   receptionClose: '19:00',
   latestArrival: '20:00',
+} as const
+
+// Reservation policies (single source of truth)
+export const RESERVATION_POLICIES = {
+  // Deposit/Seña
+  depositPercent: 30,
+  depositPercentShortStay: 50,
+  shortStayMaxNights: 2,
+
+  // Cancellation - High/Mid season
+  cancellationHighMid: {
+    fullRefundDays: 30,
+    partialRefundDays: 15, // 15-29 days = 1 night charge
+    noRefundDays: 14,
+  },
+
+  // Cancellation - Low season
+  cancellationLow: {
+    fullRefundHours: 72,
+  },
+
+  // Payment methods
+  paymentMethods: ['Transferencia bancaria', 'Mercado Pago'],
+} as const
+
+// Trust signals / stats
+export const TRUST_STATS = {
+  yearsExperience: 28,
+  tripAdvisorRating: 4.6,
+  tripAdvisorMaxRating: 5,
+  reviewCount: 150,
+  rankingInTanti: 1,
 } as const
 
 // Cache configuration

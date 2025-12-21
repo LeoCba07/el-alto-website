@@ -16,7 +16,7 @@ import {
 } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { PiPawPrint } from 'react-icons/pi'
-import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
+import { SITE_CONFIG, BUSINESS_HOURS, RESERVATION_POLICIES, formatDateAR } from '@/lib/constants'
 
 export interface ChatbotRespuesta {
   clave: string
@@ -88,7 +88,7 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
     followUp: ['ver_mapa', 'consultar_disponibilidad', 'otra_pregunta']
   },
   checkin: {
-    answer: 'Check-in: desde las 13:30 hs (llegada máxima 20:00 hs). Check-out: hasta las 10:00 hs. Late check-out hasta 18:00 hs con 50% adicional.',
+    answer: `Check-in: desde las ${BUSINESS_HOURS.checkIn} hs (llegada máxima ${BUSINESS_HOURS.latestArrival} hs). Check-out: hasta las ${BUSINESS_HOURS.checkOut} hs. Late check-out hasta ${BUSINESS_HOURS.lateCheckOut} hs con ${BUSINESS_HOURS.lateCheckOutFee}% adicional.`,
     followUp: ['consultar_disponibilidad', 'otra_pregunta']
   },
   cabanas: {
@@ -100,7 +100,7 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
     followUp: ['consultar_disponibilidad', 'otra_pregunta']
   },
   pago: {
-    answer: 'Para reservar se requiere una seña del 30% (50% para estadías de 2 noches o menos). Aceptamos transferencia bancaria y Mercado Pago.',
+    answer: `Para reservar se requiere una seña del ${RESERVATION_POLICIES.depositPercent}% (${RESERVATION_POLICIES.depositPercentShortStay}% para estadías de ${RESERVATION_POLICIES.shortStayMaxNights} noches o menos). Aceptamos ${RESERVATION_POLICIES.paymentMethods.join(' y ')}.`,
     followUp: ['consultar_disponibilidad', 'otra_pregunta']
   },
 }
