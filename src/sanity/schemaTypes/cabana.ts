@@ -9,14 +9,6 @@ export default defineType({
       name: 'nombre',
       title: 'Nombre',
       type: 'string',
-      description: 'Ej: Dúplex, Estándar, Compactas, Parejas',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: { source: 'nombre' },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -37,85 +29,49 @@ export default defineType({
       name: 'descripcion',
       title: 'Descripción',
       type: 'text',
-      rows: 3,
-      validation: (Rule) => Rule.required(),
+      rows: 2,
     }),
     defineField({
       name: 'destacado',
-      title: 'Texto destacado',
+      title: 'Etiqueta',
       type: 'string',
-      description: 'Ej: "Máxima capacidad", "Las más populares", "Mejor precio", "Románticas"',
+      description: 'Ej: "Máxima capacidad", "Las más populares"',
     }),
     defineField({
       name: 'capacidadTexto',
-      title: 'Capacidad (texto)',
+      title: 'Capacidad',
       type: 'string',
-      description: 'Ej: "Hasta 6", "2 a 4", "2 a 3", "2"',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'capacidadMaxima',
-      title: 'Capacidad máxima',
-      type: 'number',
-      description: 'Número máximo de personas',
-      validation: (Rule) => Rule.required().positive().integer(),
+      description: 'Ej: "Hasta 6", "2 a 4"',
     }),
     defineField({
       name: 'cantidad',
       title: 'Cantidad de unidades',
       type: 'number',
-      description: 'Número de cabañas de este tipo',
-      validation: (Rule) => Rule.required().positive().integer(),
-    }),
-    defineField({
-      name: 'amenities',
-      title: 'Amenities',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Comodidades y servicios disponibles',
     }),
     defineField({
       name: 'fotos',
       title: 'Fotos',
       type: 'array',
-      of: [
-        {
-          type: 'image',
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: 'alt',
-              type: 'string',
-              title: 'Texto alternativo',
-            },
-          ],
-        },
-      ],
-      validation: (Rule) => Rule.required().min(1),
+      of: [{ type: 'image', options: { hotspot: true } }],
     }),
     defineField({
-      name: 'precioBase',
-      title: 'Precio Base',
+      name: 'orden',
+      title: 'Orden',
       type: 'number',
-      description: 'Precio base por noche en ARS',
-      validation: (Rule) => Rule.required().positive(),
     }),
+  ],
+  orderings: [
+    {
+      title: 'Por orden',
+      name: 'orden',
+      by: [{ field: 'orden', direction: 'asc' }],
+    },
   ],
   preview: {
     select: {
       title: 'nombre',
-      subtitle: 'capacidad',
+      subtitle: 'capacidadTexto',
       media: 'fotos.0',
-    },
-    prepare(selection) {
-      const { title, subtitle } = selection
-      return {
-        title,
-        subtitle: subtitle ? `Capacidad: ${subtitle} personas` : '',
-        media: selection.media,
-      }
     },
   },
 })

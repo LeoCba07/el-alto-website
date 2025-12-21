@@ -6,68 +6,51 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'cita',
-      title: 'Cita',
+      name: 'comentario',
+      title: 'Comentario',
       type: 'text',
-      rows: 4,
+      rows: 3,
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'autor',
-      title: 'Autor',
+      name: 'nombre',
+      title: 'Nombre',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'calificacion',
+      name: 'ubicacion',
+      title: 'Ubicación',
+      type: 'string',
+      description: 'Ciudad o provincia del huésped',
+    }),
+    defineField({
+      name: 'rating',
       title: 'Calificación',
       type: 'number',
-      description: 'Calificación de 1 a 5 estrellas',
+      description: 'De 1 a 5 estrellas',
       validation: (Rule) => Rule.required().min(1).max(5).integer(),
     }),
     defineField({
-      name: 'fuente',
-      title: 'Fuente',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Google', value: 'google' },
-          { title: 'Booking.com', value: 'booking' },
-          { title: 'Airbnb', value: 'airbnb' },
-          { title: 'TripAdvisor', value: 'tripadvisor' },
-          { title: 'Facebook', value: 'facebook' },
-          { title: 'Directo', value: 'directo' },
-        ],
-      },
-      description: 'Plataforma donde se dejó el testimonio',
-    }),
-    defineField({
-      name: 'fecha',
-      title: 'Fecha',
-      type: 'date',
-      description: 'Fecha del testimonio',
-    }),
-    defineField({
-      name: 'destacado',
-      title: 'Destacado',
-      type: 'boolean',
-      description: 'Marcar para mostrar en la página principal',
-      initialValue: false,
+      name: 'orden',
+      title: 'Orden',
+      type: 'number',
+      description: 'Orden de aparición',
     }),
   ],
   preview: {
     select: {
-      autor: 'autor',
-      calificacion: 'calificacion',
-      cita: 'cita',
+      nombre: 'nombre',
+      rating: 'rating',
+      comentario: 'comentario',
     },
     prepare(selection) {
-      const { autor, calificacion, cita } = selection
-      const stars = calificacion ? `${'★'.repeat(calificacion)}${'☆'.repeat(5 - calificacion)}` : ''
-      const citaPreview = cita ? ` - ${cita.substring(0, 60)}...` : ''
+      const { nombre, rating, comentario } = selection
+      const stars = rating ? `${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}` : ''
+      const preview = comentario ? ` - ${comentario.substring(0, 50)}...` : ''
       return {
-        title: autor || 'Sin autor',
-        subtitle: `${stars}${citaPreview}`,
+        title: nombre || 'Sin nombre',
+        subtitle: `${stars}${preview}`,
       }
     },
   },

@@ -1,26 +1,20 @@
 import { type SchemaTypeDefinition } from 'sanity'
-import cabana from './cabana'
-import tarifa from './tarifa'
-import preguntaFrecuente from './preguntaFrecuente'
-import testimonio from './testimonio'
-import atraccionCercana from './atraccionCercana'
-import configuracionSitio from './configuracionSitio'
-import servicio from './servicio'
-import norma from './norma'
 import heroSection from './heroSection'
+import cabana from './cabana'
+import servicio from './servicio'
+import testimonio from './testimonio'
+import preguntaFrecuente from './preguntaFrecuente'
 import chatbotRespuesta from './chatbotRespuesta'
+import configuracionSitio from './configuracionSitio'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
-    cabana,
-    tarifa,
-    preguntaFrecuente,
-    testimonio,
-    atraccionCercana,
-    configuracionSitio,
-    servicio,
-    norma,
     heroSection,
+    cabana,
+    servicio,
+    testimonio,
+    preguntaFrecuente,
     chatbotRespuesta,
+    configuracionSitio,
   ],
 }
