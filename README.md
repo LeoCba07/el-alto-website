@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Complejo El Alto - Website
+
+Modern website for Complejo El Alto, a cabin rental business in Tanti, Córdoba, Argentina.
+
+**Live site:** [el-alto-website.vercel.app](https://el-alto-website.vercel.app)
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Styling**: Tailwind CSS v4
+- **CMS**: Sanity Studio
+- **Analytics**: Google Analytics 4
+- **Deployment**: Vercel
+
+## Features
+
+- Responsive design for all devices
+- Sanity CMS for content management
+- Photo carousels for cabin galleries
+- WhatsApp contact form integration
+- Interactive chatbot for common questions
+- SEO optimized with sitemap and schema markup
+- Section navigation indicator on homepage
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+SANITY_API_TOKEN=your_write_token
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                 # Next.js pages
+│   ├── cabanas/         # Cabins & pricing
+│   ├── servicios/       # Services & amenities
+│   ├── normas/          # Rules & policies
+│   ├── consultas-frecuentes/  # FAQ
+│   ├── contacto/        # Contact form
+│   └── studio/          # Sanity Studio
+├── components/          # React components
+├── sanity/              # Sanity schemas & config
+└── lib/                 # Utilities & constants
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Content Management
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Access Sanity Studio at `/studio` to manage:
+- Hero section content
+- Cabin types and photos
+- Services and amenities
+- FAQs
+- Site configuration
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private - All rights reserved.
