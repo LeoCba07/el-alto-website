@@ -19,13 +19,24 @@ export default function PhotoCarousel({
 }: PhotoCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  // Filter out empty strings and handle empty array
+  const validPhotos = photos.filter(p => p && p.trim() !== '')
+
+  if (validPhotos.length === 0) {
+    return (
+      <div className={`relative ${aspectRatio} rounded-xl overflow-hidden bg-sand flex items-center justify-center`}>
+        <span className="text-text-light">Sin fotos</span>
+      </div>
+    )
+  }
+
   const nextPhoto = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % photos.length)
-  }, [photos.length])
+    setCurrentIndex((prev) => (prev + 1) % validPhotos.length)
+  }, [validPhotos.length])
 
   const prevPhoto = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + photos.length) % photos.length)
-  }, [photos.length])
+    setCurrentIndex((prev) => (prev - 1 + validPhotos.length) % validPhotos.length)
+  }, [validPhotos.length])
 
   // Keyboard navigation
   useEffect(() => {
@@ -59,12 +70,12 @@ export default function PhotoCarousel({
       aria-roledescription="carousel"
     >
       <Image
-        src={photos[currentIndex]}
-        alt={`${altPrefix} - foto ${currentIndex + 1} de ${photos.length}`}
+        src={validPhotos[currentIndex]}
+        alt={`${altPrefix} - foto ${currentIndex + 1} de ${validPhotos.length}`}
         fill
         className="object-cover"
       />
-      {photos.length > 1 && (
+      {validPhotos.length > 1 && (
         <>
           <button
             onClick={prevPhoto}
@@ -85,7 +96,7 @@ export default function PhotoCarousel({
             role="tablist"
             aria-label="Indicadores de foto"
           >
-            {photos.map((_, index) => (
+            {validPhotos.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
