@@ -84,8 +84,13 @@ export default function TrustSignals() {
 
   useEffect(() => {
     if (isInView) {
-      const timer = setTimeout(() => setShowShine(true), ANIMATION_TIMING.trustSignalsInterval)
-      return () => clearTimeout(timer)
+      // Show amber highlight briefly, then return to white
+      const showTimer = setTimeout(() => setShowShine(true), ANIMATION_TIMING.trustSignalsInterval)
+      const hideTimer = setTimeout(() => setShowShine(false), ANIMATION_TIMING.trustSignalsInterval + 800)
+      return () => {
+        clearTimeout(showTimer)
+        clearTimeout(hideTimer)
+      }
     }
   }, [isInView])
 
@@ -121,7 +126,7 @@ export default function TrustSignals() {
               <TbHomeHeart className="w-5 h-5 text-amber" />
             </div>
             <div>
-              <span className={`font-bold text-white text-lg inline-block relative overflow-hidden ${showShine ? 'text-shine' : ''}`}>
+              <span className={`font-bold text-lg transition-colors duration-500 ${showShine ? 'text-amber' : 'text-white'}`}>
                 Familiar
               </span>
               <p className="text-white/70 text-sm">atendido por dueños</p>

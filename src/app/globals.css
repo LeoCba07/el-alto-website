@@ -139,33 +139,3 @@ html {
   animation: fade-in-down 0.8s ease-out;
 }
 
-/* Text shine animation for trust signals */
-@keyframes shine-sweep {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-.text-shine {
-  position: relative;
-  color: #ffffff;
-}
-
-.text-shine::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(200, 151, 62, 0.6) 50%,
-    transparent 100%
-  );
-  animation: shine-sweep 0.8s ease-in-out forwards;
-}
