@@ -1,77 +1,63 @@
-# Complejo El Alto - Website
+# Complejo El Alto — Website Rebuild
 
-Modern website for Complejo El Alto, a cabin rental business in Tanti, Córdoba, Argentina.
+Website rebuild for my uncle's cabin rental complex in Tanti, Córdoba, Argentina. Replacing an outdated WordPress site with something fast, professional, and easy to edit.
 
-**Live site:** [el-alto-website.vercel.app](https://el-alto-website.vercel.app)
+🌐 **Current site:** [complejoelalto.com.ar](https://complejoelalto.com.ar)
+⭐ **TripAdvisor:** #1 Campground in Tanti
+📍 **Location:** Ruta 28 y San Martín, Tanti, Córdoba
+
+## The Problem
+
+The WordPress site has placeholder text, spelling errors, and a broken contact flow. 80% of WhatsApp inquiries come in as just "Hola" — no dates, no guest count — leading to endless back-and-forth.
+
+## The Solution
+
+A smart contact form that collects check-in/check-out dates and guest count *before* opening WhatsApp. The owner receives complete inquiries instantly, no follow-up needed.
+
+Also: Sanity CMS so he can update prices and content himself (important with Argentine inflation).
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
-- **Styling**: Tailwind CSS v4
-- **CMS**: Sanity Studio
-- **Analytics**: Google Analytics 4
-- **Deployment**: Vercel
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **CMS:** Sanity
+- **Hosting:** Vercel (free tier)
 
-## Features
-
-- Responsive design for all devices
-- Sanity CMS for content management
-- Photo carousels for cabin galleries
-- WhatsApp contact form integration
-- Interactive chatbot for common questions
-- SEO optimized with sitemap and schema markup
-- Section navigation indicator on homepage
-
-## Getting Started
+## Setup
 
 ```bash
-# Install dependencies
+git clone https://github.com/LeoCba07/el-alto-website.git
+cd el-alto-website
 npm install
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
 ```
 
-## Environment Variables
-
-Create a `.env.local` file:
+Create `.env.local`:
 
 ```env
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-SANITY_API_TOKEN=your_write_token
+```
+
+Run it:
+
+```bash
+npm run dev
 ```
 
 ## Project Structure
 
 ```
 src/
-├── app/                 # Next.js pages
-│   ├── cabanas/         # Cabins & pricing
-│   ├── servicios/       # Services & amenities
-│   ├── normas/          # Rules & policies
-│   ├── consultas-frecuentes/  # FAQ
-│   ├── contacto/        # Contact form
-│   └── studio/          # Sanity Studio
-├── components/          # React components
-├── sanity/              # Sanity schemas & config
-└── lib/                 # Utilities & constants
+├── app/        # Pages (App Router)
+├── components/ # React components
+└── sanity/     # Schemas & queries
 ```
 
-## Content Management
+## About the Property
 
-Access Sanity Studio at `/studio` to manage:
-- Hero section content
-- Cabin types and photos
-- Services and amenities
-- FAQs
-- Site configuration
+12-unit complex with pool, quincho (BBQ), gym, spa, and restaurant. Family-owned for 28+ years. Check-in 13:00, check-out 10:00. No pets.
 
-## License
+---
 
-Private - All rights reserved.
+Built by [Leo](https://github.com/LeoCba07)
