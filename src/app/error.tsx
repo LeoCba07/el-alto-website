@@ -12,7 +12,11 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error(error)
+    // Error logging - in production, send to monitoring service (e.g., Sentry)
+    // For now, we silently capture the error digest for debugging
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error:', error.message, error.digest)
+    }
   }, [error])
 
   return (

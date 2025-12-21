@@ -5,18 +5,41 @@ import Button from './Button'
 import { HiOutlineChevronDown } from 'react-icons/hi2'
 import { useState, useEffect, useCallback } from 'react'
 
-const heroImages = [
+interface HeroImage {
+  url: string
+  alt?: string
+}
+
+interface HeroProps {
+  subtitulo?: string
+  titulo?: string
+  descripcion?: string
+  imagenes?: HeroImage[]
+  textoBoton?: string
+  linkBoton?: string
+}
+
+const defaultImages = [
   '/images/panorama-pileta.jpg',
   '/images/vista-desde-cabana.JPG',
   '/images/sierras.jpg',
 ]
 
-export default function Hero() {
+export default function Hero({
+  subtitulo = 'Complejo de cabañas en Tanti, Córdoba',
+  titulo = 'El Alto',
+  descripcion = 'Tu refugio en las sierras',
+  imagenes,
+  textoBoton = 'Ver alojamientos',
+  linkBoton = '/cabanas',
+}: HeroProps) {
+  const heroImages = imagenes?.length ? imagenes.map(img => img.url) : defaultImages
+  const heroAlts = imagenes?.length ? imagenes.map(img => img.alt || 'El Alto - Cabañas en las sierras') : defaultImages.map(() => 'El Alto - Cabañas en las sierras')
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % heroImages.length)
-  }, [])
+  }, [heroImages.length])
 
   useEffect(() => {
     const interval = setInterval(nextSlide, 5000)
@@ -35,7 +58,7 @@ export default function Hero() {
         >
           <Image
             src={src}
-            alt="El Alto - Cabañas en las sierras"
+            alt={heroAlts[index]}
             fill
             className="object-cover"
             priority={index === 0}
@@ -52,17 +75,17 @@ export default function Hero() {
         {/* Top - Tagline */}
         <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
           <p className="font-medium tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
-            Complejo de cabañas en Tanti, Córdoba
+            {subtitulo}
           </p>
         </div>
 
         {/* Center - Main Title */}
         <div className="text-center px-6">
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-            El Alto
+            {titulo}
           </h1>
           <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
-            Tu refugio en las sierras
+            {descripcion}
           </p>
         </div>
 
@@ -72,8 +95,8 @@ export default function Hero() {
             Desde 1996 · A 10 minutos de Villa Carlos Paz
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Button href="/cabanas" variant="primary" size="lg" className="shadow-xl">
-              Ver alojamientos
+            <Button href={linkBoton} variant="primary" size="lg" className="shadow-xl">
+              {textoBoton}
             </Button>
             <Button href="/contacto" variant="outline-light" size="lg" className="shadow-xl backdrop-blur-sm bg-white/10">
               Consultar disponibilidad

@@ -15,11 +15,21 @@ import {
 } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { PiPawPrint } from 'react-icons/pi'
+import { SITE_CONFIG, ANIMATION_TIMING } from '@/lib/constants'
 
-const WHATSAPP_NUMBER = '5493572501030'
+export interface ChatbotRespuesta {
+  clave: string
+  respuesta: string
+  opcionesSeguimiento?: string[]
+}
 
-// FAQ Data - answers to common questions
-const FAQ_DATA = {
+export interface ChatBotProps {
+  respuestas?: ChatbotRespuesta[]
+  whatsappNumber?: string
+}
+
+// Default FAQ Data - answers to common questions
+const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> = {
   tarifas: {
     answer: 'Las tarifas varían según la temporada y el tipo de cabaña. Temporada alta (dic-feb, Semana Santa, vacaciones de invierno): desde $45.000/noche. Temporada media: desde $35.000/noche. Temporada baja: desde $28.000/noche.',
     followUp: ['ver_tarifas', 'consultar_disponibilidad', 'otra_pregunta']
@@ -100,7 +110,7 @@ type BookingData = {
   childrenAges: number[]
 }
 
-export default function ChatBot() {
+export default function ChatBot({ respuestas, whatsappNumber }: ChatBotProps) {
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
   const [messages, setMessages] = useState<Message[]>([])
   const [bookingData, setBookingData] = useState<BookingData>({
@@ -113,6 +123,23 @@ export default function ChatBot() {
   const [currentStep, setCurrentStep] = useState<'initial' | 'dates' | 'guests' | 'confirm'>('initial')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [showPulse, setShowPulse] = useState(true)
+
+  // Build FAQ data from Sanity or use defaults
+  const FAQ_DATA = React.useMemo(() => {
+    if (!respuestas?.length) return DEFAULT_FAQ_DATA
+
+    const sanityData: Record<string, { answer: string; followUp: string[] }> = {}
+    respuestas.forEach((r) => {
+      sanityData[r.clave] = {
+        answer: r.respuesta,
+        followUp: r.opcionesSeguimiento || ['consultar_disponibilidad', 'otra_pregunta']
+      }
+    })
+    // Merge with defaults for any missing keys
+    return { ...DEFAULT_FAQ_DATA, ...sanityData }
+  }, [respuestas])
+
+  const WHATSAPP_NUMBER = whatsappNumber || SITE_CONFIG.WHATSAPP_NUMBER
 
   const isOpen = animationStage === 'open'
 
@@ -326,10 +353,12 @@ export default function ChatBot() {
       style={{
         background: animationStage === 'closed' ? '#25D366' : 'white'
       }}
-      onClick={() => animationStage === 'closed' && handleOpen()}
     >
       {/* Closed state - WhatsApp button */}
-      <div
+      <button
+        onClick={() => animationStage === 'closed' && handleOpen()}
+        aria-label="Abrir chat de consultas"
+        aria-expanded={isOpen}
         className={`absolute inset-0 flex items-center justify-center transition-opacity duration-100 cursor-pointer ${
           animationStage === 'closed' ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
@@ -338,10 +367,13 @@ export default function ChatBot() {
         {showPulse && (
           <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-white rounded-full border-2 border-[#25D366]" />
         )}
-      </div>
+      </button>
 
       {/* Open state - Chat window */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Chat de consultas - Complejo El Alto"
         className={`absolute inset-0 flex flex-col overflow-hidden rounded-2xl border border-sand transition-opacity duration-100 ${
           animationStage === 'open' ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
@@ -359,6 +391,7 @@ export default function ChatBot() {
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleClose() }}
+            aria-label="Cerrar chat"
             className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"
           >
             <HiXMark className="w-5 h-5" />

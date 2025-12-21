@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatBot from "@/components/ChatBot";
+import { client } from "@/sanity/lib/client";
+import { chatbotRespuestasQuery, configuracionSitioQuery } from "@/sanity/lib/queries";
+import { SITE_CONFIG, CACHE_CONFIG } from "@/lib/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,7 +24,7 @@ const merriweather = Merriweather({
   weight: ["300", "400", "700", "900"],
 });
 
-const baseUrl = "https://complejoelalto.com.ar";
+const baseUrl = SITE_CONFIG.BASE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -128,11 +131,35 @@ const jsonLd = {
   ],
 };
 
-export default function RootLayout({
+interface ChatbotData {
+  clave: string;
+  respuesta: string;
+  opcionesSeguimiento?: string[];
+}
+
+interface SiteConfig {
+  numeroWhatsapp?: string;
+}
+
+async function getChatbotData() {
+  try {
+    const [respuestas, config] = await Promise.all([
+      client.fetch<ChatbotData[]>(chatbotRespuestasQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
+      client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
+    ]);
+    return { respuestas, whatsappNumber: config?.numeroWhatsapp };
+  } catch {
+    return { respuestas: undefined, whatsappNumber: undefined };
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { respuestas, whatsappNumber } = await getChatbotData();
+
   return (
     <html lang="es">
       <head>
@@ -153,7 +180,7 @@ export default function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
-        <ChatBot />
+        <ChatBot respuestas={respuestas} whatsappNumber={whatsappNumber} />
       </body>
     </html>
   );

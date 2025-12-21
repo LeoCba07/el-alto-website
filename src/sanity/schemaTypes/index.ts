@@ -5,6 +5,10 @@ import preguntaFrecuente from './preguntaFrecuente'
 import testimonio from './testimonio'
 import atraccionCercana from './atraccionCercana'
 import configuracionSitio from './configuracionSitio'
+import servicio from './servicio'
+import norma from './norma'
+import heroSection from './heroSection'
+import chatbotRespuesta from './chatbotRespuesta'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -14,5 +18,9 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     testimonio,
     atraccionCercana,
     configuracionSitio,
+    servicio,
+    norma,
+    heroSection,
+    chatbotRespuesta,
   ],
 }

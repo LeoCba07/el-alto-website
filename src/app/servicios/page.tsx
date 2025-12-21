@@ -1,8 +1,46 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
+import { client } from '@/sanity/lib/client'
+import { serviciosQuery } from '@/sanity/lib/queries'
+import { urlFor } from '@/sanity/lib/image'
 
-export default function ServiciosPage() {
+interface SanityServicio {
+  _id: string
+  nombre: string
+  descripcion?: string
+  icono: string
+  categoria: 'unidad' | 'complejo' | 'opcional' | 'destacado'
+  imagen?: { asset: { _ref: string }; alt?: string }
+  detalle?: string
+  precio?: string
+}
+
+async function getServiciosData() {
+  try {
+    const servicios = await client.fetch<SanityServicio[]>(serviciosQuery, {}, {
+      next: { revalidate: 60 }
+    })
+    return servicios
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to fetch servicios data:', error)
+    }
+    return null
+  }
+}
+
+export default async function ServiciosPage() {
+  const serviciosData = await getServiciosData()
+
+  // Group services by category
+  const destacados = serviciosData?.filter(s => s.categoria === 'destacado') || []
+  const enUnidad = serviciosData?.filter(s => s.categoria === 'unidad') || []
+  const enComplejo = serviciosData?.filter(s => s.categoria === 'complejo') || []
+  const opcionales = serviciosData?.filter(s => s.categoria === 'opcional') || []
+
+  // Use Sanity data if available, otherwise use hardcoded fallbacks
+  const useHardcoded = !serviciosData?.length
   return (
     <main className="min-h-screen bg-cream">
       {/* Hero banner */}
@@ -29,23 +67,37 @@ export default function ServiciosPage() {
             Lo que más disfrutan nuestros huéspedes
           </h2>
           <div className="grid md:grid-cols-3 gap-5">
-            <FeatureCard
-              image="/images/panorama-pileta.jpg"
-              title="Pileta al aire libre"
-              description="Vista a las sierras. Climatizada en primavera y otoño."
-              note="Horario: 9:30 a 22:00 hs"
-            />
-            <FeatureCard
-              image="/images/asador.jpg"
-              title="Quincho con asadores"
-              description="Espacio común para disfrutar un asado en familia."
-              note="Reservá en recepción"
-            />
-            <FeatureCard
-              image="/images/vista-desde-cabana.JPG"
-              title="Vistas a la montaña"
-              description="Predio escalonado con jardín y panorámicas."
-            />
+            {destacados.length > 0 ? (
+              destacados.slice(0, 3).map((servicio) => (
+                <FeatureCard
+                  key={servicio._id}
+                  image={servicio.imagen ? urlFor(servicio.imagen).url() : '/images/panorama-pileta.jpg'}
+                  title={servicio.nombre}
+                  description={servicio.descripcion || ''}
+                  note={servicio.detalle}
+                />
+              ))
+            ) : (
+              <>
+                <FeatureCard
+                  image="/images/panorama-pileta.jpg"
+                  title="Pileta al aire libre"
+                  description="Vista a las sierras. Climatizada en primavera y otoño."
+                  note="Horario: 9:30 a 22:00 hs"
+                />
+                <FeatureCard
+                  image="/images/asador.jpg"
+                  title="Quincho con asadores"
+                  description="Espacio común para disfrutar un asado en familia."
+                  note="Reservá en recepción"
+                />
+                <FeatureCard
+                  image="/images/vista-desde-cabana.JPG"
+                  title="Vistas a la montaña"
+                  description="Predio escalonado con jardín y panorámicas."
+                />
+              </>
+            )}
           </div>
           <div className="mt-6 flex items-center justify-center gap-3 text-text-dark">
             <svg className="w-5 h-5 text-amber flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -67,13 +119,21 @@ export default function ServiciosPage() {
                   En tu unidad
                 </h3>
                 <div className="space-y-3">
-                  <AmenityRow icon="wifi" label="Wi-Fi gratis" />
-                  <AmenityRow icon="kitchen" label="Cocina equipada" pill="horno, microondas, heladera, vajilla" />
-                  <AmenityRow icon="bed" label="Ropa de cama y toallas" />
-                  <AmenityRow icon="tv" label="TV con cable" />
-                  <AmenityRow icon="climate" label="Calefacción y ventiladores" />
-                  <AmenityRow icon="safe" label="Caja de seguridad" />
-                  <AmenityRow icon="hairdryer" label="Secador de pelo" />
+                  {enUnidad.length > 0 ? (
+                    enUnidad.map((s) => (
+                      <AmenityRow key={s._id} icon={s.icono} label={s.nombre} pill={s.detalle} />
+                    ))
+                  ) : (
+                    <>
+                      <AmenityRow icon="wifi" label="Wi-Fi gratis" />
+                      <AmenityRow icon="kitchen" label="Cocina equipada" pill="horno, microondas, heladera, vajilla" />
+                      <AmenityRow icon="bed" label="Ropa de cama y toallas" />
+                      <AmenityRow icon="tv" label="TV con cable" />
+                      <AmenityRow icon="climate" label="Calefacción y ventiladores" />
+                      <AmenityRow icon="safe" label="Caja de seguridad" />
+                      <AmenityRow icon="hairdryer" label="Secador de pelo" />
+                    </>
+                  )}
                 </div>
               </div>
               <div>
@@ -81,13 +141,21 @@ export default function ServiciosPage() {
                   En el complejo
                 </h3>
                 <div className="space-y-3">
-                  <AmenityRow icon="car" label="Cochera techada" pill="1 por unidad" />
-                  <AmenityRow icon="kids" label="Sala de juegos para chicos" />
-                  <AmenityRow icon="gym" label="Gimnasio" />
-                  <AmenityRow icon="restaurant" label="Restaurant en el predio" />
-                  <AmenityRow icon="map" label="Info turística y excursiones" />
-                  <AmenityRow icon="luggage" label="Guardado de equipaje" />
-                  <AmenityRow icon="reception" label="Recepción" pill="9 a 19 hs" />
+                  {enComplejo.length > 0 ? (
+                    enComplejo.map((s) => (
+                      <AmenityRow key={s._id} icon={s.icono} label={s.nombre} pill={s.detalle} />
+                    ))
+                  ) : (
+                    <>
+                      <AmenityRow icon="car" label="Cochera techada" pill="1 por unidad" />
+                      <AmenityRow icon="kids" label="Sala de juegos para chicos" />
+                      <AmenityRow icon="gym" label="Gimnasio" />
+                      <AmenityRow icon="restaurant" label="Restaurant en el predio" />
+                      <AmenityRow icon="map" label="Info turística y excursiones" />
+                      <AmenityRow icon="luggage" label="Guardado de equipaje" />
+                      <AmenityRow icon="reception" label="Recepción" pill="9 a 19 hs" />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -98,35 +166,58 @@ export default function ServiciosPage() {
                 Servicios opcionales
               </h3>
               <div className="space-y-3">
-                <div className="bg-white rounded-2xl p-4 border border-sand">
-                  <div className="flex justify-between items-start mb-1">
-                    <span className="font-medium text-text-dark">Aire acondicionado</span>
-                    <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">$2.500/día</span>
-                  </div>
-                  <p className="text-sm text-text-medium">
-                    Opcional para mantener tarifas accesibles.
-                  </p>
-                </div>
-                <div className="bg-white rounded-2xl p-4 border border-sand">
-                  <div className="flex justify-between items-start mb-1">
-                    <span className="font-medium text-text-dark">Desayuno</span>
-                    <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
-                  </div>
-                  <p className="text-sm text-text-medium">
-                    Desayuno seco servido en tu unidad.
-                  </p>
-                  <p className="text-xs text-text-light mt-1">Disponibilidad limitada</p>
-                </div>
-                <div className="bg-white rounded-2xl p-4 border border-sand">
-                  <div className="flex justify-between items-start mb-1">
-                    <span className="font-medium text-text-dark">Masajes</span>
-                    <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
-                  </div>
-                  <p className="text-sm text-text-medium">
-                    Facial, reflexología, piedras calientes.
-                  </p>
-                  <p className="text-xs text-text-light mt-1">Disponibilidad limitada</p>
-                </div>
+                {opcionales.length > 0 ? (
+                  opcionales.map((s) => (
+                    <div key={s._id} className="bg-white rounded-2xl p-4 border border-sand">
+                      <div className="flex justify-between items-start mb-1">
+                        <span className="font-medium text-text-dark">{s.nombre}</span>
+                        {s.precio && (
+                          <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">
+                            {s.precio}
+                          </span>
+                        )}
+                      </div>
+                      {s.descripcion && (
+                        <p className="text-sm text-text-medium">{s.descripcion}</p>
+                      )}
+                      {s.detalle && (
+                        <p className="text-xs text-text-light mt-1">{s.detalle}</p>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="bg-white rounded-2xl p-4 border border-sand">
+                      <div className="flex justify-between items-start mb-1">
+                        <span className="font-medium text-text-dark">Aire acondicionado</span>
+                        <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">$2.500/día</span>
+                      </div>
+                      <p className="text-sm text-text-medium">
+                        Opcional para mantener tarifas accesibles.
+                      </p>
+                    </div>
+                    <div className="bg-white rounded-2xl p-4 border border-sand">
+                      <div className="flex justify-between items-start mb-1">
+                        <span className="font-medium text-text-dark">Desayuno</span>
+                        <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
+                      </div>
+                      <p className="text-sm text-text-medium">
+                        Desayuno seco servido en tu unidad.
+                      </p>
+                      <p className="text-xs text-text-light mt-1">Disponibilidad limitada</p>
+                    </div>
+                    <div className="bg-white rounded-2xl p-4 border border-sand">
+                      <div className="flex justify-between items-start mb-1">
+                        <span className="font-medium text-text-dark">Masajes</span>
+                        <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
+                      </div>
+                      <p className="text-sm text-text-medium">
+                        Facial, reflexología, piedras calientes.
+                      </p>
+                      <p className="text-xs text-text-light mt-1">Disponibilidad limitada</p>
+                    </div>
+                  </>
+                )}
               </div>
               <p className="mt-4 text-sm text-text-light">
                 No incluimos mucama para mantener tarifas accesibles.

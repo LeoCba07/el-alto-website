@@ -25,13 +25,10 @@ export default defineType({
       options: {
         list: [
           { title: 'Reservas', value: 'reservas' },
-          { title: 'Check-in / Check-out', value: 'checkin-checkout' },
+          { title: 'Horarios', value: 'horarios' },
           { title: 'Servicios', value: 'servicios' },
-          { title: 'Precios', value: 'precios' },
+          { title: 'Normas', value: 'normas' },
           { title: 'Ubicación', value: 'ubicacion' },
-          { title: 'Mascotas', value: 'mascotas' },
-          { title: 'Cancelaciones', value: 'cancelaciones' },
-          { title: 'General', value: 'general' },
         ],
       },
       validation: (Rule) => Rule.required(),

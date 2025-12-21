@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
+import { SITE_CONFIG } from '@/lib/constants'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://complejoelalto.com.ar'
+  const baseUrl = SITE_CONFIG.BASE_URL
 
   return [
     {

@@ -14,13 +14,50 @@ import {
 import { MdOutlinePool, MdOutlineLocalParking, MdOutlineWaterDrop } from 'react-icons/md'
 import { PiPawPrint } from 'react-icons/pi'
 import { GiTowel } from 'react-icons/gi'
+import { client } from '@/sanity/lib/client'
+import { normasQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
 
 export const metadata: Metadata = {
   title: 'Normas del Complejo | El Alto',
   description: 'Normas de convivencia y políticas de reserva de Complejo El Alto, Tanti, Córdoba.',
 }
 
-export default function NormasPage() {
+interface SanityNorma {
+  _id: string
+  titulo: string
+  descripcion?: string
+  icono: string
+  categoria: string
+  tipo: string
+  horario?: string
+  detalle?: string
+}
+
+interface SanityConfig {
+  horarios?: {
+    checkIn?: string
+    checkOut?: string
+  }
+}
+
+async function getNormasData() {
+  try {
+    const [normas, config] = await Promise.all([
+      client.fetch<SanityNorma[]>(normasQuery, {}, { next: { revalidate: 60 } }),
+      client.fetch<SanityConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } })
+    ])
+    return { normas, config }
+  } catch {
+    return { normas: null, config: null }
+  }
+}
+
+export default async function NormasPage() {
+  const { config } = await getNormasData()
+
+  // Use config data for check-in/check-out times if available
+  const checkInTime = config?.horarios?.checkIn || '13:00'
+  const checkOutTime = config?.horarios?.checkOut || '10:00'
   return (
     <div className="min-h-screen bg-cream">
       {/* Header Section */}
@@ -51,13 +88,13 @@ export default function NormasPage() {
               <div className="grid sm:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-cream rounded-xl">
                   <HiOutlineArrowRightOnRectangle className="w-8 h-8 text-forest mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-forest-dark">13:00</p>
+                  <p className="text-2xl font-bold text-forest-dark">{checkInTime.replace(' hs', '')}</p>
                   <p className="text-sm text-text-medium">Check-In</p>
                   <p className="text-xs text-text-light mt-1">Llegada hasta las 20:00</p>
                 </div>
                 <div className="text-center p-4 bg-cream rounded-xl">
                   <HiOutlineArrowLeftOnRectangle className="w-8 h-8 text-forest mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-forest-dark">10:00</p>
+                  <p className="text-2xl font-bold text-forest-dark">{checkOutTime.replace(' hs', '')}</p>
                   <p className="text-sm text-text-medium">Check-Out</p>
                   <p className="text-xs text-text-light mt-1">Late check-out disponible</p>
                 </div>

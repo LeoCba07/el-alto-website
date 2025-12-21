@@ -9,8 +9,7 @@ import {
   HiOutlineUserGroup,
   HiOutlineChatBubbleBottomCenterText
 } from 'react-icons/hi2'
-
-const WHATSAPP_NUMBER = '5493572501030'
+import { SITE_CONFIG, formatDateAR, TIME_CONSTANTS } from '@/lib/constants'
 
 export default function ContactForm() {
   const [nombre, setNombre] = useState('')
@@ -40,12 +39,7 @@ export default function ContactForm() {
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return ''
-    const date = new Date(dateStr + 'T00:00:00')
-    return date.toLocaleDateString('es-AR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    })
+    return formatDateAR(dateStr)
   }
 
   const validate = () => {
@@ -96,7 +90,7 @@ export default function ContactForm() {
 
     if (!validate()) return
 
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${generateWhatsAppMessage()}`
+    const whatsappUrl = `https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${generateWhatsAppMessage()}`
     window.open(whatsappUrl, '_blank')
   }
 

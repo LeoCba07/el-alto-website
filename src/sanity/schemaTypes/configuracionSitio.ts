@@ -9,7 +9,7 @@ export default defineType({
       name: 'numeroWhatsapp',
       title: 'Número de WhatsApp',
       type: 'string',
-      description: 'Incluir código de país (ej: +54 9 11 1234 5678)',
+      description: 'Solo números con código de país (ej: 5493572501030)',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -19,10 +19,16 @@ export default defineType({
       validation: (Rule) => Rule.required().email(),
     }),
     defineField({
-      name: 'telefono',
-      title: 'Teléfono',
+      name: 'telefonoFijo',
+      title: 'Teléfono Fijo',
       type: 'string',
-      description: 'Número de teléfono fijo',
+      description: 'Número de teléfono fijo (ej: +5403541498970)',
+    }),
+    defineField({
+      name: 'telefonoMovil',
+      title: 'Teléfono Móvil',
+      type: 'string',
+      description: 'Número de celular (ej: +5493572501030)',
     }),
     defineField({
       name: 'horarios',
