@@ -13,6 +13,7 @@ export default function FinalCTA() {
         src="/images/panorama-escaleras-a-pileta.jpg"
         alt="Vista del complejo"
         fill
+        sizes="100vw"
         className="object-cover"
       />
       {/* Simple dark overlay */}

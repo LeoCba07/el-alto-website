@@ -61,9 +61,9 @@ export default function Hero({
             src={src}
             alt={heroAlts[index]}
             fill
+            sizes="100vw"
             className="object-cover"
             priority={index === 0}
-            quality={90}
           />
         </div>
       ))}

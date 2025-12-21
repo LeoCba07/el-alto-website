@@ -156,6 +156,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
           src="/images/panorama-pileta.jpg"
           alt="Vista del complejo El Alto"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
         />

@@ -73,6 +73,7 @@ export default function PhotoCarousel({
         src={validPhotos[currentIndex]}
         alt={`${altPrefix} - foto ${currentIndex + 1} de ${validPhotos.length}`}
         fill
+        sizes="(max-width: 768px) 100vw, 60vw"
         className="object-cover"
       />
       {validPhotos.length > 1 && (

@@ -241,6 +241,7 @@ function FeatureCard({ image, title, description, note }: { image: string; title
         src={image}
         alt={title}
         fill
+        sizes="(max-width: 768px) 100vw, 33vw"
         className="object-cover group-hover:scale-105 transition-transform duration-500"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
