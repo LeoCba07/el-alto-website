@@ -65,37 +65,23 @@ export default async function ServiciosPage() {
             Lo que más disfrutan nuestros huéspedes
           </h2>
           <div className="grid md:grid-cols-3 gap-5">
-            {destacados.length > 0 ? (
-              destacados.slice(0, 3).map((servicio) => (
-                <FeatureCard
-                  key={servicio._id}
-                  image={servicio.imagen ? urlFor(servicio.imagen).url() : '/images/panorama-pileta.jpg'}
-                  title={servicio.nombre}
-                  description={servicio.descripcion || ''}
-                  note={servicio.detalle}
-                />
-              ))
-            ) : (
-              <>
-                <FeatureCard
-                  image="/images/panorama-pileta.jpg"
-                  title="Pileta al aire libre"
-                  description="Vista a las sierras. Climatizada en primavera y otoño."
-                  note="Horario: 9:30 a 22:00 hs"
-                />
-                <FeatureCard
-                  image="/images/asador.jpg"
-                  title="Quincho con asadores"
-                  description="Espacio común para disfrutar un asado en familia."
-                  note="Reservá en recepción"
-                />
-                <FeatureCard
-                  image="/images/vista-desde-cabana.jpg"
-                  title="Vistas a la montaña"
-                  description="Predio escalonado con jardín y panorámicas."
-                />
-              </>
-            )}
+            <FeatureCard
+              image={destacados[0]?.imagen ? urlFor(destacados[0].imagen).url() : '/images/panorama-pileta.jpg'}
+              title={destacados[0]?.nombre || 'Pileta al aire libre'}
+              description={destacados[0]?.descripcion || 'Vista a las sierras. Climatizada en primavera y otoño.'}
+              note={destacados[0]?.detalle || 'Horario: 9:30 a 22:00 hs'}
+            />
+            <FeatureCard
+              image={destacados[1]?.imagen ? urlFor(destacados[1].imagen).url() : '/images/asador.jpg'}
+              title={destacados[1]?.nombre || 'Quincho con asadores'}
+              description={destacados[1]?.descripcion || 'Espacio común para disfrutar un asado en familia.'}
+              note={destacados[1]?.detalle || 'Reservá en recepción'}
+            />
+            <FeatureCard
+              image={destacados[2]?.imagen ? urlFor(destacados[2].imagen).url() : '/images/vista-desde-cabana.jpg'}
+              title={destacados[2]?.nombre || 'Vistas a la montaña'}
+              description={destacados[2]?.descripcion || 'Predio escalonado con jardín y panorámicas.'}
+            />
           </div>
           <div className="mt-6 flex items-center justify-center gap-3 text-text-dark">
             <svg className="w-5 h-5 text-amber flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
