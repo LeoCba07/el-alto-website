@@ -103,10 +103,12 @@ export default function PhotoCarousel({
                 role="tab"
                 aria-selected={index === currentIndex}
                 aria-label={`Ir a foto ${index + 1}`}
-                className={`w-2.5 h-2.5 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-1 ${
+                className="p-2 -m-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-1 rounded-full"
+              >
+                <span className={`block w-2.5 h-2.5 rounded-full transition-all ${
                   index === currentIndex ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/70'
-                }`}
-              />
+                }`} />
+              </button>
             ))}
           </div>
         </>

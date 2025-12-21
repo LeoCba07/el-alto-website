@@ -70,7 +70,7 @@ function AnimatedStat({
       </div>
       <div>
         <span className="font-bold text-white text-lg">
-          {prefix}{count}<span className="text-white/50 font-normal">{suffix}</span>
+          {prefix}{count}<span className="text-white/70 font-normal">{suffix}</span>
         </span>
         <p className="text-white/70 text-sm">{label}</p>
       </div>

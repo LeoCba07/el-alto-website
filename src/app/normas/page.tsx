@@ -206,7 +206,7 @@ export default async function NormasPage() {
                   <p className="text-sm text-white/70">Las tarifas promocionales no son reembolsables.</p>
                 </div>
               </div>
-              <p className="text-white/50 text-xs text-center mt-4">Una vez confirmada la reserva, no se pueden modificar las fechas.</p>
+              <p className="text-white/70 text-xs text-center mt-4">Una vez confirmada la reserva, no se pueden modificar las fechas.</p>
             </div>
           </div>
 
