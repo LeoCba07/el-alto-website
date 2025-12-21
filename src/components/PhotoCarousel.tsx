@@ -79,14 +79,14 @@ export default function PhotoCarousel({
         <>
           <button
             onClick={prevPhoto}
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2"
             aria-label="Foto anterior"
           >
             <HiOutlineChevronLeft className="w-5 h-5 text-forest-dark" />
           </button>
           <button
             onClick={nextPhoto}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all md:opacity-0 md:group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2"
             aria-label="Foto siguiente"
           >
             <HiOutlineChevronRight className="w-5 h-5 text-forest-dark" />
