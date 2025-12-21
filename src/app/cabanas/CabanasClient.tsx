@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -115,6 +115,26 @@ const defaultCabanas: CabanaType[] = [
 export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) {
   const unitTypes = cabanas?.length ? cabanas : defaultCabanas
   const [activeUnit, setActiveUnit] = useState(unitTypes[0])
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [displayedUnit, setDisplayedUnit] = useState(unitTypes[0])
+
+  // Handle unit change with animation
+  const handleUnitChange = (unit: CabanaType) => {
+    if (unit.id === activeUnit.id || isTransitioning) return
+    setIsTransitioning(true)
+    setActiveUnit(unit)
+  }
+
+  // Update displayed content after fade out
+  useEffect(() => {
+    if (isTransitioning) {
+      const timer = setTimeout(() => {
+        setDisplayedUnit(activeUnit)
+        setIsTransitioning(false)
+      }, 150)
+      return () => clearTimeout(timer)
+    }
+  }, [isTransitioning, activeUnit])
 
   return (
     <div className="min-h-screen bg-cream">
@@ -154,7 +174,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
               return (
                 <button
                   key={unit.id}
-                  onClick={() => setActiveUnit(unit)}
+                  onClick={() => handleUnitChange(unit)}
                   className={`flex items-center gap-2 px-5 py-3 rounded-full font-medium transition-all ${
                     activeUnit.id === unit.id
                       ? 'bg-forest-dark text-white shadow-lg'
@@ -169,10 +189,14 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
           </div>
 
           {/* Selected Unit Display */}
-          <div className="grid lg:grid-cols-5 gap-8 items-start">
+          <div
+            className={`grid lg:grid-cols-5 gap-8 items-start transition-all duration-200 ${
+              isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+            }`}
+          >
             {/* Photo Gallery - Takes more space */}
             <div className="lg:col-span-3">
-              <PhotoCarousel key={activeUnit.id} photos={activeUnit.photos} altPrefix={`Cabaña ${activeUnit.nombre}`} />
+              <PhotoCarousel key={displayedUnit.id} photos={displayedUnit.photos} altPrefix={`Cabaña ${displayedUnit.nombre}`} />
             </div>
 
             {/* Unit Info */}
@@ -180,10 +204,10 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <span className="text-xs font-medium text-amber-dark bg-amber/20 px-3 py-1 rounded-full">
-                    {activeUnit.destacado}
+                    {displayedUnit.destacado}
                   </span>
                   <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
-                    Cabañas {activeUnit.nombre}
+                    Cabañas {displayedUnit.nombre}
                   </h2>
                 </div>
               </div>
@@ -191,15 +215,15 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
               <div className="flex items-center gap-4 mb-6 pb-6 border-b border-sand">
                 <div className="flex items-center gap-2 bg-forest-dark/5 px-4 py-2 rounded-full">
                   <HiOutlineUserGroup className="w-5 h-5 text-forest" />
-                  <span className="font-semibold text-forest-dark">{activeUnit.capacidad} personas</span>
+                  <span className="font-semibold text-forest-dark">{displayedUnit.capacidad} personas</span>
                 </div>
                 <div className="text-sm text-text-medium">
-                  {activeUnit.cantidad} {activeUnit.cantidad === 1 ? 'unidad disponible' : 'unidades disponibles'}
+                  {displayedUnit.cantidad} {displayedUnit.cantidad === 1 ? 'unidad disponible' : 'unidades disponibles'}
                 </div>
               </div>
 
               <p className="text-text-medium mb-6 leading-relaxed">
-                {activeUnit.descripcion}
+                {displayedUnit.descripcion}
               </p>
 
               <Link
