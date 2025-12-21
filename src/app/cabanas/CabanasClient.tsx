@@ -62,7 +62,7 @@ const defaultCabanas: CabanaType[] = [
     destacado: 'Máxima capacidad',
     photos: [
       '/images/cabana1-interior.jpg',
-      '/images/cabana1-cocina.jpg',
+      '/images/cabana2-interior.jpg',
       '/images/cabana2-habitacion.jpg',
     ],
   },

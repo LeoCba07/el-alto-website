@@ -61,7 +61,7 @@ export default async function CabanasPage() {
 
   // Fallback photos for each cabin type
   const fallbackPhotos: Record<string, string[]> = {
-    duplex: ['/images/cabana1-interior.jpg', '/images/cabana1-cocina.jpg', '/images/cabana2-habitacion.jpg'],
+    duplex: ['/images/cabana1-interior.jpg', '/images/cabana2-interior.jpg', '/images/cabana2-habitacion.jpg'],
     standard: ['/images/cabana2-interior.jpg', '/images/cabana2-cocina.jpg', '/images/cabana2-habitacion.jpg'],
     compact: ['/images/cabana3-interior.jpg', '/images/cabana-con-vista.jpg'],
     couple: ['/images/vista-desde-cabana.jpg', '/images/cabana-con-vista.jpg'],

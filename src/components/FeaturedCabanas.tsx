@@ -13,7 +13,7 @@ import PhotoCarousel from './PhotoCarousel'
 const featuredPhotos = [
   '/images/cabana1-interior.jpg',
   '/images/cabana2-interior.jpg',
-  '/images/cabana1-cocina.jpg',
+  '/images/cabana-con-vista.jpg',
   '/images/cabana2-cocina.jpg',
   '/images/cabana3-interior.jpg',
   '/images/cabana2-habitacion.jpg',
