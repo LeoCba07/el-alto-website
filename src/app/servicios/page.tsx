@@ -156,7 +156,7 @@ export default async function ServiciosPage() {
                       <div className="flex justify-between items-start mb-1">
                         <span className="font-medium text-text-dark">{s.nombre}</span>
                         {s.precio && (
-                          <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">
+                          <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">
                             {s.precio}
                           </span>
                         )}
@@ -174,7 +174,7 @@ export default async function ServiciosPage() {
                     <div className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
                         <span className="font-medium text-text-dark">Aire acondicionado</span>
-                        <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">$2.500/día</span>
+                        <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">$2.500/día</span>
                       </div>
                       <p className="text-sm text-text-medium">
                         Opcional para mantener tarifas accesibles.
@@ -183,7 +183,7 @@ export default async function ServiciosPage() {
                     <div className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
                         <span className="font-medium text-text-dark">Desayuno</span>
-                        <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
+                        <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
                       </div>
                       <p className="text-sm text-text-medium">
                         Desayuno seco servido en tu unidad.
@@ -193,7 +193,7 @@ export default async function ServiciosPage() {
                     <div className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
                         <span className="font-medium text-text-dark">Masajes</span>
-                        <span className="text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full">Consultar</span>
+                        <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
                       </div>
                       <p className="text-sm text-text-medium">
                         Facial, reflexología, piedras calientes.
@@ -223,7 +223,7 @@ export default async function ServiciosPage() {
           </p>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 bg-amber text-white px-8 py-4 rounded-full font-semibold hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25"
+            className="inline-flex items-center gap-2 bg-amber text-forest-dark px-8 py-4 rounded-full font-semibold hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25"
           >
             <HiOutlineChatBubbleLeftRight className="w-5 h-5" />
             Contactanos
@@ -309,7 +309,7 @@ function AmenityRow({ icon, label, pill, pillVariant }: { icon: string; label: s
   }
 
   const pillStyles = pillVariant === 'price'
-    ? 'text-xs font-semibold text-amber bg-amber/10 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
+    ? 'text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
     : 'text-xs text-text-light bg-sand/70 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
 
   return (

@@ -87,7 +87,7 @@ export default function Header() {
           <div className="hidden md:block">
             <Link
               href="/contacto"
-              className="group relative inline-flex items-center gap-1.5 bg-amber text-white px-5 py-2.5 rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
+              className="group relative inline-flex items-center gap-1.5 bg-amber text-forest-dark px-5 py-2.5 rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
             >
               <span className="absolute inset-0 bg-amber-dark translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               <span className="relative">Consultar</span>
@@ -136,7 +136,7 @@ export default function Header() {
               <Link
                 href="/contacto"
                 onClick={() => setIsMenuOpen(false)}
-                className="inline-flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-forest-dark px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
               >
                 Consultar
               </Link>

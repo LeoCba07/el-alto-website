@@ -98,7 +98,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom row: Copyright + Legajo + Dev credit */}
-        <div className="pt-4 border-t border-cream/10 flex flex-col sm:flex-row justify-center items-center gap-x-6 gap-y-1 text-xs text-cream/50">
+        <div className="pt-4 border-t border-cream/10 flex flex-col sm:flex-row justify-center items-center gap-x-6 gap-y-1 text-xs text-cream/70">
           <p>© {currentYear} Complejo El Alto</p>
           <span className="hidden sm:inline">·</span>
           <p>Legajo N°272/07 — Agencia Córdoba Turismo</p>
