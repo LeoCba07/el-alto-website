@@ -101,7 +101,7 @@ function QuestionItem({ q, a }: { q: string; a: string }) {
     <div className="border-b border-sand last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 text-left group focus:outline-none focus:ring-2 focus:ring-forest focus:ring-inset rounded-lg"
+        className="w-full flex items-center justify-between py-4 text-left group focus:outline-none"
       >
         <span className="font-medium text-forest-dark group-hover:text-forest pr-4">{q}</span>
         <HiOutlineChevronDown
