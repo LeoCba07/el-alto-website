@@ -5,6 +5,36 @@ import { client } from '@/sanity/lib/client'
 import { serviciosQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 
+const iconPaths: Record<string, string> = {
+  wifi: 'M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0',
+  kitchen: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10',
+  bed: 'M3 7v11a1 1 0 001 1h16a1 1 0 001-1V7M3 7l9-4 9 4M4 11h16M8 11v4m8-4v4',
+  tv: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  climate: 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z',
+  safe: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
+  hairdryer: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z',
+  car: 'M8 17h.01M16 17h.01M3 11l1.5-5.5A2 2 0 016.4 4h11.2a2 2 0 011.9 1.5L21 11M3 11v6a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-6M3 11h18',
+  kids: 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  gym: 'M3 12h1m16 0h1m-15.5 0h-1V8.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v7a.5.5 0 01-.5.5H5a.5.5 0 01-.5-.5V12zm12 0h1v3.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-7a.5.5 0 01.5-.5h1a.5.5 0 01.5.5V12zm-9.5 0h9',
+  restaurant: 'M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zm4-6v2m4-2v2m4-2v2',
+  map: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7',
+  luggage: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  reception: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9',
+  ac: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  breakfast: 'M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zm4-6v2m4-2v2m4-2v2',
+  spa: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
+}
+
+function ServiceIcon({ icon, className = 'w-5 h-5' }: { icon: string; className?: string }) {
+  const path = iconPaths[icon]
+  if (!path) return null
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={path} />
+    </svg>
+  )
+}
+
 interface SanityServicio {
   _id: string
   nombre: string
@@ -154,7 +184,10 @@ export default async function ServiciosPage() {
                   opcionales.map((s) => (
                     <div key={s._id} className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
-                        <span className="font-medium text-text-dark">{s.nombre}</span>
+                        <div className="flex items-center gap-2">
+                          <ServiceIcon icon={s.icono} className="w-5 h-5 text-forest" />
+                          <span className="font-medium text-text-dark">{s.nombre}</span>
+                        </div>
                         {s.precio && (
                           <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">
                             {s.precio}
@@ -162,10 +195,10 @@ export default async function ServiciosPage() {
                         )}
                       </div>
                       {s.descripcion && (
-                        <p className="text-sm text-text-medium">{s.descripcion}</p>
+                        <p className="text-sm text-text-medium ml-7">{s.descripcion}</p>
                       )}
                       {s.detalle && (
-                        <p className="text-sm text-text-light mt-1">{s.detalle}</p>
+                        <p className="text-sm text-text-light mt-1 ml-7">{s.detalle}</p>
                       )}
                     </div>
                   ))
@@ -173,32 +206,41 @@ export default async function ServiciosPage() {
                   <>
                     <div className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
-                        <span className="font-medium text-text-dark">Aire acondicionado</span>
+                        <div className="flex items-center gap-2">
+                          <ServiceIcon icon="ac" className="w-5 h-5 text-forest" />
+                          <span className="font-medium text-text-dark">Aire acondicionado</span>
+                        </div>
                         <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">$2.500/día</span>
                       </div>
-                      <p className="text-sm text-text-medium">
+                      <p className="text-sm text-text-medium ml-7">
                         Opcional para mantener tarifas accesibles.
                       </p>
                     </div>
                     <div className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
-                        <span className="font-medium text-text-dark">Desayuno</span>
+                        <div className="flex items-center gap-2">
+                          <ServiceIcon icon="breakfast" className="w-5 h-5 text-forest" />
+                          <span className="font-medium text-text-dark">Desayuno</span>
+                        </div>
                         <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
                       </div>
-                      <p className="text-sm text-text-medium">
+                      <p className="text-sm text-text-medium ml-7">
                         Desayuno seco servido en tu unidad.
                       </p>
-                      <p className="text-sm text-text-light mt-1">Disponibilidad limitada</p>
+                      <p className="text-sm text-text-light mt-1 ml-7">Disponibilidad limitada</p>
                     </div>
                     <div className="bg-white rounded-2xl p-4 border border-sand">
                       <div className="flex justify-between items-start mb-1">
-                        <span className="font-medium text-text-dark">Masajes</span>
+                        <div className="flex items-center gap-2">
+                          <ServiceIcon icon="spa" className="w-5 h-5 text-forest" />
+                          <span className="font-medium text-text-dark">Masajes</span>
+                        </div>
                         <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
                       </div>
-                      <p className="text-sm text-text-medium">
+                      <p className="text-sm text-text-medium ml-7">
                         Facial, reflexología, piedras calientes.
                       </p>
-                      <p className="text-sm text-text-light mt-1">Disponibilidad limitada</p>
+                      <p className="text-sm text-text-light mt-1 ml-7">Disponibilidad limitada</p>
                     </div>
                   </>
                 )}
@@ -255,69 +297,13 @@ function FeatureCard({ image, title, description, note }: { image: string; title
 }
 
 function AmenityRow({ icon, label, pill, pillVariant }: { icon: string; label: string; pill?: string; pillVariant?: 'default' | 'price' }) {
-  const icons: Record<string, React.ReactNode> = {
-    wifi: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
-    ),
-    kitchen: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-    ),
-    bed: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v11a1 1 0 001 1h16a1 1 0 001-1V7M3 7l9-4 9 4M4 11h16M8 11v4m8-4v4" />
-    ),
-    tv: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    ),
-    climate: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-    ),
-    safe: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-    ),
-    hairdryer: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-    ),
-    car: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 17h.01M16 17h.01M3 11l1.5-5.5A2 2 0 016.4 4h11.2a2 2 0 011.9 1.5L21 11M3 11v6a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-6M3 11h18" />
-    ),
-    kids: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    ),
-    gym: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12h1m16 0h1m-15.5 0h-1V8.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v7a.5.5 0 01-.5.5H5a.5.5 0 01-.5-.5V12zm12 0h1v3.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-7a.5.5 0 01.5-.5h1a.5.5 0 01.5.5V12zm-9.5 0h9" />
-    ),
-    restaurant: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zm4-6v2m4-2v2m4-2v2" />
-    ),
-    map: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-    ),
-    luggage: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    ),
-    reception: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-    ),
-    ac: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    ),
-    breakfast: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zm4-6v2m4-2v2m4-2v2" />
-    ),
-    spa: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-    ),
-  }
-
   const pillStyles = pillVariant === 'price'
     ? 'text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
     : 'text-xs text-text-light bg-sand/70 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
 
   return (
     <div className="flex items-start gap-3">
-      <svg className="w-5 h-5 text-forest flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        {icons[icon]}
-      </svg>
+      <ServiceIcon icon={icon} className="w-5 h-5 text-forest flex-shrink-0 mt-0.5" />
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <span className="text-base text-text-dark">{label}</span>
         {pill && (
