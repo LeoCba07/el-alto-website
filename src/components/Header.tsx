@@ -109,6 +109,15 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Mobile Menu Backdrop */}
+      {isMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 top-16 bg-black/20 backdrop-blur-sm z-[-1]"
+          onClick={() => setIsMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Mobile Menu */}
       <div className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="bg-cream/95 backdrop-blur-md border-t border-sand/50">
