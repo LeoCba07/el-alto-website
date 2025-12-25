@@ -39,7 +39,15 @@ export default function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-md border-b border-sand/50 shadow-sm">
+    <>
+      {/* Mobile Menu Backdrop - outside header for proper stacking */}
+      <div
+        className={`md:hidden fixed inset-0 top-16 z-40 bg-black/30 transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setIsMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      <header className="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-md border-b border-sand/50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -109,15 +117,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu Backdrop */}
-      {isMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 top-16 bg-black/20 backdrop-blur-sm z-[-1]"
-          onClick={() => setIsMenuOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
       {/* Mobile Menu */}
       <div className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="bg-cream/95 backdrop-blur-md border-t border-sand/50">
@@ -154,5 +153,6 @@ export default function Header() {
         </div>
       </div>
     </header>
+    </>
   )
 }
