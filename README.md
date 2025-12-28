@@ -65,4 +65,4 @@ The owner can edit via Sanity Studio (`/studio`):
 
 ---
 
-Built by [LeoCba07](https://github.com/LeoCba07) / MIT LICENSE
+Built by [LeoCba07](https://github.com/LeoCba07)
