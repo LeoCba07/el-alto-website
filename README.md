@@ -1,4 +1,4 @@
-# Complejo de Cabañas El Alto
+# 🏔️ Complejo de Cabañas El Alto
 
 Website built for a cabin rental complex in Tanti, Córdoba, Argentina.
 
@@ -17,6 +17,14 @@ The old WordPress site had placeholder text, spelling errors, and a broken conta
 ## Tech Stack
 
 Next.js 15 · TypeScript · Tailwind CSS · Sanity · Vercel · Google Analytics 4
+
+## Screenshots
+
+<p>
+  <img src="public/screenshots/el-alto-1.png" width="32%" alt="Hero Section">
+  <img src="public/screenshots/el-alto-2.png" width="32%" alt="Cabin Cards">
+  <img src="public/screenshots/el-alto-3.png" width="32%" alt="Contact Form">
+</p>
 
 ## Setup
 ```bash
