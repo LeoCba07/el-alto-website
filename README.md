@@ -6,7 +6,7 @@ Website built for a 28-year-old family cabin rental business complex in Tanti, C
 
 ## The Problem
 
-The old WordPress site had placeholder text, spelling errors, and a broken contact flow. 80% of WhatsApp inquiries came in as just "Hola" — no dates, no guest count.
+The old WordPress site had placeholder text, spelling errors, and a broken contact flow. 80% of WhatsApp inquiries came in as just "Hola" — no dates, no guest count. Which made the already busy owner have to rely on back and forth messaging with many guests at the same time.
 
 ## The Solution
 
