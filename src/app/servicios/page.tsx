@@ -2,9 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
 import { client } from '@/sanity/lib/client'
-import { serviciosQuery } from '@/sanity/lib/queries'
-import { urlFor } from '@/sanity/lib/image'
-import { OPTIONAL_SERVICES } from '@/lib/constants'
+import { configuracionSitioQuery } from '@/sanity/lib/queries'
+import { OPTIONAL_SERVICES, BUSINESS_HOURS } from '@/lib/constants'
+import { SiteConfig } from '@/lib/types'
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
@@ -39,37 +39,25 @@ function ServiceIcon({ icon, className = 'w-5 h-5' }: { icon: string; className?
   )
 }
 
-interface SanityServicio {
-  _id: string
-  nombre: string
-  descripcion?: string
-  icono: string
-  categoria: 'unidad' | 'complejo' | 'opcional' | 'destacado'
-  imagen?: { asset: { _ref: string }; alt?: string }
-  detalle?: string
-  precio?: string
-}
-
-async function getServiciosData() {
+async function getConfig() {
   try {
-    const servicios = await client.fetch<SanityServicio[]>(serviciosQuery)
-    return servicios
+    const config = await client.fetch<SiteConfig | null>(configuracionSitioQuery)
+    return config
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      console.error('Failed to fetch servicios data:', error)
+      console.error('Failed to fetch config data:', error)
     }
     return null
   }
 }
 
 export default async function ServiciosPage() {
-  const serviciosData = await getServiciosData()
+  const config = await getConfig()
 
-  // Group services by category
-  const destacados = serviciosData?.filter(s => s.categoria === 'destacado') || []
-  const enUnidad = serviciosData?.filter(s => s.categoria === 'unidad') || []
-  const enComplejo = serviciosData?.filter(s => s.categoria === 'complejo') || []
-  const opcionales = serviciosData?.filter(s => s.categoria === 'opcional') || []
+  // Get reception hours from config
+  const recepcionApertura = config?.horarios?.recepcion?.apertura || BUSINESS_HOURS.receptionOpen
+  const recepcionCierre = config?.horarios?.recepcion?.cierre || BUSINESS_HOURS.receptionClose
+  const horarioRecepcion = `${recepcionApertura} a ${recepcionCierre} hs`
 
   return (
     <main className="min-h-screen bg-cream">
@@ -98,21 +86,21 @@ export default async function ServiciosPage() {
           </h2>
           <div className="grid md:grid-cols-3 gap-5">
             <FeatureCard
-              image={destacados[0]?.imagen ? urlFor(destacados[0].imagen).url() : '/images/panorama-pileta.jpg'}
-              title={destacados[0]?.nombre || 'Pileta al aire libre'}
-              description={destacados[0]?.descripcion || 'Vista a las sierras. Climatizada en primavera y otoño.'}
-              note={destacados[0]?.detalle || 'Horario: 9:30 a 22:00 hs'}
+              image="/images/panorama-pileta.jpg"
+              title="Pileta al aire libre"
+              description="Vista a las sierras. Climatizada en primavera y otoño."
+              note="Horario: 9:30 a 22:00 hs"
             />
             <FeatureCard
-              image={destacados[1]?.imagen ? urlFor(destacados[1].imagen).url() : '/images/asador.jpg'}
-              title={destacados[1]?.nombre || 'Quincho con asadores'}
-              description={destacados[1]?.descripcion || 'Espacio común para disfrutar un asado en familia.'}
-              note={destacados[1]?.detalle || 'Reservá en recepción'}
+              image="/images/asador.jpg"
+              title="Quincho con asadores"
+              description="Espacio común para disfrutar un asado en familia."
+              note="Reservá en recepción"
             />
             <FeatureCard
-              image={destacados[2]?.imagen ? urlFor(destacados[2].imagen).url() : '/images/vista-desde-cabana.jpg'}
-              title={destacados[2]?.nombre || 'Vistas a la montaña'}
-              description={destacados[2]?.descripcion || 'Predio escalonado con jardín y panorámicas.'}
+              image="/images/vista-desde-cabana.jpg"
+              title="Vistas a la montaña"
+              description="Predio escalonado con jardín y panorámicas."
             />
           </div>
           <div className="mt-6 flex items-center justify-center gap-3 text-text-dark">
@@ -135,21 +123,13 @@ export default async function ServiciosPage() {
                   En tu unidad
                 </h3>
                 <div className="space-y-3">
-                  {enUnidad.length > 0 ? (
-                    enUnidad.map((s) => (
-                      <AmenityRow key={s._id} icon={s.icono} label={s.nombre} pill={s.detalle} />
-                    ))
-                  ) : (
-                    <>
-                      <AmenityRow icon="wifi" label="Wi-Fi gratis" />
-                      <AmenityRow icon="kitchen" label="Cocina equipada" pill="horno, microondas, heladera, vajilla" />
-                      <AmenityRow icon="bed" label="Ropa de cama y toallas" />
-                      <AmenityRow icon="tv" label="TV con cable" />
-                      <AmenityRow icon="climate" label="Calefacción y ventiladores" />
-                      <AmenityRow icon="safe" label="Caja de seguridad" />
-                      <AmenityRow icon="hairdryer" label="Secador de pelo" />
-                    </>
-                  )}
+                  <AmenityRow icon="wifi" label="Wi-Fi gratis" />
+                  <AmenityRow icon="kitchen" label="Cocina equipada" pill="horno, microondas, heladera, vajilla" />
+                  <AmenityRow icon="bed" label="Ropa de cama y toallas" />
+                  <AmenityRow icon="tv" label="TV con cable" />
+                  <AmenityRow icon="climate" label="Calefacción y ventiladores" />
+                  <AmenityRow icon="safe" label="Caja de seguridad" />
+                  <AmenityRow icon="hairdryer" label="Secador de pelo" />
                 </div>
               </div>
               <div>
@@ -157,19 +137,11 @@ export default async function ServiciosPage() {
                   En el complejo
                 </h3>
                 <div className="space-y-3">
-                  {enComplejo.length > 0 ? (
-                    enComplejo.map((s) => (
-                      <AmenityRow key={s._id} icon={s.icono} label={s.nombre} pill={s.detalle} />
-                    ))
-                  ) : (
-                    <>
-                      <AmenityRow icon="car" label="Cochera techada" pill="1 por unidad" />
-                      <AmenityRow icon="kids" label="Sala de juegos para chicos" />
-                      <AmenityRow icon="map" label="Info turística y excursiones" />
-                      <AmenityRow icon="luggage" label="Guardado de equipaje" />
-                      <AmenityRow icon="reception" label="Recepción" pill="9 a 19 hs" />
-                    </>
-                  )}
+                  <AmenityRow icon="car" label="Cochera techada" pill="1 por unidad" />
+                  <AmenityRow icon="kids" label="Sala de juegos para chicos" />
+                  <AmenityRow icon="map" label="Info turística y excursiones" />
+                  <AmenityRow icon="luggage" label="Guardado de equipaje" />
+                  <AmenityRow icon="reception" label="Recepción" pill={horarioRecepcion} />
                 </div>
               </div>
             </div>
@@ -180,57 +152,31 @@ export default async function ServiciosPage() {
                 Servicios opcionales
               </h3>
               <div className="space-y-3">
-                {opcionales.length > 0 ? (
-                  opcionales.map((s) => (
-                    <div key={s._id} className="bg-white rounded-2xl p-4 border border-sand">
-                      <div className="flex justify-between items-start mb-1">
-                        <div className="flex items-center gap-2">
-                          <ServiceIcon icon={s.icono} className="w-5 h-5 text-forest" />
-                          <span className="font-medium text-text-dark">{s.nombre}</span>
-                        </div>
-                        {s.precio && (
-                          <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">
-                            {s.precio}
-                          </span>
-                        )}
-                      </div>
-                      {s.descripcion && (
-                        <p className="text-sm text-text-medium ml-7">{s.descripcion}</p>
-                      )}
-                      {s.detalle && (
-                        <p className="text-sm text-text-light mt-1 ml-7">{s.detalle}</p>
-                      )}
+                <div className="bg-white rounded-2xl p-4 border border-sand">
+                  <div className="flex justify-between items-start mb-1">
+                    <div className="flex items-center gap-2">
+                      <ServiceIcon icon="ac" className="w-5 h-5 text-forest" />
+                      <span className="font-medium text-text-dark">Aire acondicionado</span>
                     </div>
-                  ))
-                ) : (
-                  <>
-                    <div className="bg-white rounded-2xl p-4 border border-sand">
-                      <div className="flex justify-between items-start mb-1">
-                        <div className="flex items-center gap-2">
-                          <ServiceIcon icon="ac" className="w-5 h-5 text-forest" />
-                          <span className="font-medium text-text-dark">Aire acondicionado</span>
-                        </div>
-                        <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">{OPTIONAL_SERVICES.acPricePerDay}</span>
-                      </div>
-                      <p className="text-sm text-text-medium ml-7">
-                        Opcional para mantener tarifas accesibles.
-                      </p>
+                    <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">{OPTIONAL_SERVICES.acPricePerDay}</span>
+                  </div>
+                  <p className="text-sm text-text-medium ml-7">
+                    Opcional para mantener tarifas accesibles.
+                  </p>
+                </div>
+                <div className="bg-white rounded-2xl p-4 border border-sand">
+                  <div className="flex justify-between items-start mb-1">
+                    <div className="flex items-center gap-2">
+                      <ServiceIcon icon="breakfast" className="w-5 h-5 text-forest" />
+                      <span className="font-medium text-text-dark">Desayuno</span>
                     </div>
-                    <div className="bg-white rounded-2xl p-4 border border-sand">
-                      <div className="flex justify-between items-start mb-1">
-                        <div className="flex items-center gap-2">
-                          <ServiceIcon icon="breakfast" className="w-5 h-5 text-forest" />
-                          <span className="font-medium text-text-dark">Desayuno</span>
-                        </div>
-                        <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
-                      </div>
-                      <p className="text-sm text-text-medium ml-7">
-                        Desayuno seco servido en tu unidad.
-                      </p>
-                      <p className="text-sm text-text-light mt-1 ml-7">Disponibilidad limitada</p>
-                    </div>
-                  </>
-                )}
+                    <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
+                  </div>
+                  <p className="text-sm text-text-medium ml-7">
+                    Desayuno seco servido en tu unidad.
+                  </p>
+                  <p className="text-sm text-text-light mt-1 ml-7">Disponibilidad limitada</p>
+                </div>
               </div>
               <p className="mt-4 text-sm text-text-light">
                 No incluimos mucama para mantener tarifas accesibles.

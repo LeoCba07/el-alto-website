@@ -22,16 +22,10 @@ interface SanityCabana {
   }>
 }
 
-interface SanityTarifaTemporada {
-  _id: string
-  temporada: 'alta' | 'media' | 'baja'
-  nombre: string
-  periodo: string
-  precios: Array<{
-    capacidad: string
-    precio: number
-  }>
-  orden: number
+interface SanityTarifasDocument {
+  temporadaAlta?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
+  temporadaMedia?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
+  temporadaBaja?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
 }
 
 async function getCabanasData() {
@@ -45,28 +39,17 @@ async function getCabanasData() {
 
 async function getTarifasData(): Promise<TarifasData | null> {
   try {
-    const tarifas = await client.fetch<SanityTarifaTemporada[]>(tarifasTemporadaQuery)
+    const tarifasDoc = await client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery)
 
-    if (!tarifas || tarifas.length === 0) {
+    if (!tarifasDoc?.temporadaAlta || !tarifasDoc?.temporadaMedia || !tarifasDoc?.temporadaBaja) {
       return null
     }
 
-    // Transform array into the expected object structure
-    const tarifasData: Partial<TarifasData> = {}
-    for (const tarifa of tarifas) {
-      tarifasData[tarifa.temporada] = {
-        nombre: tarifa.nombre,
-        periodo: tarifa.periodo,
-        precios: tarifa.precios,
-      }
+    return {
+      alta: tarifasDoc.temporadaAlta,
+      media: tarifasDoc.temporadaMedia,
+      baja: tarifasDoc.temporadaBaja,
     }
-
-    // Verify all temporadas are present
-    if (!tarifasData.alta || !tarifasData.media || !tarifasData.baja) {
-      return null
-    }
-
-    return tarifasData as TarifasData
   } catch {
     return null
   }

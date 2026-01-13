@@ -119,13 +119,6 @@ export default defineType({
             { name: 'reembolsoTotalHoras', title: 'Horas antes para reembolso', type: 'number' },
           ],
         },
-        {
-          name: 'mediosDePago',
-          title: 'Medios de pago',
-          type: 'array',
-          of: [{ type: 'string' }],
-          description: 'Ej: Transferencia bancaria, Mercado Pago',
-        },
       ],
     }),
     defineField({
@@ -188,50 +181,6 @@ export default defineType({
           name: 'tripadvisor',
           title: 'TripAdvisor',
           type: 'url',
-        },
-      ],
-    }),
-    defineField({
-      name: 'direccion',
-      title: 'Dirección',
-      type: 'object',
-      fields: [
-        {
-          name: 'calle',
-          title: 'Calle',
-          type: 'string',
-        },
-        {
-          name: 'ciudad',
-          title: 'Ciudad',
-          type: 'string',
-        },
-        {
-          name: 'provincia',
-          title: 'Provincia',
-          type: 'string',
-        },
-        {
-          name: 'codigoPostal',
-          title: 'Código Postal',
-          type: 'string',
-        },
-        {
-          name: 'ubicacion',
-          title: 'Ubicación en mapa',
-          type: 'object',
-          fields: [
-            {
-              name: 'lat',
-              title: 'Latitud',
-              type: 'number',
-            },
-            {
-              name: 'lng',
-              title: 'Longitud',
-              type: 'number',
-            },
-          ],
         },
       ],
     }),

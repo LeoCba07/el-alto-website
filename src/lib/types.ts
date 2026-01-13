@@ -30,7 +30,6 @@ export interface SiteConfig {
     cancelacionBaja?: {
       reembolsoTotalHoras?: number
     }
-    mediosDePago?: string[]
   }
   estadisticas?: {
     anosExperiencia?: number
@@ -44,16 +43,6 @@ export interface SiteConfig {
     instagram?: string
     youtube?: string
     tripadvisor?: string
-  }
-  direccion?: {
-    calle?: string
-    ciudad?: string
-    provincia?: string
-    codigoPostal?: string
-    ubicacion?: {
-      lat?: number
-      lng?: number
-    }
   }
 }
 

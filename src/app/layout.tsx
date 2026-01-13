@@ -91,7 +91,6 @@ export const metadata: Metadata = {
 // Generate JSON-LD with config from Sanity (with fallbacks)
 function generateJsonLd(config: SiteConfig | null) {
   const stats = config?.estadisticas;
-  const direccion = config?.direccion;
   const redes = config?.redesSociales;
 
   return {
@@ -107,16 +106,16 @@ function generateJsonLd(config: SiteConfig | null) {
     email: config?.email || "info@complejoelalto.com.ar",
     address: {
       "@type": "PostalAddress",
-      streetAddress: direccion?.calle || "Ruta Provincial N°28 y San Martín 1130",
-      addressLocality: direccion?.ciudad || "Tanti",
-      addressRegion: direccion?.provincia || "Córdoba",
-      postalCode: direccion?.codigoPostal || "5155",
+      streetAddress: "Ruta Provincial N°28 y San Martín 1130",
+      addressLocality: "Tanti",
+      addressRegion: "Córdoba",
+      postalCode: "5155",
       addressCountry: "AR",
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: direccion?.ubicacion?.lat || -31.3607,
-      longitude: direccion?.ubicacion?.lng || -64.5876,
+      latitude: -31.3607,
+      longitude: -64.5876,
     },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
@@ -151,46 +150,34 @@ interface ChatbotData {
   opcionesSeguimiento?: string[];
 }
 
-interface SanityTarifaTemporada {
-  _id: string;
-  temporada: 'alta' | 'media' | 'baja';
-  nombre: string;
-  periodo: string;
-  precios: Array<{
-    capacidad: string;
-    precio: number;
-  }>;
-  orden: number;
-}
-
 export interface TarifasData {
   alta: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
   media: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
   baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
 }
 
+interface SanityTarifasDocument {
+  temporadaAlta?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
+  temporadaMedia?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
+  temporadaBaja?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
+}
+
 async function getSiteData() {
   try {
-    const [respuestas, config, tarifasRaw] = await Promise.all([
-      client.fetch<ChatbotData[]>(chatbotRespuestasQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
-      client.fetch<SanityTarifaTemporada[]>(tarifasTemporadaQuery, {}, { next: { revalidate: CACHE_CONFIG.SANITY_REVALIDATE } }),
+    const [respuestas, config, tarifasDoc] = await Promise.all([
+      client.fetch<ChatbotData[]>(chatbotRespuestasQuery),
+      client.fetch<SiteConfig | null>(configuracionSitioQuery),
+      client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery),
     ]);
 
-    // Transform tarifas array into the expected structure
+    // Transform tarifas document into the expected structure
     let tarifas: TarifasData | undefined = undefined;
-    if (tarifasRaw && tarifasRaw.length > 0) {
-      const tarifasMap: Partial<TarifasData> = {};
-      for (const t of tarifasRaw) {
-        tarifasMap[t.temporada] = {
-          nombre: t.nombre,
-          periodo: t.periodo,
-          precios: t.precios,
-        };
-      }
-      if (tarifasMap.alta && tarifasMap.media && tarifasMap.baja) {
-        tarifas = tarifasMap as TarifasData;
-      }
+    if (tarifasDoc?.temporadaAlta && tarifasDoc?.temporadaMedia && tarifasDoc?.temporadaBaja) {
+      tarifas = {
+        alta: tarifasDoc.temporadaAlta,
+        media: tarifasDoc.temporadaMedia,
+        baja: tarifasDoc.temporadaBaja,
+      };
     }
 
     return { respuestas, config, tarifas };
@@ -242,7 +229,7 @@ export default async function RootLayout({
         </a>
         <Header />
         <main id="main-content">{children}</main>
-        <Footer />
+        <Footer config={config} />
         <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
       </body>
     </html>

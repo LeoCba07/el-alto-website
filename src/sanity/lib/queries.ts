@@ -53,38 +53,6 @@ export const cabanaBySlugQuery = groq`
   }
 `
 
-// Servicios
-export const serviciosQuery = groq`
-  *[_type == "servicio"] | order(categoria asc, orden asc) {
-    _id,
-    nombre,
-    descripcion,
-    icono,
-    categoria,
-    imagen {
-      asset->,
-      alt
-    },
-    detalle,
-    precio
-  }
-`
-
-export const serviciosPorCategoriaQuery = groq`
-  *[_type == "servicio" && categoria == $categoria] | order(orden asc) {
-    _id,
-    nombre,
-    descripcion,
-    icono,
-    imagen {
-      asset->,
-      alt
-    },
-    detalle,
-    precio
-  }
-`
-
 // Normas
 export const normasQuery = groq`
   *[_type == "norma"] | order(categoria asc, orden asc) {
@@ -161,18 +129,33 @@ export const atraccionesCercanasQuery = groq`
   }
 `
 
-// Tarifas por Temporada (new structure matching the UI)
+// Tarifas por Temporada (single document with all 3 seasons)
 export const tarifasTemporadaQuery = groq`
-  *[_type == "tarifaTemporada"] | order(orden asc) {
-    _id,
-    temporada,
-    nombre,
-    periodo,
-    precios[] {
-      capacidad,
-      precio
+  *[_type == "tarifaTemporada"][0] {
+    temporadaAlta {
+      nombre,
+      periodo,
+      precios[] {
+        capacidad,
+        precio
+      }
     },
-    orden
+    temporadaMedia {
+      nombre,
+      periodo,
+      precios[] {
+        capacidad,
+        precio
+      }
+    },
+    temporadaBaja {
+      nombre,
+      periodo,
+      precios[] {
+        capacidad,
+        precio
+      }
+    }
   }
 `
 
@@ -207,8 +190,7 @@ export const configuracionSitioQuery = groq`
       },
       cancelacionBaja {
         reembolsoTotalHoras
-      },
-      mediosDePago
+      }
     },
     estadisticas {
       anosExperiencia,
@@ -222,16 +204,6 @@ export const configuracionSitioQuery = groq`
       instagram,
       youtube,
       tripadvisor
-    },
-    direccion {
-      calle,
-      ciudad,
-      provincia,
-      codigoPostal,
-      ubicacion {
-        lat,
-        lng
-      }
     }
   }
 `

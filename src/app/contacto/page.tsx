@@ -59,7 +59,9 @@ export default async function ContactoPage() {
   const depositPercent = politicas?.senaPorcentaje ?? RESERVATION_POLICIES.depositPercent
   const depositPercentShort = politicas?.senaPorcentajeCorta ?? RESERVATION_POLICIES.depositPercentShortStay
   const shortStayMaxNights = politicas?.estadiaCortaMaxNoches ?? RESERVATION_POLICIES.shortStayMaxNights
-  const paymentMethods = politicas?.mediosDePago || RESERVATION_POLICIES.paymentMethods
+
+  // Payment methods are hardcoded as they rarely change
+  const paymentMethods = RESERVATION_POLICIES.paymentMethods
 
   const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
 

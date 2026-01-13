@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { HiOutlineMapPin, HiOutlinePhone, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
 import { SiInstagram, SiFacebook, SiTripadvisor } from 'react-icons/si'
+import { SiteConfig } from '@/lib/types'
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
@@ -14,14 +15,29 @@ const navLinks = [
   { href: '/contacto', label: 'Contacto' },
 ]
 
-const socialLinks = [
-  { href: 'https://instagram.com/complejoelalto', label: 'Instagram', Icon: SiInstagram },
-  { href: 'https://facebook.com/complejoelalto', label: 'Facebook', Icon: SiFacebook },
-  { href: 'https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html', label: 'TripAdvisor', Icon: SiTripadvisor },
-]
+interface FooterProps {
+  config: SiteConfig | null
+}
 
-export default function Footer() {
+export default function Footer({ config }: FooterProps) {
   const currentYear = new Date().getFullYear()
+
+  // Extract config values with fallbacks
+  const email = config?.email || 'info@complejoelalto.com.ar'
+  const telefonoMovil = config?.telefonoMovil || '+5493572501030'
+  const telefonoMovilDisplay = telefonoMovil.replace('+549', '').replace(/(\d{4})(\d{6})/, '($1) $2')
+
+  // Address is hardcoded as it never changes
+  const direccionCompleta = 'Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba'
+  const mapLat = -31.3607
+  const mapLng = -64.5876
+
+  const redes = config?.redesSociales
+  const socialLinks = [
+    { href: redes?.instagram || 'https://instagram.com/complejoelalto', label: 'Instagram', Icon: SiInstagram },
+    { href: redes?.facebook || 'https://facebook.com/complejoelalto', label: 'Facebook', Icon: SiFacebook },
+    { href: redes?.tripadvisor || 'https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html', label: 'TripAdvisor', Icon: SiTripadvisor },
+  ]
 
   return (
     <footer className="bg-forest-dark text-white">
@@ -75,21 +91,21 @@ export default function Footer() {
         {/* Middle row: Contact info */}
         <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 py-5 text-sm text-cream/70">
           <a
-            href="https://www.google.com/maps/dir/?api=1&destination=-31.3607,-64.5876"
+            href={`https://www.google.com/maps/dir/?api=1&destination=${mapLat},${mapLng}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 hover:text-amber transition-colors"
           >
             <HiOutlineMapPin className="w-4 h-4 text-amber flex-shrink-0" />
-            Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba
+            {direccionCompleta}
           </a>
-          <a href="tel:+5493572501030" className="flex items-center gap-2 hover:text-amber transition-colors">
+          <a href={`tel:${telefonoMovil}`} className="flex items-center gap-2 hover:text-amber transition-colors">
             <HiOutlineDevicePhoneMobile className="w-4 h-4 text-amber" />
-            (3572) 501030
+            {telefonoMovilDisplay}
           </a>
-          <a href="mailto:info@complejoelalto.com.ar" className="flex items-center gap-2 hover:text-amber transition-colors">
+          <a href={`mailto:${email}`} className="flex items-center gap-2 hover:text-amber transition-colors">
             <HiOutlineEnvelope className="w-4 h-4 text-amber" />
-            info@complejoelalto.com.ar
+            {email}
           </a>
         </div>
 
