@@ -177,7 +177,6 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
   const depositPercent = politicas?.senaPorcentaje ?? RESERVATION_POLICIES.depositPercent
   const depositPercentShort = politicas?.senaPorcentajeCorta ?? RESERVATION_POLICIES.depositPercentShortStay
   const shortStayMaxNights = politicas?.estadiaCortaMaxNoches ?? RESERVATION_POLICIES.shortStayMaxNights
-  const paymentMethods = politicas?.mediosDePago || RESERVATION_POLICIES.paymentMethods
 
   // Build FAQ data from Sanity or use defaults
   // Tarifas answer comes from Sanity tarifas data (single source of truth)
@@ -194,7 +193,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
         followUp: ['consultar_disponibilidad', 'otra_pregunta']
       },
       pago: {
-        answer: `Para reservar se requiere una seña del ${depositPercent}% (${depositPercentShort}% para estadías de ${shortStayMaxNights} noches o menos). Aceptamos ${paymentMethods.join(' y ')}.`,
+        answer: `Para reservar se requiere una seña del ${depositPercent}% (${depositPercentShort}% para estadías de ${shortStayMaxNights} noches o menos). Aceptamos ${RESERVATION_POLICIES.paymentMethods.join(' y ')}.`,
         followUp: ['consultar_disponibilidad', 'otra_pregunta']
       },
     }
@@ -212,7 +211,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
     })
     // Merge with base (tarifas answer is already set from Sanity tarifas)
     return { ...dynamicDefaults, ...sanityData }
-  }, [respuestas, tarifas, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights, paymentMethods])
+  }, [respuestas, tarifas, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights])
 
   const WHATSAPP_NUMBER = siteConfig?.numeroWhatsapp || SITE_CONFIG.WHATSAPP_NUMBER
 
