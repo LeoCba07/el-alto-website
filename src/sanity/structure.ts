@@ -13,9 +13,17 @@ export const structure: StructureResolver = (S) =>
             .schemaType('configuracionSitio')
             .documentId('configuracionSitio')
         ),
+      // Singleton for tarifas
+      S.listItem()
+        .title('Tarifas por Temporada')
+        .child(
+          S.document()
+            .schemaType('tarifaTemporada')
+            .documentId('tarifaTemporada')
+        ),
       S.divider(),
       // All other document types
       ...S.documentTypeListItems().filter(
-        (listItem) => listItem.getId() !== 'configuracionSitio'
+        (listItem) => !['configuracionSitio', 'tarifaTemporada'].includes(listItem.getId() || '')
       ),
     ])

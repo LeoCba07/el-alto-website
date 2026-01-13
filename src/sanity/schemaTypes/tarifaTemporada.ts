@@ -9,11 +9,23 @@ export default defineType({
       name: 'temporadaAlta',
       title: '🔴 Temporada Alta',
       type: 'object',
+      initialValue: {
+        nombre: 'Temporada Alta',
+        periodo: 'Dic 28 - Feb, Carnaval, Semana Santa',
+        precios: [
+          { capacidad: '2 personas', precio: 60000 },
+          { capacidad: '2 + 1 menor', precio: 75000 },
+          { capacidad: '2 a 4 personas', precio: 90000 },
+          { capacidad: '4 a 5 personas', precio: 110000 },
+          { capacidad: '5 a 6 personas', precio: 129000 },
+        ],
+      },
       fields: [
         defineField({
           name: 'nombre',
           title: 'Nombre',
           type: 'string',
+          readOnly: true,
           initialValue: 'Temporada Alta',
         }),
         defineField({
@@ -64,11 +76,23 @@ export default defineType({
       name: 'temporadaMedia',
       title: '🟡 Temporada Media',
       type: 'object',
+      initialValue: {
+        nombre: 'Temporada Media',
+        periodo: 'Marzo, Diciembre, fines de semana largos, vacaciones de Julio',
+        precios: [
+          { capacidad: '2 personas', precio: 55000 },
+          { capacidad: '2 + 1 menor', precio: 68000 },
+          { capacidad: '2 a 4 personas', precio: 85000 },
+          { capacidad: '4 a 5 personas', precio: 90000 },
+          { capacidad: '5 a 6 personas', precio: 99000 },
+        ],
+      },
       fields: [
         defineField({
           name: 'nombre',
           title: 'Nombre',
           type: 'string',
+          readOnly: true,
           initialValue: 'Temporada Media',
         }),
         defineField({
@@ -119,11 +143,22 @@ export default defineType({
       name: 'temporadaBaja',
       title: '🟢 Temporada Baja',
       type: 'object',
+      initialValue: {
+        nombre: 'Temporada Baja',
+        periodo: 'Resto del año',
+        precios: [
+          { capacidad: '2 personas', precio: 49000 },
+          { capacidad: '2 + 1 menor', precio: 60000 },
+          { capacidad: '2 a 4 personas', precio: 75000 },
+          { capacidad: '5 a 6 personas', precio: 89000 },
+        ],
+      },
       fields: [
         defineField({
           name: 'nombre',
           title: 'Nombre',
           type: 'string',
+          readOnly: true,
           initialValue: 'Temporada Baja',
         }),
         defineField({

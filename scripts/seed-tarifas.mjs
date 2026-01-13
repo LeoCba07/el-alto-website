@@ -21,12 +21,11 @@ const client = createClient({
   useCdn: false,
 })
 
-// Current tarifas - these are the source of truth
-const tarifas = [
-  {
-    _id: 'tarifa-alta',
-    _type: 'tarifaTemporada',
-    temporada: 'alta',
+// Tarifas singleton document - this is the source of truth
+const tarifasDocument = {
+  _id: 'tarifaTemporada',
+  _type: 'tarifaTemporada',
+  temporadaAlta: {
     nombre: 'Temporada Alta',
     periodo: 'Dic 28 - Feb, Carnaval, Semana Santa',
     precios: [
@@ -36,12 +35,8 @@ const tarifas = [
       { capacidad: '4 a 5 personas', precio: 110000 },
       { capacidad: '5 a 6 personas', precio: 129000 },
     ],
-    orden: 1,
   },
-  {
-    _id: 'tarifa-media',
-    _type: 'tarifaTemporada',
-    temporada: 'media',
+  temporadaMedia: {
     nombre: 'Temporada Media',
     periodo: 'Marzo, Diciembre, fines de semana largos, vacaciones de Julio',
     precios: [
@@ -51,12 +46,8 @@ const tarifas = [
       { capacidad: '4 a 5 personas', precio: 90000 },
       { capacidad: '5 a 6 personas', precio: 99000 },
     ],
-    orden: 2,
   },
-  {
-    _id: 'tarifa-baja',
-    _type: 'tarifaTemporada',
-    temporada: 'baja',
+  temporadaBaja: {
     nombre: 'Temporada Baja',
     periodo: 'Resto del año',
     precios: [
@@ -65,21 +56,19 @@ const tarifas = [
       { capacidad: '2 a 4 personas', precio: 75000 },
       { capacidad: '5 a 6 personas', precio: 89000 },
     ],
-    orden: 3,
   },
-]
+}
 
 async function seed() {
   console.log('Seeding tarifas to Sanity...\n')
 
-  for (const tarifa of tarifas) {
-    try {
-      // Use createOrReplace to update existing or create new
-      await client.createOrReplace(tarifa)
-      console.log(`✓ ${tarifa.nombre}`)
-    } catch (error) {
-      console.error(`✗ Error with ${tarifa.nombre}:`, error.message)
-    }
+  try {
+    // Use createOrReplace to update existing or create new
+    await client.createOrReplace(tarifasDocument)
+    console.log('✓ Tarifas por Temporada document created/updated')
+  } catch (error) {
+    console.error('✗ Error seeding tarifas:', error.message)
+    throw error
   }
 
   console.log('\nDone! Tarifas have been seeded to Sanity.')
