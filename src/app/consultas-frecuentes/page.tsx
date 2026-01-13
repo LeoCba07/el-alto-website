@@ -22,9 +22,7 @@ const categoryLabels: Record<string, string> = {
 
 async function getFAQData() {
   try {
-    const preguntas = await client.fetch<SanityPregunta[]>(preguntasFrecuentesQuery, {}, {
-      next: { revalidate: 60 }
-    })
+    const preguntas = await client.fetch<SanityPregunta[]>(preguntasFrecuentesQuery)
     return preguntas
   } catch {
     return null

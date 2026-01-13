@@ -52,9 +52,7 @@ interface SanityServicio {
 
 async function getServiciosData() {
   try {
-    const servicios = await client.fetch<SanityServicio[]>(serviciosQuery, {}, {
-      next: { revalidate: 60 }
-    })
+    const servicios = await client.fetch<SanityServicio[]>(serviciosQuery)
     return servicios
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {

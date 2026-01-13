@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
 async function getConfig() {
   try {
-    return await client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } })
+    return await client.fetch<SiteConfig | null>(configuracionSitioQuery)
   } catch {
     return null
   }

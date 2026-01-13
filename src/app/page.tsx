@@ -27,8 +27,8 @@ interface SanityHeroSection {
 async function getHomeData() {
   try {
     const [heroData, config] = await Promise.all([
-      client.fetch<SanityHeroSection | null>(heroSectionQuery, {}, { next: { revalidate: 60 } }),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } }),
+      client.fetch<SanityHeroSection | null>(heroSectionQuery),
+      client.fetch<SiteConfig | null>(configuracionSitioQuery),
     ])
     return { heroData, config }
   } catch (error) {

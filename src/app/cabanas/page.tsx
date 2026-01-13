@@ -36,9 +36,7 @@ interface SanityTarifaTemporada {
 
 async function getCabanasData() {
   try {
-    const cabanas = await client.fetch<SanityCabana[]>(cabanasQuery, {}, {
-      next: { revalidate: 60 }
-    })
+    const cabanas = await client.fetch<SanityCabana[]>(cabanasQuery)
     return cabanas
   } catch {
     return null
@@ -47,9 +45,7 @@ async function getCabanasData() {
 
 async function getTarifasData(): Promise<TarifasData | null> {
   try {
-    const tarifas = await client.fetch<SanityTarifaTemporada[]>(tarifasTemporadaQuery, {}, {
-      next: { revalidate: 60 }
-    })
+    const tarifas = await client.fetch<SanityTarifaTemporada[]>(tarifasTemporadaQuery)
 
     if (!tarifas || tarifas.length === 0) {
       return null

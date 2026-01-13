@@ -39,8 +39,8 @@ interface SanityNorma {
 async function getNormasData() {
   try {
     const [normas, config] = await Promise.all([
-      client.fetch<SanityNorma[]>(normasQuery, {}, { next: { revalidate: 60 } }),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery, {}, { next: { revalidate: 60 } })
+      client.fetch<SanityNorma[]>(normasQuery),
+      client.fetch<SiteConfig | null>(configuracionSitioQuery)
     ])
     return { normas, config }
   } catch {
