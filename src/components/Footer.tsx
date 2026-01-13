@@ -83,10 +83,6 @@ export default function Footer() {
             <HiOutlineMapPin className="w-4 h-4 text-amber flex-shrink-0" />
             Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba
           </a>
-          <a href="tel:+5403541498970" className="flex items-center gap-2 hover:text-amber transition-colors">
-            <HiOutlinePhone className="w-4 h-4 text-amber" />
-            (03541) 498970
-          </a>
           <a href="tel:+5493572501030" className="flex items-center gap-2 hover:text-amber transition-colors">
             <HiOutlineDevicePhoneMobile className="w-4 h-4 text-amber" />
             (3572) 501030

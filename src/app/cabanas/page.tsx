@@ -3,6 +3,9 @@ import { cabanasQuery, tarifasTemporadaQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import CabanasClient, { CabanaType, TarifasData } from './CabanasClient'
 
+// Force dynamic rendering to show Sanity updates immediately
+export const dynamic = 'force-dynamic'
+
 interface SanityCabana {
   _id: string
   nombre: string

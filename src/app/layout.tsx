@@ -10,6 +10,9 @@ import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery 
 import { SITE_CONFIG, CACHE_CONFIG, TRUST_STATS, BUSINESS_HOURS, RESERVATION_POLICIES } from "@/lib/constants";
 import { SiteConfig } from "@/lib/types";
 
+// Force dynamic rendering to show Sanity updates immediately
+export const dynamic = 'force-dynamic'
+
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const geistSans = Geist({
@@ -100,10 +103,7 @@ function generateJsonLd(config: SiteConfig | null) {
     url: baseUrl,
     logo: `${baseUrl}/icon-512.png`,
     image: `${baseUrl}/og-image.png`,
-    telephone: [
-      config?.telefonoFijo || "+54 3541 498970",
-      config?.telefonoMovil || "+54 9 3572 501030"
-    ],
+    telephone: config?.telefonoMovil || "+54 9 3572 501030",
     email: config?.email || "info@complejoelalto.com.ar",
     address: {
       "@type": "PostalAddress",

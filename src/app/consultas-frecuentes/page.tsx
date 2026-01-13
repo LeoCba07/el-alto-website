@@ -2,6 +2,9 @@ import { client } from '@/sanity/lib/client'
 import { preguntasFrecuentesQuery } from '@/sanity/lib/queries'
 import FAQClient, { FAQCategory } from './FAQClient'
 
+// Force dynamic rendering to show Sanity updates immediately
+export const dynamic = 'force-dynamic'
+
 interface SanityPregunta {
   _id: string
   pregunta: string

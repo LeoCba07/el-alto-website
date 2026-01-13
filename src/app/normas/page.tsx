@@ -17,6 +17,9 @@ import { normasQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
 import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'
 
+// Force dynamic rendering to show Sanity updates immediately
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Normas del Complejo | El Alto',
   description: 'Normas de convivencia y políticas de reserva de Complejo El Alto, Tanti, Córdoba.',

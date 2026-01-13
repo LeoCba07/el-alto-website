@@ -25,6 +25,9 @@ import { client } from '@/sanity/lib/client'
 import { configuracionSitioQuery } from '@/sanity/lib/queries'
 import { SiteConfig } from '@/lib/types'
 
+// Force dynamic rendering to show Sanity updates immediately
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Contacto',
   description:
@@ -61,8 +64,8 @@ export default async function ContactoPage() {
   const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
 
   const email = config?.email || 'info@complejoelalto.com.ar'
-  const telefonoFijo = config?.telefonoFijo || '+5403541498970'
-  const telefonoFijoDisplay = telefonoFijo.replace('+54', '').replace(/(\d{4})(\d{6})/, '($1) $2')
+  const telefonoMovil = config?.telefonoMovil || '+5493572501030'
+  const telefonoMovilDisplay = telefonoMovil.replace('+549', '').replace(/(\d{4})(\d{6})/, '($1) $2')
   return (
     <div className="min-h-screen bg-cream">
       {/* Header Section */}
@@ -165,11 +168,11 @@ export default async function ContactoPage() {
                 <div className="mt-6 pt-5 border-t border-white/10">
                   <p className="text-white/80 text-sm font-medium mb-3">También podés contactarnos</p>
                   <div className="space-y-3">
-                    <a href={`tel:${telefonoFijo}`} className="flex items-center gap-3 text-white hover:text-amber transition-colors">
+                    <a href={`tel:${telefonoMovil}`} className="flex items-center gap-3 text-white hover:text-amber transition-colors">
                       <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
                         <HiOutlinePhone className="w-4 h-4 text-amber" />
                       </div>
-                      <span>{telefonoFijoDisplay}</span>
+                      <span>{telefonoMovilDisplay}</span>
                     </a>
                     <a href={`mailto:${email}`} className="flex items-center gap-3 text-white hover:text-amber transition-colors">
                       <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">

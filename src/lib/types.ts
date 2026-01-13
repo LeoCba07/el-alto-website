@@ -3,7 +3,6 @@
 export interface SiteConfig {
   numeroWhatsapp?: string
   email?: string
-  telefonoFijo?: string
   telefonoMovil?: string
   horarios?: {
     checkIn?: string

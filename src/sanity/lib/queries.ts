@@ -181,7 +181,6 @@ export const configuracionSitioQuery = groq`
   *[_type == "configuracionSitio"][0] {
     numeroWhatsapp,
     email,
-    telefonoFijo,
     telefonoMovil,
     horarios {
       checkIn,

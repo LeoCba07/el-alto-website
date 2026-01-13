@@ -11,6 +11,9 @@ import { heroSectionQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { SiteConfig } from '@/lib/types'
 
+// Force dynamic rendering to show Sanity updates immediately
+export const dynamic = 'force-dynamic'
+
 interface SanityHeroSection {
   subtitulo?: string
   titulo?: string

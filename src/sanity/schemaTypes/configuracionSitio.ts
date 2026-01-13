@@ -19,12 +19,6 @@ export default defineType({
       validation: (Rule) => Rule.required().email(),
     }),
     defineField({
-      name: 'telefonoFijo',
-      title: 'Teléfono Fijo',
-      type: 'string',
-      description: 'Número de teléfono fijo (ej: +5403541498970)',
-    }),
-    defineField({
       name: 'telefonoMovil',
       title: 'Teléfono Móvil',
       type: 'string',
