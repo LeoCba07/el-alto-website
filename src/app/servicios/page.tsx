@@ -2,7 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
 import { client } from '@/sanity/lib/client'
-import { configuracionSitioQuery } from '@/sanity/lib/queries'
+import { configuracionSitioQuery, serviciosDestacadosQuery } from '@/sanity/lib/queries'
+import { urlFor } from '@/sanity/lib/image'
 import { OPTIONAL_SERVICES, BUSINESS_HOURS } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'
 
@@ -39,6 +40,19 @@ function ServiceIcon({ icon, className = 'w-5 h-5' }: { icon: string; className?
   )
 }
 
+interface ServicioDestacado {
+  _id: string
+  nombre: string
+  descripcion: string
+  detalle?: string
+  imagen?: {
+    asset: {
+      _ref: string
+    }
+    alt?: string
+  }
+}
+
 async function getConfig() {
   try {
     const config = await client.fetch<SiteConfig | null>(configuracionSitioQuery)
@@ -51,13 +65,31 @@ async function getConfig() {
   }
 }
 
+async function getServiciosDestacados() {
+  try {
+    const servicios = await client.fetch<ServicioDestacado[]>(serviciosDestacadosQuery)
+    return servicios || []
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Failed to fetch servicios destacados:', error)
+    }
+    return []
+  }
+}
+
 export default async function ServiciosPage() {
-  const config = await getConfig()
+  const [config, serviciosDestacados] = await Promise.all([
+    getConfig(),
+    getServiciosDestacados()
+  ])
 
   // Get reception hours from config
   const recepcionApertura = config?.horarios?.recepcion?.apertura || BUSINESS_HOURS.receptionOpen
   const recepcionCierre = config?.horarios?.recepcion?.cierre || BUSINESS_HOURS.receptionClose
   const horarioRecepcion = `${recepcionApertura} a ${recepcionCierre} hs`
+
+  // Get years of experience from config
+  const anosExperiencia = config?.estadisticas?.anosExperiencia || 30
 
   return (
     <main className="min-h-screen bg-cream">
@@ -85,30 +117,44 @@ export default async function ServiciosPage() {
             Lo que más disfrutan nuestros huéspedes
           </h2>
           <div className="grid md:grid-cols-3 gap-5">
-            <FeatureCard
-              image="/images/panorama-pileta.jpg"
-              title="Pileta al aire libre"
-              description="Vista a las sierras. Climatizada en primavera y otoño."
-              note="Horario: 9:30 a 22:00 hs"
-            />
-            <FeatureCard
-              image="/images/asador.jpg"
-              title="Quincho con asadores"
-              description="Espacio común para disfrutar un asado en familia."
-              note="Reservá en recepción"
-            />
-            <FeatureCard
-              image="/images/vista-desde-cabana.jpg"
-              title="Vistas a la montaña"
-              description="Predio escalonado con jardín y panorámicas."
-            />
+            {serviciosDestacados.length > 0 ? (
+              serviciosDestacados.map((servicio) => (
+                <FeatureCard
+                  key={servicio._id}
+                  image={servicio.imagen ? urlFor(servicio.imagen).width(800).height(600).url() : '/images/placeholder.jpg'}
+                  title={servicio.nombre}
+                  description={servicio.descripcion}
+                  note={servicio.detalle}
+                />
+              ))
+            ) : (
+              <>
+                <FeatureCard
+                  image="/images/panorama-pileta.jpg"
+                  title="Pileta al aire libre"
+                  description="Vista a las sierras. Climatizada en primavera y otoño."
+                  note="Horario: 9:30 a 22:00 hs"
+                />
+                <FeatureCard
+                  image="/images/asador.jpg"
+                  title="Quincho con asadores"
+                  description="Espacio común para disfrutar un asado en familia."
+                  note="Reservá en recepción"
+                />
+                <FeatureCard
+                  image="/images/vista-desde-cabana.jpg"
+                  title="Vistas a la montaña"
+                  description="Predio escalonado con jardín y panorámicas."
+                />
+              </>
+            )}
           </div>
           <div className="mt-6 flex items-center justify-center gap-3 text-text-dark">
             <svg className="w-5 h-5 text-amber flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
             <p className="text-base">
-              <span className="font-semibold">Atendido por sus dueños</span> — 30 años recibiendo familias con trato personalizado
+              <span className="font-semibold">Atendido por sus dueños</span> — {anosExperiencia} años recibiendo familias con trato personalizado
             </p>
           </div>
         </section>

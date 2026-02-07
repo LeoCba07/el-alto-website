@@ -216,3 +216,17 @@ export const chatbotRespuestasQuery = groq`
     opcionesSeguimiento
   }
 `
+
+// Servicios Destacados (for feature cards on /servicios page)
+export const serviciosDestacadosQuery = groq`
+  *[_type == "servicio" && categoria == "destacado"] | order(orden asc) {
+    _id,
+    nombre,
+    descripcion,
+    detalle,
+    imagen {
+      asset->,
+      alt
+    }
+  }
+`
