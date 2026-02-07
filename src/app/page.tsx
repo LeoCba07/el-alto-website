@@ -1,6 +1,6 @@
 import Hero from '@/components/Hero'
 import TrustSignals from '@/components/TrustSignals'
-import FeaturedCabanas from '@/components/FeaturedCabanas'
+import FeaturedUnidades from '@/components/FeaturedUnidades'
 import ServicesHighlights from '@/components/ServicesHighlights'
 import LocationTeaser from '@/components/LocationTeaser'
 import Testimonials from '@/components/Testimonials'
@@ -61,8 +61,8 @@ export default async function Home() {
       <section id="trust-signals">
         <TrustSignals stats={config?.estadisticas} />
       </section>
-      <section id="cabanas">
-        <FeaturedCabanas />
+      <section id="unidades">
+        <FeaturedUnidades />
       </section>
       <section id="servicios">
         <ServicesHighlights />

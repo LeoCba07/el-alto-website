@@ -65,7 +65,7 @@ const defaultCategories: FAQCategory[] = [
     id: 'servicios',
     label: 'Servicios',
     questions: [
-      { pregunta: '¿Qué incluyen las cabañas?', respuesta: 'Cocina equipada, ropa blanca, TV con cable, calefacción y baño privado.' },
+      { pregunta: '¿Qué incluyen las unidades?', respuesta: 'Cocina equipada, ropa blanca, TV con cable, calefacción y baño privado.' },
       { pregunta: '¿Tienen aire acondicionado?', respuesta: 'Sí, con costo adicional. La calefacción está incluida.' },
       { pregunta: '¿Incluye servicio de mucama?', respuesta: 'No, así mantenemos precios competitivos.' },
       { pregunta: '¿Tienen silla alta para bebé?', respuesta: 'Sí, consultá disponibilidad al reservar.' },

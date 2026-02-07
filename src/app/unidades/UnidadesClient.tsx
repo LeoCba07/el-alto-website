@@ -19,7 +19,7 @@ import { IconType } from 'react-icons'
 import PhotoCarousel from '@/components/PhotoCarousel'
 import { RESERVATION_POLICIES, OPTIONAL_SERVICES } from '@/lib/constants'
 
-export interface CabanaType {
+export interface UnidadType {
   id: string
   tipo: string
   nombre: string
@@ -43,8 +43,8 @@ export interface TarifasData {
   baja: TarifaTemporada
 }
 
-export interface CabanasClientProps {
-  cabanas?: CabanaType[]
+export interface UnidadesClientProps {
+  unidades?: UnidadType[]
   tarifas?: TarifasData | null
 }
 
@@ -55,7 +55,7 @@ const iconMap: Record<string, IconType> = {
   couple: HiOutlineHeart,
 }
 
-const defaultCabanas: CabanaType[] = [
+const defaultUnidades: UnidadType[] = [
   {
     id: 'duplex',
     tipo: 'duplex',
@@ -112,14 +112,14 @@ const defaultCabanas: CabanaType[] = [
   },
 ]
 
-export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) {
-  const unitTypes = cabanas?.length ? cabanas : defaultCabanas
+export default function UnidadesClient({ unidades, tarifas }: UnidadesClientProps) {
+  const unitTypes = unidades?.length ? unidades : defaultUnidades
   const [activeUnit, setActiveUnit] = useState(unitTypes[0])
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displayedUnit, setDisplayedUnit] = useState(unitTypes[0])
 
   // Handle unit change with animation
-  const handleUnitChange = (unit: CabanaType) => {
+  const handleUnitChange = (unit: UnidadType) => {
     if (unit.id === activeUnit.id || isTransitioning) return
     setIsTransitioning(true)
     setActiveUnit(unit)
@@ -155,7 +155,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
               Alojamiento
             </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-3">
-              Nuestras Cabañas
+              Nuestras Unidades
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-xl">
               12 unidades con distintas capacidades para tu estadía ideal
@@ -196,7 +196,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
           >
             {/* Photo Gallery - Takes more space */}
             <div className="lg:col-span-3">
-              <PhotoCarousel key={displayedUnit.id} photos={displayedUnit.photos} altPrefix={`Cabaña ${displayedUnit.nombre}`} />
+              <PhotoCarousel key={displayedUnit.id} photos={displayedUnit.photos} altPrefix={`Unidad ${displayedUnit.nombre}`} />
             </div>
 
             {/* Unit Info */}
@@ -207,7 +207,7 @@ export default function CabanasClient({ cabanas, tarifas }: CabanasClientProps) 
                     {displayedUnit.destacado}
                   </span>
                   <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
-                    Cabañas {displayedUnit.nombre}
+                    Unidades {displayedUnit.nombre}
                   </h2>
                 </div>
               </div>

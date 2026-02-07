@@ -12,9 +12,9 @@ export const heroSectionQuery = groq`
   }
 `
 
-// Cabañas
-export const cabanasQuery = groq`
-  *[_type == "cabana"] | order(orden asc) {
+// Unidades
+export const unidadesQuery = groq`
+  *[_type == "unidad"] | order(orden asc) {
     _id,
     nombre,
     slug,
@@ -33,8 +33,8 @@ export const cabanasQuery = groq`
   }
 `
 
-export const cabanaBySlugQuery = groq`
-  *[_type == "cabana" && slug.current == $slug][0] {
+export const unidadBySlugQuery = groq`
+  *[_type == "unidad" && slug.current == $slug][0] {
     _id,
     nombre,
     slug,

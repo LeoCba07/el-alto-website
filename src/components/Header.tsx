@@ -13,8 +13,8 @@ const navLinks = [
     Icon: HiOutlineHome,
   },
   {
-    href: '/cabanas',
-    label: 'Cabañas',
+    href: '/unidades',
+    label: 'Unidades',
     Icon: HiOutlineHomeModern,
   },
   {

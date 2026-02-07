@@ -1,12 +1,12 @@
 import { client } from '@/sanity/lib/client'
-import { cabanasQuery, tarifasTemporadaQuery } from '@/sanity/lib/queries'
+import { unidadesQuery, tarifasTemporadaQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
-import CabanasClient, { CabanaType, TarifasData } from './CabanasClient'
+import UnidadesClient, { UnidadType, TarifasData } from './UnidadesClient'
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
 
-interface SanityCabana {
+interface SanityUnidad {
   _id: string
   nombre: string
   slug?: { current: string }
@@ -28,10 +28,10 @@ interface SanityTarifasDocument {
   temporadaBaja?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
 }
 
-async function getCabanasData() {
+async function getUnidadesData() {
   try {
-    const cabanas = await client.fetch<SanityCabana[]>(cabanasQuery)
-    return cabanas
+    const unidades = await client.fetch<SanityUnidad[]>(unidadesQuery)
+    return unidades
   } catch {
     return null
   }
@@ -55,13 +55,13 @@ async function getTarifasData(): Promise<TarifasData | null> {
   }
 }
 
-export default async function CabanasPage() {
-  const [cabanasData, tarifasData] = await Promise.all([
-    getCabanasData(),
+export default async function UnidadesPage() {
+  const [unidadesData, tarifasData] = await Promise.all([
+    getUnidadesData(),
     getTarifasData()
   ])
 
-  // Fallback photos for each cabin type
+  // Fallback photos for each unit type
   const fallbackPhotos: Record<string, string[]> = {
     duplex: ['/images/cabana1-interior.jpg', '/images/cabana2-interior.jpg', '/images/cabana2-habitacion.jpg'],
     standard: ['/images/cabana2-interior.jpg', '/images/cabana2-cocina.jpg', '/images/cabana2-habitacion.jpg'],
@@ -69,20 +69,20 @@ export default async function CabanasPage() {
     couple: ['/images/vista-desde-cabana.jpg', '/images/cabana-con-vista.jpg'],
   }
 
-  const cabanas: CabanaType[] | undefined = cabanasData?.length
-    ? cabanasData.map((cabana) => ({
-        id: cabana._id,
-        tipo: cabana.tipo,
-        nombre: cabana.nombre,
-        capacidad: cabana.capacidadTexto,
-        cantidad: cabana.cantidad,
-        descripcion: cabana.descripcion,
-        destacado: cabana.destacado || '',
-        photos: cabana.fotos?.length
-          ? cabana.fotos.map((foto) => urlFor(foto).url())
-          : fallbackPhotos[cabana.tipo] || [],
+  const unidades: UnidadType[] | undefined = unidadesData?.length
+    ? unidadesData.map((unidad) => ({
+        id: unidad._id,
+        tipo: unidad.tipo,
+        nombre: unidad.nombre,
+        capacidad: unidad.capacidadTexto,
+        cantidad: unidad.cantidad,
+        descripcion: unidad.descripcion,
+        destacado: unidad.destacado || '',
+        photos: unidad.fotos?.length
+          ? unidad.fotos.map((foto) => urlFor(foto).url())
+          : fallbackPhotos[unidad.tipo] || [],
       }))
     : undefined
 
-  return <CabanasClient cabanas={cabanas} tarifas={tarifasData} />
+  return <UnidadesClient unidades={unidades} tarifas={tarifasData} />
 }

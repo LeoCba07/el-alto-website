@@ -8,7 +8,7 @@ import { SiteConfig } from '@/lib/types'
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
-  { href: '/cabanas', label: 'Cabañas' },
+  { href: '/unidades', label: 'Unidades' },
   { href: '/servicios', label: 'Servicios' },
   { href: '/normas', label: 'Normas' },
   { href: '/consultas-frecuentes', label: 'Preguntas' },

@@ -36,17 +36,17 @@ const baseUrl = SITE_CONFIG.BASE_URL;
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Complejo El Alto | Cabañas en Tanti, Córdoba",
+    default: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     template: "%s | Complejo El Alto",
   },
   description:
-    "Cabañas y departamentos en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti. Pileta, quincho, desayuno incluido.",
+    "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti. Pileta, quincho, desayuno incluido.",
   keywords: [
-    "cabañas en Tanti",
+    "alojamiento en Tanti",
     "alojamiento Tanti Córdoba",
     "complejo El Alto Tanti",
     "departamentos Tanti",
-    "cabañas cerca de Carlos Paz",
+    "alojamiento cerca de Carlos Paz",
     "alquiler temporario Tanti",
   ],
   authors: [{ name: "Complejo El Alto" }],
@@ -58,9 +58,9 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Complejo El Alto | Cabañas en Tanti, Córdoba",
+    title: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     description:
-      "Cabañas y departamentos en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
+      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
     url: baseUrl,
     siteName: "Complejo El Alto",
     locale: "es_AR",
@@ -70,15 +70,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Complejo El Alto - Cabañas en Tanti, Córdoba",
+        alt: "Complejo El Alto - Alojamiento en Tanti, Córdoba",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Complejo El Alto | Cabañas en Tanti, Córdoba",
+    title: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     description:
-      "Cabañas y departamentos en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
+      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
     images: ["/og-image.png"],
   },
   icons: {
@@ -98,7 +98,7 @@ function generateJsonLd(config: SiteConfig | null) {
     "@type": "LodgingBusiness",
     name: "Complejo El Alto",
     description:
-      "Cabañas y departamentos en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti.",
+      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti.",
     url: baseUrl,
     logo: `${baseUrl}/icon-512.png`,
     image: `${baseUrl}/og-image.png`,

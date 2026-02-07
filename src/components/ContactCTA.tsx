@@ -9,7 +9,7 @@ export default function ContactCTA() {
             ¿Listo para tu próxima escapada?
           </h2>
           <p className="mb-8 text-xl font-light">
-            Consultá disponibilidad y reservá tu cabaña en las sierras de
+            Consultá disponibilidad y reservá tu unidad en las sierras de
             Córdoba
           </p>
           <Button href="/contacto" variant="outline" size="lg">

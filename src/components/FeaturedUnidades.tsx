@@ -19,9 +19,9 @@ const featuredPhotos = [
   '/images/cabana2-habitacion.jpg',
 ]
 
-export default function FeaturedCabanas() {
+export default function FeaturedUnidades() {
   return (
-    <section id="cabanas" className="bg-cream py-16 md:py-20">
+    <section id="unidades" className="bg-cream py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
         {/* Section Header */}
         <FadeUp>
@@ -30,7 +30,7 @@ export default function FeaturedCabanas() {
               Alojamiento
             </p>
             <h2 className="text-3xl md:text-4xl font-bold text-forest-dark font-serif mb-3">
-              Nuestras Cabañas
+              Nuestras Unidades
             </h2>
             <p className="text-text-medium max-w-xl mx-auto">
               12 unidades con distintas capacidades para tu estadía ideal
@@ -42,7 +42,7 @@ export default function FeaturedCabanas() {
         <div className="grid lg:grid-cols-5 gap-8 items-start">
           {/* Photo Carousel */}
           <div className="lg:col-span-3">
-            <PhotoCarousel photos={featuredPhotos} altPrefix="Interior de cabaña" />
+            <PhotoCarousel photos={featuredPhotos} altPrefix="Interior de unidad" />
           </div>
 
           {/* Summary Info */}
@@ -68,15 +68,15 @@ export default function FeaturedCabanas() {
             </div>
 
             <p className="text-text-medium mb-6 leading-relaxed">
-              Cabañas completamente equipadas con cocina, Wi-Fi, cochera cubierta y acceso a pileta y quincho.
+              Unidades completamente equipadas con cocina, Wi-Fi, cochera cubierta y acceso a pileta y quincho.
               Opciones para parejas, familias y grupos.
             </p>
 
             <Link
-              href="/cabanas"
+              href="/unidades"
               className="flex items-center justify-center gap-2 w-full bg-forest-dark text-white py-4 rounded-full font-semibold hover:bg-forest transition-all hover:shadow-lg group"
             >
-              Explorar cabañas y tarifas
+              Explorar unidades y tarifas
               <HiOutlineArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>

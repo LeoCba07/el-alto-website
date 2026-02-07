@@ -23,10 +23,10 @@ export default function NotFound() {
             Ir al inicio
           </Link>
           <Link
-            href="/cabanas"
+            href="/unidades"
             className="inline-flex items-center justify-center gap-2 bg-white text-forest-dark border border-sand px-6 py-3 rounded-full font-semibold hover:border-forest transition-colors group"
           >
-            Ver cabañas
+            Ver unidades
             <HiOutlineArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

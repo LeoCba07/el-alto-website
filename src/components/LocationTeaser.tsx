@@ -138,10 +138,10 @@ export default function LocationTeaser() {
               ¿Listo para explorar?
             </p>
             <Link
-              href="/cabanas"
+              href="/unidades"
               className="inline-flex items-center gap-2 bg-forest text-white px-6 py-3 rounded-full font-semibold hover:bg-forest-dark transition-all hover:shadow-lg group"
             >
-              Ver cabañas
+              Ver unidades
               <HiOutlineChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>

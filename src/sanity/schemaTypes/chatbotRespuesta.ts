@@ -19,7 +19,7 @@ export default defineType({
           { title: 'Ubicación', value: 'ubicacion' },
           { title: 'Cómo llegar', value: 'como_llegar' },
           { title: 'Check-in/Check-out', value: 'checkin' },
-          { title: 'Cabañas', value: 'cabanas' },
+          { title: 'Unidades', value: 'unidades' },
           { title: 'Mascotas', value: 'mascotas' },
           { title: 'Formas de pago', value: 'pago' },
         ],
@@ -42,7 +42,7 @@ export default defineType({
       options: {
         list: [
           { title: 'Ver tarifas', value: 'ver_tarifas' },
-          { title: 'Ver cabañas', value: 'ver_cabanas' },
+          { title: 'Ver unidades', value: 'ver_unidades' },
           { title: 'Consultar disponibilidad', value: 'consultar_disponibilidad' },
           { title: 'Otra pregunta', value: 'otra_pregunta' },
           { title: 'Más servicios', value: 'mas_servicios' },

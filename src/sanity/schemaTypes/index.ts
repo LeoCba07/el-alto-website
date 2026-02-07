@@ -1,6 +1,6 @@
 import { type SchemaTypeDefinition } from 'sanity'
 import heroSection from './heroSection'
-import cabana from './cabana'
+import unidad from './unidad'
 import testimonio from './testimonio'
 import preguntaFrecuente from './preguntaFrecuente'
 import chatbotRespuesta from './chatbotRespuesta'
@@ -10,7 +10,7 @@ import tarifaTemporada from './tarifaTemporada'
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     heroSection,
-    cabana,
+    unidad,
     testimonio,
     preguntaFrecuente,
     chatbotRespuesta,

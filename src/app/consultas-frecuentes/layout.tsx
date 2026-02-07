@@ -21,7 +21,7 @@ const faqJsonLd = {
     { "@type": "Question", name: "¿Cómo hago mi reserva?", acceptedAnswer: { "@type": "Answer", text: "Contactanos por WhatsApp o teléfono. Te tomamos la reserva provisoria y te enviamos los datos bancarios para confirmar con la seña." }},
     { "@type": "Question", name: "¿Cuánto es la seña?", acceptedAnswer: { "@type": "Answer", text: "30% del total. Para estadías de 2 noches o menos, es el 50%." }},
     { "@type": "Question", name: "¿Check-in y check-out?", acceptedAnswer: { "@type": "Answer", text: "Check-in desde las 13:30 hs. Check-out hasta las 10:00 hs." }},
-    { "@type": "Question", name: "¿Qué incluyen las cabañas?", acceptedAnswer: { "@type": "Answer", text: "Cocina equipada, ropa blanca, TV con cable, calefacción y baño privado." }},
+    { "@type": "Question", name: "¿Qué incluyen las unidades?", acceptedAnswer: { "@type": "Answer", text: "Cocina equipada, ropa blanca, TV con cable, calefacción y baño privado." }},
     { "@type": "Question", name: "¿Tienen aire acondicionado?", acceptedAnswer: { "@type": "Answer", text: "Sí, con costo adicional. La calefacción está incluida." }},
     { "@type": "Question", name: "¿Hay Wi-Fi?", acceptedAnswer: { "@type": "Answer", text: "Sí, gratis en todo el predio." }},
     { "@type": "Question", name: "¿Aceptan mascotas?", acceptedAnswer: { "@type": "Answer", text: "No, para garantizar la tranquilidad de todos los huéspedes." }},

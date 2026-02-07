@@ -41,7 +41,7 @@ export interface ChatBotProps {
 // Generate tarifas summary from Sanity data
 function getTarifasSummaryFromData(tarifas?: TarifasData): string {
   if (!tarifas) {
-    return 'Consultá las tarifas actualizadas por WhatsApp o en nuestra página de cabañas.'
+    return 'Consultá las tarifas actualizadas por WhatsApp o en nuestra página de unidades.'
   }
   const minBaja = Math.min(...tarifas.baja.precios.map(p => p.precio))
   const maxAlta = Math.max(...tarifas.alta.precios.map(p => p.precio))
@@ -50,15 +50,15 @@ function getTarifasSummaryFromData(tarifas?: TarifasData): string {
 
 // Links to pages for "Para más información"
 const INFO_LINKS: Record<string, { url: string; label: string }> = {
-  tarifas: { url: '/cabanas#tarifas', label: 'ver todas las tarifas' },
+  tarifas: { url: '/unidades#tarifas', label: 'ver todas las tarifas' },
   servicios: { url: '/servicios', label: 'ver todos los servicios' },
   mas_servicios: { url: '/servicios', label: 'ver servicios' },
   ubicacion: { url: '/contacto', label: 'ver ubicación' },
   como_llegar: { url: '/contacto', label: 'ver mapa' },
   checkin: { url: '/normas', label: 'ver horarios y normas' },
-  cabanas: { url: '/cabanas', label: 'ver cabañas' },
+  unidades: { url: '/unidades', label: 'ver unidades' },
   mascotas: { url: '/normas', label: 'ver normas' },
-  pago: { url: '/cabanas', label: 'ver info de reservas' },
+  pago: { url: '/unidades', label: 'ver info de reservas' },
 }
 
 // Default FAQ Data - answers to common questions
@@ -73,7 +73,7 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
     followUp: ['iniciar_consulta']
   },
   servicios: {
-    answer: 'Todas las cabañas incluyen: Wi-Fi gratis, cochera cubierta, ropa de cama y toallas, cocina equipada, y acceso a pileta y quincho con asadores.',
+    answer: 'Todas las unidades incluyen: Wi-Fi gratis, cochera cubierta, ropa de cama y toallas, cocina equipada, y acceso a pileta y quincho con asadores.',
     followUp: ['mas_servicios', 'consultar_disponibilidad', 'otra_pregunta']
   },
   mas_servicios: {
@@ -92,9 +92,9 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
     answer: `Check-in: desde las ${BUSINESS_HOURS.checkIn} hs (llegada máxima ${BUSINESS_HOURS.latestArrival} hs). Check-out: hasta las ${BUSINESS_HOURS.checkOut} hs. Late check-out hasta ${BUSINESS_HOURS.lateCheckOut} hs con ${BUSINESS_HOURS.lateCheckOutFee}% adicional.`,
     followUp: ['consultar_disponibilidad', 'otra_pregunta']
   },
-  cabanas: {
-    answer: 'Tenemos 12 cabañas de 4 tipos: Dúplex (hasta 6 personas), Estándar (2-4 personas), Compactas (2-3 personas) y Parejas (2 personas). Todas equipadas con cocina, baño privado y calefacción.',
-    followUp: ['ver_cabanas', 'consultar_disponibilidad', 'otra_pregunta']
+  unidades: {
+    answer: 'Tenemos 12 unidades de 4 tipos: Dúplex (hasta 6 personas), Estándar (2-4 personas), Compactas (2-3 personas) y Parejas (2 personas). Todas equipadas con cocina, baño privado y calefacción.',
+    followUp: ['ver_unidades', 'consultar_disponibilidad', 'otra_pregunta']
   },
   mascotas: {
     answer: 'Lo sentimos, no aceptamos mascotas en el complejo para mantener la tranquilidad de todos los huéspedes.',
@@ -107,7 +107,7 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
 }
 
 // Main menu options - shown after each answer
-const MAIN_MENU_OPTIONS = ['disponibilidad', 'cabanas', 'tarifas', 'servicios', 'ubicacion', 'checkin', 'pago', 'mascotas']
+const MAIN_MENU_OPTIONS = ['disponibilidad', 'unidades', 'tarifas', 'servicios', 'ubicacion', 'checkin', 'pago', 'mascotas']
 
 // Quick reply button options with icons (matching site-wide icon usage)
 const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<{ className?: string }> }> = {
@@ -115,13 +115,13 @@ const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<
   disponibilidad: { label: 'Disponibilidad', icon: HiOutlineCalendarDays },
   servicios: { label: 'Servicios', icon: HiOutlineSquares2X2 },
   ubicacion: { label: 'Ubicación', icon: HiOutlineMapPin },
-  cabanas: { label: 'Cabañas', icon: HiOutlineHomeModern },
+  unidades: { label: 'Unidades', icon: HiOutlineHomeModern },
   checkin: { label: 'Horarios', icon: HiOutlineClock },
   mascotas: { label: 'Mascotas', icon: PiPawPrint },
   pago: { label: 'Formas de pago', icon: HiOutlineCreditCard },
   consultar_disponibilidad: { label: 'Consultar disponibilidad', icon: HiOutlineCalendarDays },
   ver_tarifas: { label: 'Ver tarifas', icon: HiOutlineArrowTopRightOnSquare },
-  ver_cabanas: { label: 'Ver cabañas', icon: HiOutlineArrowTopRightOnSquare },
+  ver_unidades: { label: 'Ver unidades', icon: HiOutlineArrowTopRightOnSquare },
   mas_servicios: { label: 'Más servicios', icon: HiOutlineSquares2X2 },
   como_llegar: { label: 'Cómo llegar', icon: HiOutlineMapPin },
   ver_mapa: { label: 'Ver en Google Maps', icon: HiOutlineArrowTopRightOnSquare },
@@ -229,7 +229,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
           {
             id: 1,
             type: 'bot',
-            text: 'Bienvenido al Complejo de Cabañas El Alto. ¿En qué podemos ayudarte?',
+            text: 'Bienvenido al Complejo El Alto. ¿En qué podemos ayudarte?',
             options: MAIN_MENU_OPTIONS,
           },
         ])
@@ -260,11 +260,11 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
 
     // Handle special actions
     if (option === 'ver_tarifas') {
-      router.push('/cabanas#tarifas')
+      router.push('/unidades#tarifas')
       return
     }
-    if (option === 'ver_cabanas') {
-      router.push('/cabanas')
+    if (option === 'ver_unidades') {
+      router.push('/unidades')
       return
     }
     if (option === 'ver_mapa') {
@@ -452,7 +452,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
               <SiWhatsapp className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="font-semibold text-sm">Complejo de Cabañas El Alto</p>
+              <p className="font-semibold text-sm">Complejo El Alto</p>
               <p className="text-xs text-white/60">Tanti, Córdoba</p>
             </div>
           </div>

@@ -27,15 +27,15 @@ const defaultImages = [
 ]
 
 export default function Hero({
-  subtitulo = 'Complejo de cabañas en Tanti, Córdoba',
+  subtitulo = 'Complejo de alojamiento en Tanti, Córdoba',
   titulo = 'El Alto',
   descripcion = 'Tranquilidad serrana con calidez familiar',
   imagenes,
   textoBoton = 'Ver alojamientos',
-  linkBoton = '/cabanas',
+  linkBoton = '/unidades',
 }: HeroProps) {
   const heroImages = imagenes?.length ? imagenes.map(img => img.url) : defaultImages
-  const heroAlts = imagenes?.length ? imagenes.map(img => img.alt || 'El Alto - Cabañas en las sierras') : defaultImages.map(() => 'El Alto - Cabañas en las sierras')
+  const heroAlts = imagenes?.length ? imagenes.map(img => img.alt || 'El Alto - Alojamiento en las sierras') : defaultImages.map(() => 'El Alto - Alojamiento en las sierras')
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextSlide = useCallback(() => {
