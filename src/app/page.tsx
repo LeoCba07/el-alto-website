@@ -7,7 +7,7 @@ import Testimonials from '@/components/Testimonials'
 import FinalCTA from '@/components/FinalCTA'
 import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
-import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery } from '@/sanity/lib/queries'
+import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { SiteConfig } from '@/lib/types'
 
@@ -31,24 +31,36 @@ interface SanityUnidadesDestacadas {
   descripcionPanelInfo?: string
 }
 
+interface ServicioDestacado {
+  _id: string
+  nombre: string
+  descripcion: string
+  detalle?: string
+  imagen?: {
+    asset: { _ref: string }
+    alt?: string
+  }
+}
+
 async function getHomeData() {
   try {
-    const [heroData, config, unidadesDestacadas] = await Promise.all([
+    const [heroData, config, unidadesDestacadas, serviciosDestacados] = await Promise.all([
       client.fetch<SanityHeroSection | null>(heroSectionQuery),
       client.fetch<SiteConfig | null>(configuracionSitioQuery),
       client.fetch<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery),
+      client.fetch<ServicioDestacado[]>(serviciosDestacadosQuery),
     ])
-    return { heroData, config, unidadesDestacadas }
+    return { heroData, config, unidadesDestacadas, serviciosDestacados: serviciosDestacados || [] }
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('Failed to fetch home data:', error)
     }
-    return { heroData: null, config: null, unidadesDestacadas: null }
+    return { heroData: null, config: null, unidadesDestacadas: null, serviciosDestacados: [] }
   }
 }
 
 export default async function Home() {
-  const { heroData, config, unidadesDestacadas } = await getHomeData()
+  const { heroData, config, unidadesDestacadas, serviciosDestacados } = await getHomeData()
 
   const heroProps = heroData ? {
     subtitulo: heroData.subtitulo,
@@ -67,6 +79,16 @@ export default async function Home() {
     descripcionPanelInfo: unidadesDestacadas.descripcionPanelInfo,
   } : {}
 
+  const highlightsProps = serviciosDestacados.length > 0
+    ? {
+        highlights: serviciosDestacados.map(s => ({
+          image: s.imagen ? urlFor(s.imagen).width(800).height(600).url() : '/images/placeholder.jpg',
+          title: s.nombre,
+          description: s.descripcion,
+        })),
+      }
+    : {}
+
   return (
     <div className="min-h-screen">
       <SectionIndicator />
@@ -80,7 +102,7 @@ export default async function Home() {
         <FeaturedUnidades {...unidadesDestacadasProps} />
       </section>
       <section id="servicios">
-        <ServicesHighlights />
+        <ServicesHighlights {...highlightsProps} />
       </section>
       <section id="ubicacion">
         <LocationTeaser />

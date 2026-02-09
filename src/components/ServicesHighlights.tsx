@@ -2,30 +2,36 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { HiOutlineFire } from 'react-icons/hi2'
 import { FiWifi } from 'react-icons/fi'
-import { MdOutlinePool, MdOutlineLocalParking, MdOutlineKitchen, MdOutlineLandscape } from 'react-icons/md'
+import { MdOutlineLocalParking, MdOutlineKitchen } from 'react-icons/md'
 import { HiOutlineArrowRight } from 'react-icons/hi2'
 import { FadeUp, StaggerGrid } from './ScrollAnimations'
 
-const highlights = [
+interface HighlightItem {
+  image: string
+  title: string
+  description: string
+}
+
+interface ServicesHighlightsProps {
+  highlights?: HighlightItem[]
+}
+
+const defaultHighlights: HighlightItem[] = [
   {
     image: '/images/panorama-pileta.jpg',
     title: 'Pileta al aire libre',
     description: 'Refrescate con vista a las sierras. Climatizada en primavera y otoño.',
-    Icon: MdOutlinePool,
   },
   {
     image: '/images/asador.jpg',
     title: 'Quincho con asadores',
     description: 'Espacio común equipado para disfrutar un asado en familia.',
-    Icon: HiOutlineFire,
   },
   {
     image: '/images/vista-desde-cabana.jpg',
     title: 'Vistas a la montaña',
     description: 'Predio escalonado con jardín y panorámicas de las sierras.',
-    Icon: MdOutlineLandscape,
   },
 ]
 
@@ -35,7 +41,8 @@ const amenities = [
   { label: 'Cocina equipada', Icon: MdOutlineKitchen },
 ]
 
-export default function ServicesHighlights() {
+export default function ServicesHighlights({ highlights }: ServicesHighlightsProps) {
+  const items = highlights ?? defaultHighlights
   return (
     <section className="bg-forest-dark py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
@@ -56,7 +63,7 @@ export default function ServicesHighlights() {
 
         {/* Feature Cards */}
         <StaggerGrid className="grid md:grid-cols-3 gap-6 mb-12" staggerDelay={150}>
-          {highlights.map((item, index) => (
+          {items.map((item, index) => (
             <div
               key={index}
               className="group relative rounded-2xl overflow-hidden shadow-lg aspect-[4/3]"
@@ -70,10 +77,7 @@ export default function ServicesHighlights() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                <div className="flex items-center gap-2 mb-2">
-                  <item.Icon className="w-5 h-5 text-amber" />
-                  <h3 className="font-bold text-lg">{item.title}</h3>
-                </div>
+                <h3 className="font-bold text-lg mb-1">{item.title}</h3>
                 <p className="text-sm text-white/90">{item.description}</p>
               </div>
             </div>
