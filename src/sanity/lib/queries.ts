@@ -208,6 +208,16 @@ export const configuracionSitioQuery = groq`
   }
 `
 
+// Unidades Destacadas (Home)
+export const unidadesDestacadasQuery = groq`
+  *[_type == "unidadesDestacadas"][0] {
+    fotos[] { asset-> },
+    insignia,
+    tituloPanelInfo,
+    descripcionPanelInfo
+  }
+`
+
 // Chatbot Respuestas
 export const chatbotRespuestasQuery = groq`
   *[_type == "chatbotRespuesta"] {

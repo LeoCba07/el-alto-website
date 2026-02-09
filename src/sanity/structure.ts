@@ -21,9 +21,17 @@ export const structure: StructureResolver = (S) =>
             .schemaType('tarifaTemporada')
             .documentId('tarifaTemporada')
         ),
+      // Singleton for unidades destacadas
+      S.listItem()
+        .title('Unidades Destacadas (Home)')
+        .child(
+          S.document()
+            .schemaType('unidadesDestacadas')
+            .documentId('unidadesDestacadas')
+        ),
       S.divider(),
       // All other document types
       ...S.documentTypeListItems().filter(
-        (listItem) => !['configuracionSitio', 'tarifaTemporada'].includes(listItem.getId() || '')
+        (listItem) => !['configuracionSitio', 'tarifaTemporada', 'unidadesDestacadas'].includes(listItem.getId() || '')
       ),
     ])

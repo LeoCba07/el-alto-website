@@ -7,6 +7,7 @@ import chatbotRespuesta from './chatbotRespuesta'
 import configuracionSitio from './configuracionSitio'
 import tarifaTemporada from './tarifaTemporada'
 import servicio from './servicio'
+import unidadesDestacadas from './unidadesDestacadas'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -18,5 +19,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     configuracionSitio,
     tarifaTemporada,
     servicio,
+    unidadesDestacadas,
   ],
 }

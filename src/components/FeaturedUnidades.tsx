@@ -9,8 +9,8 @@ import {
 import { FadeUp } from './ScrollAnimations'
 import PhotoCarousel from './PhotoCarousel'
 
-// Featured photos from our best cabins
-const featuredPhotos = [
+// Default photos (fallback when no Sanity data)
+const defaultPhotos = [
   '/images/cabana1-interior.jpg',
   '/images/cabana2-interior.jpg',
   '/images/cabana-con-vista.jpg',
@@ -19,7 +19,21 @@ const featuredPhotos = [
   '/images/cabana2-habitacion.jpg',
 ]
 
-export default function FeaturedUnidades() {
+interface FeaturedUnidadesProps {
+  fotos?: string[]
+  insignia?: string
+  tituloPanelInfo?: string
+  descripcionPanelInfo?: string
+}
+
+export default function FeaturedUnidades({
+  fotos,
+  insignia = 'Variedad para todos',
+  tituloPanelInfo = 'Confort en las sierras',
+  descripcionPanelInfo = 'Unidades completamente equipadas con cocina, Wi-Fi, cochera cubierta y acceso a pileta y quincho. Opciones para parejas, familias y grupos.',
+}: FeaturedUnidadesProps) {
+  const photos = fotos?.length ? fotos : defaultPhotos
+
   return (
     <section id="unidades" className="bg-cream py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
@@ -42,17 +56,17 @@ export default function FeaturedUnidades() {
         <div className="grid lg:grid-cols-5 gap-8 items-start">
           {/* Photo Carousel */}
           <div className="lg:col-span-3">
-            <PhotoCarousel photos={featuredPhotos} altPrefix="Interior de unidad" />
+            <PhotoCarousel photos={photos} altPrefix="Interior de unidad" />
           </div>
 
           {/* Summary Info */}
           <div className="lg:col-span-2 bg-white rounded-2xl border border-sand p-6 md:p-8">
             <div className="mb-4">
               <span className="text-xs font-medium text-amber-dark bg-amber/20 px-3 py-1 rounded-full">
-                Variedad para todos
+                {insignia}
               </span>
               <h3 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
-                Confort en las sierras
+                {tituloPanelInfo}
               </h3>
             </div>
 
@@ -68,8 +82,7 @@ export default function FeaturedUnidades() {
             </div>
 
             <p className="text-text-medium mb-6 leading-relaxed">
-              Unidades completamente equipadas con cocina, Wi-Fi, cochera cubierta y acceso a pileta y quincho.
-              Opciones para parejas, familias y grupos.
+              {descripcionPanelInfo}
             </p>
 
             <Link

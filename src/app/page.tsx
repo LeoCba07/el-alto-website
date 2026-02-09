@@ -7,7 +7,7 @@ import Testimonials from '@/components/Testimonials'
 import FinalCTA from '@/components/FinalCTA'
 import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
-import { heroSectionQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
+import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { SiteConfig } from '@/lib/types'
 
@@ -24,23 +24,31 @@ interface SanityHeroSection {
   }>
 }
 
+interface SanityUnidadesDestacadas {
+  fotos?: Array<{ asset: { _ref: string } }>
+  insignia?: string
+  tituloPanelInfo?: string
+  descripcionPanelInfo?: string
+}
+
 async function getHomeData() {
   try {
-    const [heroData, config] = await Promise.all([
+    const [heroData, config, unidadesDestacadas] = await Promise.all([
       client.fetch<SanityHeroSection | null>(heroSectionQuery),
       client.fetch<SiteConfig | null>(configuracionSitioQuery),
+      client.fetch<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery),
     ])
-    return { heroData, config }
+    return { heroData, config, unidadesDestacadas }
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('Failed to fetch home data:', error)
     }
-    return { heroData: null, config: null }
+    return { heroData: null, config: null, unidadesDestacadas: null }
   }
 }
 
 export default async function Home() {
-  const { heroData, config } = await getHomeData()
+  const { heroData, config, unidadesDestacadas } = await getHomeData()
 
   const heroProps = heroData ? {
     subtitulo: heroData.subtitulo,
@@ -50,6 +58,13 @@ export default async function Home() {
       url: urlFor(img).url(),
       alt: img.alt
     })),
+  } : {}
+
+  const unidadesDestacadasProps = unidadesDestacadas ? {
+    fotos: unidadesDestacadas.fotos?.map(img => urlFor(img).url()),
+    insignia: unidadesDestacadas.insignia,
+    tituloPanelInfo: unidadesDestacadas.tituloPanelInfo,
+    descripcionPanelInfo: unidadesDestacadas.descripcionPanelInfo,
   } : {}
 
   return (
@@ -62,7 +77,7 @@ export default async function Home() {
         <TrustSignals stats={config?.estadisticas} />
       </section>
       <section id="unidades">
-        <FeaturedUnidades />
+        <FeaturedUnidades {...unidadesDestacadasProps} />
       </section>
       <section id="servicios">
         <ServicesHighlights />
