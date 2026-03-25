@@ -13,7 +13,9 @@ import { SiteConfig } from "@/lib/types";
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const rawGaId = process.env.NEXT_PUBLIC_GA_ID;
+// Only accept valid GA4 / UA measurement IDs to prevent injection
+const GA_ID = /^(G|GT|UA|AW|DC)-[A-Z0-9-]+$/.test(rawGaId ?? '') ? rawGaId : undefined;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
