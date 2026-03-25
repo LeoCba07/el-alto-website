@@ -60,6 +60,7 @@ export default function Header() {
               alt="Complejo El Alto"
               width={44}
               height={44}
+              priority
               className="rounded-full shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300"
             />
             <span className="text-xl font-bold text-forest-dark font-serif group-hover:text-forest transition-colors duration-300">
