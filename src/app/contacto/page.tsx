@@ -314,7 +314,7 @@ export default async function ContactoPage() {
               {/* Directions Link */}
               <div className="text-center">
                 <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=-31.35838,-64.59019"
+                  href="https://www.google.com/maps/dir/?api=1&destination=-31.3606733,-64.5874595"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 bg-forest text-white px-8 py-3.5 rounded-full font-semibold hover:bg-forest-dark shadow-md hover:shadow-lg transition-all"
