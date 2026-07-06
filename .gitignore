@@ -41,6 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 # project docs
+/*.pdf
+/*.odt
 public/*.pdf
 public/*.odt
 public/*.pdf:Zone.Identifier
