@@ -90,6 +90,9 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
+  verification: {
+    google: "pSGvW281BktjsOKPOQvLIzvTEMVw1VqoyOCkFbr_ZKw",
+  },
 };
 
 // Generate JSON-LD with config from Sanity (with fallbacks)
