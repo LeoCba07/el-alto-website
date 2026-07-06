@@ -268,7 +268,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
       return
     }
     if (option === 'ver_mapa') {
-      window.open('https://www.google.com/maps/dir/?api=1&destination=-31.3607,-64.5876', '_blank')
+      window.open('https://www.google.com/maps/dir/?api=1&destination=-31.3607,-64.5876', '_blank', 'noopener,noreferrer')
       return
     }
     if (option === 'volver_inicio') {
@@ -384,7 +384,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
     msg += `\nTienen disponibilidad? Gracias!`
 
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`
-    window.open(whatsappUrl, '_blank')
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 
   const today = new Date().toISOString().split('T')[0]

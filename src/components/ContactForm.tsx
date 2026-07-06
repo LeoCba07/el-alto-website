@@ -93,7 +93,7 @@ export default function ContactForm() {
     if (!validate()) return
 
     const whatsappUrl = `https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${generateWhatsAppMessage()}`
-    window.open(whatsappUrl, '_blank')
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 
   // Get today's date in YYYY-MM-DD format for min date

@@ -37,7 +37,8 @@ export default function Footer({ config }: FooterProps) {
     { href: redes?.instagram || 'https://instagram.com/complejoelalto', label: 'Instagram', Icon: SiInstagram },
     { href: redes?.facebook || 'https://facebook.com/complejoelalto', label: 'Facebook', Icon: SiFacebook },
     { href: redes?.tripadvisor || 'https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html', label: 'TripAdvisor', Icon: SiTripadvisor },
-  ]
+    // CMS-sourced URLs: only allow http(s) schemes
+  ].filter((link) => /^https?:\/\//.test(link.href))
 
   return (
     <footer className="bg-forest-dark text-white">
