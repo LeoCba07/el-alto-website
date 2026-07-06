@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
@@ -9,6 +10,22 @@ import { SiteConfig } from '@/lib/types'
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Servicios e Instalaciones',
+  description:
+    'Pileta, quincho, desayuno incluido, Wi-Fi gratis y estacionamiento. Todos los servicios del Complejo El Alto en Tanti, Córdoba.',
+  alternates: {
+    canonical: '/servicios',
+  },
+  openGraph: {
+    title: 'Servicios e Instalaciones | Complejo El Alto',
+    description:
+      'Pileta, quincho, desayuno incluido, Wi-Fi gratis y estacionamiento en Tanti, Córdoba.',
+    url: '/servicios',
+    images: ['/og-image.jpg'],
+  },
+}
 
 const iconPaths: Record<string, string> = {
   wifi: 'M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0',
@@ -92,7 +109,7 @@ export default async function ServiciosPage() {
   const anosExperiencia = config?.estadisticas?.anosExperiencia || 30
 
   return (
-    <main className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-cream">
       {/* Hero banner */}
       <section className="bg-forest-dark text-white py-12 md:py-16 mt-14 md:mt-16">
         <div className="max-w-6xl mx-auto px-4 text-center">
@@ -251,7 +268,7 @@ export default async function ServiciosPage() {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   )
 }
 

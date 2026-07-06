@@ -1,5 +1,10 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { HiOutlineMapPin, HiOutlineHome, HiOutlineArrowRight } from 'react-icons/hi2'
+
+export const metadata: Metadata = {
+  title: 'Página no encontrada',
+}
 
 export default function NotFound() {
   return (

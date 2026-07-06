@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { HiOutlineChevronLeft, HiOutlineChevronRight, HiOutlineArrowsRightLeft } from 'react-icons/hi2'
 
+export type CarouselPhoto = string | { url: string; alt?: string }
+
 interface PhotoCarouselProps {
-  photos: string[]
+  photos: CarouselPhoto[]
   altPrefix?: string
   aspectRatio?: string
   enableKeyboard?: boolean
@@ -32,8 +34,10 @@ export default function PhotoCarousel({
     return () => clearTimeout(timer)
   }, [])
 
-  // Filter out empty strings and handle empty array
-  const validPhotos = photos.filter(p => p && p.trim() !== '')
+  // Normalize to objects, filter out empty urls and handle empty array
+  const validPhotos = photos
+    .map((p) => (typeof p === 'string' ? { url: p, alt: undefined } : p))
+    .filter((p) => p.url && p.url.trim() !== '')
 
   const goToPhoto = useCallback((index: number) => {
     if (isTransitioning) return
@@ -140,14 +144,14 @@ export default function PhotoCarousel({
       {/* Images with fade transition */}
       {validPhotos.map((photo, index) => (
         <div
-          key={photo}
+          key={photo.url}
           className={`absolute inset-0 transition-opacity duration-300 ease-in-out ${
             index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
         >
           <Image
-            src={photo}
-            alt={`${altPrefix} - foto ${index + 1} de ${validPhotos.length}`}
+            src={photo.url}
+            alt={photo.alt || `${altPrefix} - foto ${index + 1} de ${validPhotos.length}`}
             fill
             sizes="(max-width: 768px) 100vw, 60vw"
             className="object-cover"

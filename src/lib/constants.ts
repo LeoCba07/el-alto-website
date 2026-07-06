@@ -3,7 +3,7 @@
 
 export const SITE_CONFIG = {
   // Base URL for the site
-  BASE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://complejoelalto.com.ar',
+  BASE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.complejoelalto.com.ar',
 
   // Contact information (fallbacks for when Sanity is unavailable)
   WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5493572501030',

@@ -32,6 +32,16 @@ export const metadata: Metadata = {
   title: 'Contacto',
   description:
     'Consultá disponibilidad y reservá tu estadía en Complejo El Alto, Tanti, Córdoba. Te respondemos por WhatsApp con toda la información.',
+  alternates: {
+    canonical: '/contacto',
+  },
+  openGraph: {
+    title: 'Contacto | Complejo El Alto',
+    description:
+      'Consultá disponibilidad y reservá tu estadía en Complejo El Alto, Tanti, Córdoba.',
+    url: '/contacto',
+    images: ['/og-image.jpg'],
+  },
 }
 
 async function getConfig() {

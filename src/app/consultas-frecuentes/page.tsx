@@ -59,5 +59,29 @@ export default async function FAQPage() {
       .map((cat) => grouped[cat])
   }
 
-  return <FAQClient categories={categories} />
+  // FAQ structured data built from the same Sanity content the page renders,
+  // so the JSON-LD always matches what Google sees on the page
+  const faqJsonLd = preguntasData?.length
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: preguntasData.map((p) => ({
+          '@type': 'Question',
+          name: p.pregunta,
+          acceptedAnswer: { '@type': 'Answer', text: p.respuesta },
+        })),
+      }
+    : null
+
+  return (
+    <>
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, '\\u003c') }}
+        />
+      )}
+      <FAQClient categories={categories} />
+    </>
+  )
 }

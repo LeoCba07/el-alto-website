@@ -7,7 +7,8 @@ export const heroSectionQuery = groq`
     titulo,
     descripcion,
     imagenes[] {
-      asset->
+      asset->,
+      alt
     }
   }
 `
@@ -211,7 +212,7 @@ export const configuracionSitioQuery = groq`
 // Unidades Destacadas (Home)
 export const unidadesDestacadasQuery = groq`
   *[_type == "unidadesDestacadas"][0] {
-    fotos[] { asset-> },
+    fotos[] { asset->, alt },
     insignia,
     tituloPanelInfo,
     descripcionPanelInfo

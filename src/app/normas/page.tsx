@@ -21,8 +21,17 @@ import { SiteConfig } from '@/lib/types'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Normas del Complejo | El Alto',
+  title: 'Normas del Complejo',
   description: 'Normas de convivencia y políticas de reserva de Complejo El Alto, Tanti, Córdoba.',
+  alternates: {
+    canonical: '/normas',
+  },
+  openGraph: {
+    title: 'Normas del Complejo | Complejo El Alto',
+    description: 'Normas de convivencia y políticas de reserva de Complejo El Alto, Tanti, Córdoba.',
+    url: '/normas',
+    images: ['/og-image.jpg'],
+  },
 }
 
 interface SanityNorma {

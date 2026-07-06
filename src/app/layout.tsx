@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Complejo El Alto - Alojamiento en Tanti, Córdoba",
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     title: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     description:
       "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
-    images: ["/og-image.png"],
+    images: ["/og-image.jpg"],
   },
   icons: {
     icon: "/favicon.ico",
@@ -105,7 +105,7 @@ function generateJsonLd(config: SiteConfig | null) {
       "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti.",
     url: baseUrl,
     logo: `${baseUrl}/icon-512.png`,
-    image: `${baseUrl}/og-image.png`,
+    image: `${baseUrl}/og-image.jpg`,
     telephone: config?.telefonoMovil || "+54 9 3572 501030",
     email: config?.email || "info@complejoelalto.com.ar",
     address: {

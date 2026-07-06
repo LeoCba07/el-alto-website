@@ -25,7 +25,7 @@ interface SanityHeroSection {
 }
 
 interface SanityUnidadesDestacadas {
-  fotos?: Array<{ asset: { _ref: string } }>
+  fotos?: Array<{ asset: { _ref: string }; alt?: string }>
   insignia?: string
   tituloPanelInfo?: string
   descripcionPanelInfo?: string
@@ -73,7 +73,7 @@ export default async function Home() {
   } : {}
 
   const unidadesDestacadasProps = unidadesDestacadas ? {
-    fotos: unidadesDestacadas.fotos?.map(img => urlFor(img).url()),
+    fotos: unidadesDestacadas.fotos?.map(img => ({ url: urlFor(img).url(), alt: img.alt })),
     insignia: unidadesDestacadas.insignia,
     tituloPanelInfo: unidadesDestacadas.tituloPanelInfo,
     descripcionPanelInfo: unidadesDestacadas.descripcionPanelInfo,

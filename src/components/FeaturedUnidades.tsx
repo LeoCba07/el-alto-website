@@ -7,7 +7,7 @@ import {
   HiOutlineSparkles,
 } from 'react-icons/hi2'
 import { FadeUp } from './ScrollAnimations'
-import PhotoCarousel from './PhotoCarousel'
+import PhotoCarousel, { CarouselPhoto } from './PhotoCarousel'
 
 // Default photos (fallback when no Sanity data)
 const defaultPhotos = [
@@ -20,7 +20,7 @@ const defaultPhotos = [
 ]
 
 interface FeaturedUnidadesProps {
-  fotos?: string[]
+  fotos?: CarouselPhoto[]
   insignia?: string
   tituloPanelInfo?: string
   descripcionPanelInfo?: string

@@ -16,7 +16,7 @@ import {
 import { MdOutlinePool } from 'react-icons/md'
 import { SiWhatsapp } from 'react-icons/si'
 import { IconType } from 'react-icons'
-import PhotoCarousel from '@/components/PhotoCarousel'
+import PhotoCarousel, { CarouselPhoto } from '@/components/PhotoCarousel'
 import { RESERVATION_POLICIES, OPTIONAL_SERVICES } from '@/lib/constants'
 
 export interface UnidadType {
@@ -27,7 +27,7 @@ export interface UnidadType {
   cantidad: number
   descripcion: string
   destacado: string
-  photos: string[]
+  photos: CarouselPhoto[]
 }
 
 // Tarifas types - data comes from Sanity only
