@@ -16,7 +16,7 @@ The old WordPress site had placeholder text, spelling errors, and a broken conta
 
 ## Tech Stack
 
-Next.js 15 · TypeScript · Tailwind CSS · Sanity · Vercel · Google Analytics 4
+Next.js 16 · TypeScript · Tailwind CSS · Sanity · Vercel · Google Analytics 4
 
 ## Screenshots
 
@@ -39,6 +39,7 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_TOKEN=your_api_token
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ```
 ```bash
 npm run dev
@@ -50,7 +51,25 @@ src/
 ├── app/        # Pages (App Router)
 ├── components/ # React components
 └── sanity/     # Schemas & queries
+scripts/        # One-off Sanity seed & migration scripts
 ```
+
+## Scripts
+
+Seed scripts (populate Sanity content):
+
+```bash
+npm run seed:servicios                                # featured services
+npx tsx scripts/seed-unidades-destacadas.ts           # featured units
+```
+
+One-off migrations already applied in production (kept for reference), run with `node --env-file=.env.local scripts/<name>.mjs`:
+
+- `migrate-cabana-to-unidad.mjs` — renamed the `cabana` document type to `unidad`
+- `migrate-chatbot-cabanas-to-unidades.mjs` — updated chatbot keys to match
+- `fix-chatbot-response-text.mjs` — fixed chatbot texts still mentioning "cabañas"
+
+All of them require `SANITY_API_TOKEN` with write access in `.env.local`.
 
 ## CMS Content
 
