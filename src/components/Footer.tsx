@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { HiOutlineMapPin, HiOutlinePhone, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
 import { SiInstagram, SiFacebook, SiTripadvisor } from 'react-icons/si'
+import { SITE_CONFIG } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'
 
 const navLinks = [
@@ -23,7 +24,7 @@ export default function Footer({ config }: FooterProps) {
   const currentYear = new Date().getFullYear()
 
   // Extract config values with fallbacks
-  const email = config?.email || 'info@complejoelalto.com.ar'
+  const email = config?.email || SITE_CONFIG.EMAIL
   const telefonoMovil = config?.telefonoMovil || '+5493572501030'
   const telefonoMovilDisplay = telefonoMovil.replace('+549', '').replace(/(\d{4})(\d{6})/, '($1) $2')
 

@@ -110,7 +110,7 @@ function generateJsonLd(config: SiteConfig | null) {
     logo: `${baseUrl}/icon-512.png`,
     image: `${baseUrl}/og-image.jpg`,
     telephone: config?.telefonoMovil || "+54 9 3572 501030",
-    email: config?.email || "info@complejoelalto.com.ar",
+    email: config?.email || SITE_CONFIG.EMAIL,
     address: {
       "@type": "PostalAddress",
       streetAddress: "Ruta Provincial N°28 y San Martín 1130",

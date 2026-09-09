@@ -8,7 +8,7 @@ export const SITE_CONFIG = {
   // Contact information (fallbacks for when Sanity is unavailable)
   WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5493572501030',
   PHONE_MOBILE: '+54 9 3572 501030',
-  EMAIL: 'info@complejoelalto.com.ar',
+  EMAIL: 'complejoelalto@hotmail.com',
 
   // Address
   ADDRESS: {

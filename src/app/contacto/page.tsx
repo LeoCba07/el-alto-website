@@ -20,7 +20,7 @@ import {
   HiOutlinePlus
 } from 'react-icons/hi2'
 import { MdOutlineDirectionsBus } from 'react-icons/md'
-import { BUSINESS_HOURS, RESERVATION_POLICIES, TRUST_STATS } from '@/lib/constants'
+import { BUSINESS_HOURS, RESERVATION_POLICIES, SITE_CONFIG, TRUST_STATS } from '@/lib/constants'
 import { client } from '@/sanity/lib/client'
 import { configuracionSitioQuery } from '@/sanity/lib/queries'
 import { SiteConfig } from '@/lib/types'
@@ -75,7 +75,7 @@ export default async function ContactoPage() {
 
   const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
 
-  const email = config?.email || 'info@complejoelalto.com.ar'
+  const email = config?.email || SITE_CONFIG.EMAIL
   const telefonoMovil = config?.telefonoMovil || '+5493572501030'
   const telefonoMovilDisplay = telefonoMovil.replace('+549', '').replace(/(\d{4})(\d{6})/, '($1) $2')
   return (
