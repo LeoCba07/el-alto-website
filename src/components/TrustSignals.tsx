@@ -18,8 +18,20 @@ export interface TrustSignalsProps {
 }
 
 function useCountUp(end: number, duration: number = 2000, start: number = 0, decimals: number = 0) {
-  const [count, setCount] = useState(start)
+  // Seed with the real value so SSR, crawlers and clients without JS read the
+  // actual number. Seeding with `start` rendered "0+ years" into the HTML.
+  const [count, setCount] = useState(end)
   const [hasStarted, setHasStarted] = useState(false)
+
+  // Once hydrated we can animate, so drop to the starting point. This runs on
+  // mount, while the section is still below the fold, so the reset is unseen.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setHasStarted(true)
+      return
+    }
+    setCount(start)
+  }, [start])
 
   const startCounting = () => {
     if (hasStarted) return
