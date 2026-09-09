@@ -5,7 +5,7 @@ import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
 import { client } from '@/sanity/lib/client'
 import { configuracionSitioQuery, serviciosDestacadosQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
-import { OPTIONAL_SERVICES, BUSINESS_HOURS } from '@/lib/constants'
+import { BUSINESS_HOURS, OPTIONAL_SERVICES, TRUST_STATS } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'
 
 // Force dynamic rendering to show Sanity updates immediately
@@ -106,7 +106,7 @@ export default async function ServiciosPage() {
   const horarioRecepcion = `${recepcionApertura} a ${recepcionCierre} hs`
 
   // Get years of experience from config
-  const anosExperiencia = config?.estadisticas?.anosExperiencia || 30
+  const anosExperiencia = TRUST_STATS.yearsExperience
 
   return (
     <div className="min-h-screen bg-cream">

@@ -75,8 +75,12 @@ export const OPTIONAL_SERVICES = {
 } as const
 
 // Trust signals / stats
+// The complex opened in 1996. Deriving the figure keeps every mention in sync
+// and correct across new years, instead of drifting apart as hardcoded copies.
+export const FOUNDING_YEAR = 1996
+
 export const TRUST_STATS = {
-  yearsExperience: 28,
+  yearsExperience: new Date().getFullYear() - FOUNDING_YEAR,
   tripAdvisorRating: 4.6,
   tripAdvisorMaxRating: 5,
   reviewCount: 150,

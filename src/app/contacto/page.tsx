@@ -73,7 +73,7 @@ export default async function ContactoPage() {
   // Payment methods are hardcoded as they rarely change
   const paymentMethods = RESERVATION_POLICIES.paymentMethods
 
-  const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
+  const yearsExperience = TRUST_STATS.yearsExperience
 
   const email = config?.email || SITE_CONFIG.EMAIL
   const telefonoMovil = config?.telefonoMovil || '+5493572501030'

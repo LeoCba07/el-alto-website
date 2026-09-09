@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     template: "%s | Complejo El Alto",
   },
   description:
-    "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti. Pileta, quincho, desayuno incluido.",
+    `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort en Tanti. Pileta, quincho, desayuno incluido.`,
   keywords: [
     "alojamiento en Tanti",
     "alojamiento Tanti Córdoba",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     description:
-      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
+      `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort.`,
     url: baseUrl,
     siteName: "Complejo El Alto",
     locale: "es_AR",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     description:
-      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
+      `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort.`,
     images: ["/og-image.jpg"],
   },
   icons: {
@@ -105,7 +105,7 @@ function generateJsonLd(config: SiteConfig | null) {
     "@type": "LodgingBusiness",
     name: "Complejo El Alto",
     description:
-      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti.",
+      `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort en Tanti.`,
     url: baseUrl,
     logo: `${baseUrl}/icon-512.png`,
     image: `${baseUrl}/og-image.jpg`,

@@ -105,7 +105,7 @@ export default function TrustSignals({ stats }: TrustSignalsProps) {
   const [showShine, setShowShine] = useState(false)
 
   // Use stats from Sanity with fallbacks to constants
-  const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
+  const yearsExperience = TRUST_STATS.yearsExperience
   const tripAdvisorRating = stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating
   const tripAdvisorMaxRating = stats?.tripAdvisorMaxRating ?? TRUST_STATS.tripAdvisorMaxRating
   const rankingInTanti = stats?.rankingEnTanti ?? TRUST_STATS.rankingInTanti
