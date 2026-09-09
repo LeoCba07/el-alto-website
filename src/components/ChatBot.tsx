@@ -81,11 +81,11 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
     followUp: ['consultar_disponibilidad', 'otra_pregunta']
   },
   ubicacion: {
-    answer: 'Estamos en Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba. A solo 10 minutos de Villa Carlos Paz y 500m del centro de Tanti.',
+    answer: 'Estamos en Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba. A solo 20 minutos de Villa Carlos Paz y 500m del centro de Tanti.',
     followUp: ['como_llegar', 'consultar_disponibilidad', 'otra_pregunta']
   },
   como_llegar: {
-    answer: 'Desde Córdoba Capital: tomar Ruta 20 hacia Villa Carlos Paz, luego Ruta 28 hacia Tanti (10 min). Nuestra entrada está sobre la Ruta 28. ¿Necesitás el link de Google Maps?',
+    answer: 'Desde Córdoba Capital: tomar Ruta 20 hacia Villa Carlos Paz, luego Ruta 28 hacia Tanti (20 min). Nuestra entrada está sobre la Ruta 28. ¿Necesitás el link de Google Maps?',
     followUp: ['ver_mapa', 'consultar_disponibilidad', 'otra_pregunta']
   },
   checkin: {

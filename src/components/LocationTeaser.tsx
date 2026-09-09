@@ -10,7 +10,7 @@ import { FadeUp, StaggerGrid } from './ScrollAnimations'
 
 const conveniences: { place: string; distance: string; Icon: IconType }[] = [
   { place: 'Centro de Tanti', distance: '500 m', Icon: HiOutlineBuildingStorefront },
-  { place: 'Villa Carlos Paz', distance: '10 min', Icon: MdOutlineTheaterComedy },
+  { place: 'Villa Carlos Paz', distance: '20 min', Icon: MdOutlineTheaterComedy },
   { place: 'Terminal', distance: '600 m', Icon: MdOutlineDirectionsBus },
   { place: 'Balneario', distance: '5 min', Icon: MdOutlinePool },
 ]
@@ -30,7 +30,7 @@ const nearbyAttractions = [
   },
   {
     name: 'Villa Carlos Paz',
-    distance: '10 min',
+    distance: '20 min',
     image: '/images/villa-carlos-paz.jpg',
     tag: 'Entretenimiento',
   },

@@ -90,7 +90,7 @@ const defaultCategories: FAQCategory[] = [
       { pregunta: '¿Están cerca del centro?', respuesta: 'Sí, a 6 cuadras. El río y El Diquecito también están cerca.' },
       { pregunta: '¿Hay supermercados?', respuesta: 'Despensas a 100m, supermercado grande a 3 cuadras.' },
       { pregunta: '¿Cómo llego en colectivo?', respuesta: 'Terminal a 6 cuadras. Parada más cercana a 150m.' },
-      { pregunta: '¿A cuánto está Villa Carlos Paz?', respuesta: 'A 10 minutos en auto.' },
+      { pregunta: '¿A cuánto está Villa Carlos Paz?', respuesta: 'A 20 minutos en auto.' },
     ],
   },
 ]

@@ -277,7 +277,7 @@ export default async function ContactoPage() {
               {/* Distance References */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white rounded-2xl p-4 text-center border-t-4 border-t-amber border-x border-b border-sand shadow-sm hover:shadow-md transition-shadow">
-                  <p className="text-2xl font-bold text-amber">10 min</p>
+                  <p className="text-2xl font-bold text-amber">20 min</p>
                   <p className="text-sm text-text-medium">de Villa Carlos Paz</p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 text-center border-t-4 border-t-amber border-x border-b border-sand shadow-sm hover:shadow-md transition-shadow">

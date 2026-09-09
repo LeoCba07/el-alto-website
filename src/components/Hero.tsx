@@ -93,7 +93,7 @@ export default function Hero({
         {/* Bottom - CTA & Info */}
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
           <p className="mb-8 text-base md:text-lg text-white tracking-wide font-semibold [text-shadow:_0_2px_8px_rgb(0_0_0_/_90%)]">
-            Desde 1996 · A 10 minutos de Villa Carlos Paz
+            Desde 1996 · A 20 minutos de Villa Carlos Paz
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button href={linkBoton} variant="primary" size="lg" className="shadow-xl hover:shadow-amber/25">
