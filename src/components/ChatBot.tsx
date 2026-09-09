@@ -77,11 +77,11 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
     followUp: ['mas_servicios', 'consultar_disponibilidad', 'otra_pregunta']
   },
   mas_servicios: {
-    answer: 'También contamos con: pileta al aire libre (climatizada en primavera/otoño), quincho con asadores para uso común, jardín con vistas a las sierras, y estamos a 500m del centro de Tanti.',
+    answer: 'También contamos con: pileta al aire libre (climatizada en primavera/otoño), quincho con asadores para uso común, jardín con vistas a las sierras, y estamos a 600m del centro de Tanti.',
     followUp: ['consultar_disponibilidad', 'otra_pregunta']
   },
   ubicacion: {
-    answer: 'Estamos en Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba. A solo 20 minutos de Villa Carlos Paz y 500m del centro de Tanti.',
+    answer: 'Estamos en Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba. A solo 20 minutos de Villa Carlos Paz y 600m del centro de Tanti.',
     followUp: ['como_llegar', 'consultar_disponibilidad', 'otra_pregunta']
   },
   como_llegar: {

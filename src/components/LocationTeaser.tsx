@@ -9,7 +9,7 @@ import { IconType } from 'react-icons'
 import { FadeUp, StaggerGrid } from './ScrollAnimations'
 
 const conveniences: { place: string; distance: string; Icon: IconType }[] = [
-  { place: 'Centro de Tanti', distance: '500 m', Icon: HiOutlineBuildingStorefront },
+  { place: 'Centro de Tanti', distance: '600 m', Icon: HiOutlineBuildingStorefront },
   { place: 'Villa Carlos Paz', distance: '20 min', Icon: MdOutlineTheaterComedy },
   { place: 'Terminal', distance: '600 m', Icon: MdOutlineDirectionsBus },
   { place: 'Balneario', distance: '5 min', Icon: MdOutlinePool },

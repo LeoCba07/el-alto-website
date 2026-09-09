@@ -281,7 +281,7 @@ export default async function ContactoPage() {
                   <p className="text-sm text-text-medium">de Villa Carlos Paz</p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 text-center border-t-4 border-t-amber border-x border-b border-sand shadow-sm hover:shadow-md transition-shadow">
-                  <p className="text-2xl font-bold text-amber">500 m</p>
+                  <p className="text-2xl font-bold text-amber">600 m</p>
                   <p className="text-sm text-text-medium">del centro de Tanti</p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 text-center border-t-4 border-t-amber border-x border-b border-sand shadow-sm hover:shadow-md transition-shadow">
