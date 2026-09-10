@@ -89,7 +89,7 @@ export default function Hero({
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
             {titulo}
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
+          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
             {descripcion}
           </p>
         </div>
