@@ -49,7 +49,13 @@ export default function Hero({
   }, [nextSlide])
 
   return (
-    <section className="relative min-h-svh w-full overflow-hidden">
+    // The photo spans at least lvh (browser bars collapsed) so, once iOS
+    // shrinks its bars on scroll, the next section doesn't peek in under a
+    // short hero. On phones it runs 4rem further, because iOS 26 floats a
+    // translucent bar over the page bottom and the next section showed
+    // through it on load. The content box below stays svh, the area visible
+    // on load.
+    <section className="relative min-h-[calc(100lvh+4rem)] md:min-h-lvh w-full overflow-hidden">
       {/* Background Images with Crossfade */}
       {heroImages.map((src, index) => (
         <div
@@ -72,16 +78,18 @@ export default function Hero({
       {/* Gradient overlay for better readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
-      {/* Content. Below md it is one centred group with fixed gaps, so tall
-          phones don't get wide empty bands between the blocks; from md up the
-          three blocks spread across the height as before.
+      {/* Content. Below md the blocks share the spare height evenly (above,
+          between and below, never less than 12px apart), so tall phones get
+          neither the old wide bands nor a cramped group with empty space
+          under it; from md up the three blocks spread across the height as
+          before.
           min-h-svh rather than h-screen: on iOS 100vh includes the area behind
           the browser bars, which hid the bottom of the hero and slid it under
           the floating buttons. pt-20 clears the h-16 header; pb-38 (152px)
           keeps the hero buttons 12px above the floating chat/WhatsApp stack,
           which rises 140px. On screens too short for all of it, the hero
           grows and scrolls rather than clipping. */}
-      <div className="relative z-10 flex min-h-svh flex-col justify-center gap-4 pt-20 pb-38 sm:pb-32 md:justify-between md:gap-0 md:py-40">
+      <div className="relative z-10 flex min-h-svh flex-col justify-evenly gap-3 pt-20 pb-38 sm:pb-32 md:justify-between md:gap-0 md:py-40">
         {/* Top - Tagline */}
         <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
           <p className="font-medium tracking-[0.02em] sm:tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
@@ -91,7 +99,7 @@ export default function Hero({
 
         {/* Center - Main Title */}
         <div className="text-center px-6">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-3 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
+          <h1 className="text-[3.375rem] sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
             {titulo}
           </h1>
           <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
@@ -118,20 +126,21 @@ export default function Hero({
             </Button>
           </div>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <button
-        onClick={() => {
-          // Scroll just enough to reveal the next section (account for fixed header)
-          const scrollAmount = window.innerHeight - 100
-          window.scrollTo({ top: scrollAmount, behavior: 'smooth' })
-        }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce cursor-pointer hover:scale-110 transition-transform"
-        aria-label="Scroll hacia abajo"
-      >
-        <HiOutlineChevronDown className="w-8 h-8 text-white/70 hover:text-white transition-colors" />
-      </button>
+        {/* Scroll indicator. Lives in the svh-tall content box so it sits at
+            the bottom of the first visible screen, not behind the browser bar. */}
+        <button
+          onClick={() => {
+            // Scroll just enough to reveal the next section (account for fixed header)
+            const scrollAmount = window.innerHeight - 100
+            window.scrollTo({ top: scrollAmount, behavior: 'smooth' })
+          }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce cursor-pointer hover:scale-110 transition-transform"
+          aria-label="Scroll hacia abajo"
+        >
+          <HiOutlineChevronDown className="w-8 h-8 text-white/70 hover:text-white transition-colors" />
+        </button>
+      </div>
     </section>
   )
 }
