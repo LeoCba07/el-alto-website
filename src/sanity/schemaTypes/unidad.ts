@@ -54,7 +54,6 @@ export default defineType({
           { title: 'Wi-Fi', value: 'wifi' },
           { title: 'Cocina equipada', value: 'cocina' },
           { title: 'Cochera cubierta', value: 'cochera' },
-          { title: 'Asador propio', value: 'asador' },
           { title: 'Aire acondicionado', value: 'aire' },
           { title: 'TV', value: 'tv' },
         ],

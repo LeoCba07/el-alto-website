@@ -14,7 +14,6 @@ import {
   MdOutlineWifi,
   MdOutlineKitchen,
   MdOutlineLocalParking,
-  MdOutlineOutdoorGrill,
   MdOutlineAcUnit,
   MdOutlineTv,
 } from 'react-icons/md'
@@ -49,7 +48,6 @@ const amenityIcons: Record<string, IconType> = {
   wifi: MdOutlineWifi,
   cocina: MdOutlineKitchen,
   cochera: MdOutlineLocalParking,
-  asador: MdOutlineOutdoorGrill,
   aire: MdOutlineAcUnit,
   tv: MdOutlineTv,
 }
