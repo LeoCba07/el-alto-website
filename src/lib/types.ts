@@ -32,7 +32,6 @@ export interface SiteConfig {
     }
   }
   estadisticas?: {
-    anosExperiencia?: number
     tripAdvisorRating?: number
     tripAdvisorMaxRating?: number
     cantidadResenas?: number

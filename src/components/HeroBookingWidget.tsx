@@ -1,11 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { SiWhatsapp } from 'react-icons/si'
 import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
 
 const MAX_GUESTS = 6
+
+// A native date input only opens its picker from the calendar glyph; clicking
+// the digits drops into typing mode, which reads as "type the date by hand".
+// showPicker() needs a user gesture and throws where unsupported, hence the try.
+function openPicker(e: MouseEvent<HTMLInputElement>) {
+  try {
+    e.currentTarget.showPicker()
+  } catch {
+    // Older browsers keep the default behaviour.
+  }
+}
 
 /**
  * Availability enquiry bar for the hero. Collects the three things every
@@ -57,11 +68,13 @@ export default function HeroBookingWidget() {
   const labelClass =
     'block text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-forest mb-0.5'
   const inputClass =
-    'w-full bg-transparent text-text-dark text-sm font-medium rounded-md px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-amber'
+    'w-full bg-transparent text-text-dark text-sm font-medium rounded-md px-1 py-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber'
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <div className="rounded-2xl bg-cream/95 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-sm overflow-hidden">
+      {/* 80% keeps labels at 5.6:1 and text at 8.9:1 even over pure black;
+          at 70% the green labels drop below 4.5:1. */}
+      <div className="rounded-2xl bg-cream/80 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-md overflow-hidden">
         <div className="grid grid-cols-2 sm:grid-cols-[1fr_1fr_auto_auto]">
           <div className="text-left px-4 py-3">
             <label className={labelClass} htmlFor="hero-checkin">Entrada</label>
@@ -71,6 +84,7 @@ export default function HeroBookingWidget() {
               value={checkIn}
               min={today}
               onChange={(e) => setCheckIn(e.target.value)}
+              onClick={openPicker}
               className={inputClass}
             />
           </div>
@@ -83,6 +97,7 @@ export default function HeroBookingWidget() {
               value={checkOut}
               min={minCheckOut}
               onChange={(e) => setCheckOut(e.target.value)}
+              onClick={openPicker}
               className={inputClass}
             />
           </div>

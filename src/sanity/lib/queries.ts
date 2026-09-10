@@ -164,7 +164,6 @@ export const configuracionSitioQuery = groq`
       }
     },
     estadisticas {
-      anosExperiencia,
       tripAdvisorRating,
       tripAdvisorMaxRating,
       cantidadResenas,

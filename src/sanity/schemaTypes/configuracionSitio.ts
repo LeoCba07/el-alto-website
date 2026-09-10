@@ -131,6 +131,9 @@ export default defineType({
           title: 'Años de experiencia',
           type: 'number',
           description: 'Años desde que inició el complejo',
+          // No longer read: the site derives years from FOUNDING_YEAR. Hidden
+          // rather than removed so the stored value doesn't show as unknown.
+          hidden: true,
         },
         {
           name: 'tripAdvisorRating',
