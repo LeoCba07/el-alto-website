@@ -36,6 +36,11 @@ export interface ChatBotProps {
   respuestas?: ChatbotRespuesta[]
   siteConfig?: SiteConfig | null
   tarifas?: TarifasData
+  /**
+   * Where the widget anchors itself. Defaults to the bottom-right corner;
+   * pass a raised position where the WhatsApp button already sits there.
+   */
+  positionClassName?: string
 }
 
 // Generate tarifas summary from Sanity data
@@ -148,7 +153,12 @@ type BookingData = {
   childrenAges: number[]
 }
 
-export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProps) {
+export default function ChatBot({
+  respuestas,
+  siteConfig,
+  tarifas,
+  positionClassName = 'bottom-4 right-4 md:right-6',
+}: ChatBotProps) {
   const router = useRouter()
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
   const [messages, setMessages] = useState<Message[]>([])
@@ -416,7 +426,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
 
   return (
     <div
-      className={`fixed bottom-4 right-4 md:right-6 z-50 transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''}`}
+      className={`fixed ${positionClassName} z-50 transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''}`}
       style={{
         background: animationStage === 'closed' ? 'var(--color-forest)' : 'white'
       }}

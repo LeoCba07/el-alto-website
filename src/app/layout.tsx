@@ -6,9 +6,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ChatBot from "@/components/ChatBot";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { client } from "@/sanity/lib/client";
-import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
+import { configuracionSitioQuery } from "@/sanity/lib/queries";
 import { SITE_CONFIG, CACHE_CONFIG, TRUST_STATS, BUSINESS_HOURS, RESERVATION_POLICIES } from "@/lib/constants";
 import { SiteConfig } from "@/lib/types";
 
@@ -151,45 +151,12 @@ function generateJsonLd(config: SiteConfig | null) {
   };
 }
 
-interface ChatbotData {
-  clave: string;
-  respuesta: string;
-  opcionesSeguimiento?: string[];
-}
-
-export interface TarifasData {
-  alta: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  media: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-}
-
-interface SanityTarifasDocument {
-  temporadaAlta?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  temporadaMedia?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  temporadaBaja?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-}
-
 async function getSiteData() {
   try {
-    const [respuestas, config, tarifasDoc] = await Promise.all([
-      client.fetch<ChatbotData[]>(chatbotRespuestasQuery),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery),
-      client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery),
-    ]);
-
-    // Transform tarifas document into the expected structure
-    let tarifas: TarifasData | undefined = undefined;
-    if (tarifasDoc?.temporadaAlta && tarifasDoc?.temporadaMedia && tarifasDoc?.temporadaBaja) {
-      tarifas = {
-        alta: tarifasDoc.temporadaAlta,
-        media: tarifasDoc.temporadaMedia,
-        baja: tarifasDoc.temporadaBaja,
-      };
-    }
-
-    return { respuestas, config, tarifas };
+    const config = await client.fetch<SiteConfig | null>(configuracionSitioQuery);
+    return { config };
   } catch {
-    return { respuestas: undefined, config: null, tarifas: undefined };
+    return { config: null };
   }
 }
 
@@ -198,7 +165,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { respuestas, config, tarifas } = await getSiteData();
+  const { config } = await getSiteData();
   const jsonLd = generateJsonLd(config);
 
   return (
@@ -237,7 +204,7 @@ export default async function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer config={config} />
-        <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
+        <WhatsAppButton />
         <Analytics />
         <SpeedInsights />
       </body>
