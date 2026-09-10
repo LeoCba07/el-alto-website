@@ -188,8 +188,17 @@ export default async function RootLayout({
   const jsonLd = generateJsonLd(config);
 
   return (
-    <html lang="es">
+    // suppressHydrationWarning: the head script below sets --hero-vh on
+    // <html> before React hydrates it.
+    <html lang="es" suppressHydrationWarning>
       <head>
+        {/* Sets the hero's visible height before first paint, so it doesn't
+            render at 100vh and then jump once Hero's effect measures it. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.style.setProperty('--hero-vh',window.innerHeight+'px')",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
