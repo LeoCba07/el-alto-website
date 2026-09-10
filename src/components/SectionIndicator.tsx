@@ -13,6 +13,7 @@ const SECTIONS: Section[] = [
   { id: 'servicios', label: 'Servicios' },
   { id: 'ubicacion', label: 'Ubicación' },
   { id: 'testimonios', label: 'Testimonios' },
+  { id: 'videos', label: 'Videos' },
   { id: 'contacto', label: 'Contacto' },
 ]
 

@@ -4,11 +4,13 @@ import FeaturedUnidades from '@/components/FeaturedUnidades'
 import ServicesHighlights from '@/components/ServicesHighlights'
 import LocationTeaser from '@/components/LocationTeaser'
 import Testimonials from '@/components/Testimonials'
+import VideosSection from '@/components/VideosSection'
 import FinalCTA from '@/components/FinalCTA'
 import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
-import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery, testimoniosQuery, atraccionesCercanasQuery } from '@/sanity/lib/queries'
+import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery, testimoniosQuery, atraccionesCercanasQuery, videosInicioQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
+import { youtubeId } from '@/lib/youtube'
 import { SiteConfig } from '@/lib/types'
 import type { TestimonialsProps } from '@/components/Testimonials'
 import type { LocationTeaserProps } from '@/components/LocationTeaser'
@@ -47,15 +49,24 @@ interface ServicioDestacado {
   }
 }
 
+interface SanityVideo {
+  _key: string
+  titulo?: string
+  url?: string
+  fechaPublicacion?: string
+  descripcion?: string
+}
+
 async function getHomeData() {
   try {
-    const [heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones] = await Promise.all([
+    const [heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones, videos] = await Promise.all([
       client.fetch<SanityHeroSection | null>(heroSectionQuery),
       client.fetch<SiteConfig | null>(configuracionSitioQuery),
       client.fetch<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery),
       client.fetch<ServicioDestacado[]>(serviciosDestacadosQuery),
       client.fetch<Testimonio[]>(testimoniosQuery),
       client.fetch<Atraccion[]>(atraccionesCercanasQuery),
+      client.fetch<SanityVideo[] | null>(videosInicioQuery),
     ])
     return {
       heroData,
@@ -64,17 +75,18 @@ async function getHomeData() {
       serviciosDestacados: serviciosDestacados || [],
       testimonios: testimonios || [],
       atracciones: atracciones || [],
+      videos: videos || [],
     }
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('Failed to fetch home data:', error)
     }
-    return { heroData: null, config: null, unidadesDestacadas: null, serviciosDestacados: [], testimonios: [], atracciones: [] }
+    return { heroData: null, config: null, unidadesDestacadas: null, serviciosDestacados: [], testimonios: [], atracciones: [], videos: [] }
   }
 }
 
 export default async function Home() {
-  const { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones } = await getHomeData()
+  const { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones, videos: sanityVideos } = await getHomeData()
 
   const heroProps = heroData ? {
     subtitulo: heroData.subtitulo,
@@ -108,6 +120,23 @@ export default async function Home() {
       }
     : {}
 
+  // No hardcoded fallback: with nothing in Sanity the section simply isn't rendered.
+  const videos = sanityVideos.flatMap(v => {
+    const id = youtubeId(v.url)
+    return id && v.titulo ? [{ id, titulo: v.titulo, descripcion: v.descripcion, fechaPublicacion: v.fechaPublicacion }] : []
+  })
+
+  const videosJsonLd = videos.map(v => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: v.titulo,
+    description: v.descripcion || v.titulo,
+    thumbnailUrl: `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`,
+    uploadDate: v.fechaPublicacion,
+    embedUrl: `https://www.youtube.com/embed/${v.id}`,
+    contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
+  }))
+
   return (
     <div className="min-h-screen">
       <SectionIndicator />
@@ -129,6 +158,15 @@ export default async function Home() {
       <section id="testimonios">
         <Testimonials testimonios={testimonios} />
       </section>
+      {videos.length > 0 && (
+        <section id="videos">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(videosJsonLd).replace(/</g, '\\u003c') }}
+          />
+          <VideosSection videos={videos} channelUrl={config?.redesSociales?.youtube} />
+        </section>
+      )}
       <section id="contacto">
         <FinalCTA />
       </section>

@@ -189,6 +189,17 @@ export const unidadesDestacadasQuery = groq`
   }
 `
 
+// Videos (Home)
+export const videosInicioQuery = groq`
+  *[_type == "videosInicio"][0].videos[] {
+    _key,
+    titulo,
+    url,
+    fechaPublicacion,
+    descripcion
+  }
+`
+
 // Chatbot Respuestas
 export const chatbotRespuestasQuery = groq`
   *[_type == "chatbotRespuesta"] {
