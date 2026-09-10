@@ -465,8 +465,8 @@ export default function ChatBot({
             <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
               <HiOutlineChatBubbleLeftRight className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <p className="font-semibold text-sm">Complejo El Alto</p>
+            <div className="min-w-0">
+              <p className="font-semibold text-sm truncate">Asistente de Complejo El Alto</p>
               <p className="text-xs text-white/60">Tanti, Córdoba</p>
             </div>
           </div>
