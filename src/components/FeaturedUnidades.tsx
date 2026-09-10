@@ -4,7 +4,6 @@ import Link from 'next/link'
 import {
   HiOutlineUserGroup,
   HiOutlineArrowRight,
-  HiOutlineSparkles,
 } from 'react-icons/hi2'
 import { FadeUp } from './ScrollAnimations'
 import PhotoCarousel, { CarouselPhoto } from './PhotoCarousel'
@@ -70,14 +69,18 @@ export default function FeaturedUnidades({
               </h3>
             </div>
 
-            <div className="flex items-center gap-4 mb-6 pb-6 border-b border-sand">
-              <div className="flex items-center gap-2 bg-forest-dark/5 px-4 py-2 rounded-full">
-                <HiOutlineUserGroup className="w-5 h-5 text-forest" />
-                <span className="font-semibold text-forest-dark">2 a 6 personas</span>
+            {/* Same capacity treatment as each unit on /unidades: the headline
+                fact, with the secondary detail in plain text beside it. */}
+            <div className="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-sand">
+              <div className="flex items-center gap-2.5 bg-amber/15 border border-amber/40 px-4 py-2.5 rounded-xl">
+                <HiOutlineUserGroup className="w-6 h-6 text-amber-dark shrink-0" aria-hidden="true" />
+                <span className="text-lg font-bold text-forest-dark leading-none">
+                  2 a 6
+                  <span className="font-medium text-text-medium text-sm"> personas</span>
+                </span>
               </div>
-              <div className="flex items-center gap-2 bg-forest-dark/5 px-4 py-2 rounded-full">
-                <HiOutlineSparkles className="w-5 h-5 text-forest" />
-                <span className="font-semibold text-forest-dark">4 estilos</span>
+              <div className="text-sm text-text-medium">
+                4 estilos
               </div>
             </div>
 
@@ -89,8 +92,8 @@ export default function FeaturedUnidades({
               href="/unidades"
               className="flex items-center justify-center gap-2 w-full bg-forest-dark text-white py-4 rounded-full font-semibold hover:bg-forest transition-all hover:shadow-lg group"
             >
-              Explorar unidades y tarifas
-              <HiOutlineArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              Explorar todas las unidades
+              <HiOutlineArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </Link>
           </div>
         </div>
