@@ -105,24 +105,18 @@ export const testimoniosQuery = groq`
     nombre,
     ubicacion,
     comentario,
-    rating,
-    fecha,
-    foto {
-      asset->,
-      alt
-    }
+    rating
   }
 `
 
 // Atracciones Cercanas
 export const atraccionesCercanasQuery = groq`
-  *[_type == "atraccionCercana"] | order(distancia asc) {
+  *[_type == "atraccionCercana"] {
     _id,
     nombre,
     descripcion,
     distancia,
-    tiempo,
-    categoria,
+    tipo,
     imagen {
       asset->,
       alt

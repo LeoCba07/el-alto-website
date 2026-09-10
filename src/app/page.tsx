@@ -7,9 +7,14 @@ import Testimonials from '@/components/Testimonials'
 import FinalCTA from '@/components/FinalCTA'
 import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
-import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery } from '@/sanity/lib/queries'
+import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery, testimoniosQuery, atraccionesCercanasQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { SiteConfig } from '@/lib/types'
+import type { TestimonialsProps } from '@/components/Testimonials'
+import type { LocationTeaserProps } from '@/components/LocationTeaser'
+
+type Testimonio = NonNullable<TestimonialsProps['testimonios']>[number]
+type Atraccion = NonNullable<LocationTeaserProps['atracciones']>[number]
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
@@ -44,23 +49,32 @@ interface ServicioDestacado {
 
 async function getHomeData() {
   try {
-    const [heroData, config, unidadesDestacadas, serviciosDestacados] = await Promise.all([
+    const [heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones] = await Promise.all([
       client.fetch<SanityHeroSection | null>(heroSectionQuery),
       client.fetch<SiteConfig | null>(configuracionSitioQuery),
       client.fetch<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery),
       client.fetch<ServicioDestacado[]>(serviciosDestacadosQuery),
+      client.fetch<Testimonio[]>(testimoniosQuery),
+      client.fetch<Atraccion[]>(atraccionesCercanasQuery),
     ])
-    return { heroData, config, unidadesDestacadas, serviciosDestacados: serviciosDestacados || [] }
+    return {
+      heroData,
+      config,
+      unidadesDestacadas,
+      serviciosDestacados: serviciosDestacados || [],
+      testimonios: testimonios || [],
+      atracciones: atracciones || [],
+    }
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('Failed to fetch home data:', error)
     }
-    return { heroData: null, config: null, unidadesDestacadas: null, serviciosDestacados: [] }
+    return { heroData: null, config: null, unidadesDestacadas: null, serviciosDestacados: [], testimonios: [], atracciones: [] }
   }
 }
 
 export default async function Home() {
-  const { heroData, config, unidadesDestacadas, serviciosDestacados } = await getHomeData()
+  const { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones } = await getHomeData()
 
   const heroProps = heroData ? {
     subtitulo: heroData.subtitulo,
@@ -105,10 +119,10 @@ export default async function Home() {
         <ServicesHighlights {...highlightsProps} />
       </section>
       <section id="ubicacion">
-        <LocationTeaser />
+        <LocationTeaser atracciones={atracciones} />
       </section>
       <section id="testimonios">
-        <Testimonials />
+        <Testimonials testimonios={testimonios} />
       </section>
       <section id="contacto">
         <FinalCTA />
