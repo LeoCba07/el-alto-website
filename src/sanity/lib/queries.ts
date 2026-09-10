@@ -68,18 +68,6 @@ export const normasQuery = groq`
   }
 `
 
-export const normasPorCategoriaQuery = groq`
-  *[_type == "norma" && categoria == $categoria] | order(orden asc) {
-    _id,
-    titulo,
-    descripcion,
-    icono,
-    tipo,
-    horario,
-    detalle
-  }
-`
-
 // Preguntas Frecuentes
 export const preguntasFrecuentesQuery = groq`
   *[_type == "preguntaFrecuente"] | order(categoria asc, orden asc) {
@@ -87,14 +75,6 @@ export const preguntasFrecuentesQuery = groq`
     pregunta,
     respuesta,
     categoria
-  }
-`
-
-export const preguntasPorCategoriaQuery = groq`
-  *[_type == "preguntaFrecuente" && categoria == $categoria] | order(orden asc) {
-    _id,
-    pregunta,
-    respuesta
   }
 `
 
