@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { trackEvent } from '@/lib/analytics'
 import {
   HiXMark,
   HiOutlineCalendarDays,
@@ -157,7 +158,7 @@ export default function ChatBot({
   respuestas,
   siteConfig,
   tarifas,
-  positionClassName = 'bottom-4 right-4 md:right-6',
+  positionClassName = 'bottom-24 right-4 md:right-6',
 }: ChatBotProps) {
   const router = useRouter()
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
@@ -229,6 +230,7 @@ export default function ChatBot({
 
   // Handle opening animation: closed → bar → open
   const handleOpen = () => {
+    trackEvent('chatbot_open')
     setShowPulse(false)
     setAnimationStage('bar')
     setTimeout(() => {
@@ -265,6 +267,7 @@ export default function ChatBot({
   }
 
   const handleOptionClick = (option: string) => {
+    trackEvent('chatbot_option', { option })
     // Add user's selection as a message
     addMessage({ type: 'user', text: QUICK_REPLIES[option]?.label || option })
 
@@ -393,6 +396,7 @@ export default function ChatBot({
 
     msg += `\nTienen disponibilidad? Gracias!`
 
+    trackEvent('whatsapp_click', { source: 'chatbot' })
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
@@ -420,7 +424,7 @@ export default function ChatBot({
       case 'bar':
         return 'w-[calc(100vw-2rem)] md:w-96 h-14 rounded-full'
       case 'open':
-        return 'w-[calc(100vw-2rem)] md:w-96 h-[min(28rem,calc(100vh-6rem))] rounded-2xl'
+        return 'w-[calc(100vw-2rem)] md:w-96 h-[min(28rem,calc(100vh-11rem))] rounded-2xl'
     }
   }
 

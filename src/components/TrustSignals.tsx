@@ -23,20 +23,15 @@ function useCountUp(end: number, duration: number = 2000, start: number = 0, dec
   const [count, setCount] = useState(end)
   const [hasStarted, setHasStarted] = useState(false)
 
-  // Once hydrated we can animate, so drop to the starting point. This runs on
-  // mount, while the section is still below the fold, so the reset is unseen.
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setHasStarted(true)
-      return
-    }
-    setCount(start)
-  }, [start])
-
   const startCounting = () => {
     if (hasStarted) return
     setHasStarted(true)
 
+    // Reduced motion keeps the final value already on screen.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    // The first animation frame lands on `start`, so no separate reset is
+    // needed -- and the observer fires before the section scrolls into view.
     const startTime = Date.now()
     const animate = () => {
       const now = Date.now()
@@ -101,7 +96,7 @@ function AnimatedStat({
 }
 
 export default function TrustSignals({ stats }: TrustSignalsProps) {
-  const { ref, isInView } = useInView(0.5)
+  const { ref, isInView } = useInView(0.5, '300px')
   const [showShine, setShowShine] = useState(false)
 
   // Use stats from Sanity with fallbacks to constants

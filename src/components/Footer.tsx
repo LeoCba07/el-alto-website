@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { HiOutlineMapPin, HiOutlinePhone, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
+import { HiOutlineMapPin, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
 import { SiInstagram, SiFacebook, SiTripadvisor } from 'react-icons/si'
 import { SITE_CONFIG } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'

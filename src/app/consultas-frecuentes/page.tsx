@@ -1,12 +1,5 @@
 import { client } from '@/sanity/lib/client'
-import {
-  preguntasFrecuentesQuery,
-  chatbotRespuestasQuery,
-  configuracionSitioQuery,
-  tarifasTemporadaQuery,
-} from '@/sanity/lib/queries'
-import ChatBot, { type ChatbotRespuesta, type TarifasData } from '@/components/ChatBot'
-import { SiteConfig } from '@/lib/types'
+import { preguntasFrecuentesQuery } from '@/sanity/lib/queries'
 import FAQClient, { FAQCategory } from './FAQClient'
 
 // Force dynamic rendering to show Sanity updates immediately
@@ -27,12 +20,6 @@ const categoryLabels: Record<string, string> = {
   ubicacion: 'Ubicación',
 }
 
-interface SanityTarifasDocument {
-  temporadaAlta?: TarifasData['alta']
-  temporadaMedia?: TarifasData['media']
-  temporadaBaja?: TarifasData['baja']
-}
-
 async function getFAQData() {
   try {
     const preguntas = await client.fetch<SanityPregunta[]>(preguntasFrecuentesQuery)
@@ -42,33 +29,8 @@ async function getFAQData() {
   }
 }
 
-// The assistant lives on this page only, so its data is fetched here rather
-// than in the root layout, where every page paid for it.
-async function getChatBotData() {
-  try {
-    const [respuestas, config, tarifasDoc] = await Promise.all([
-      client.fetch<ChatbotRespuesta[]>(chatbotRespuestasQuery),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery),
-      client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery),
-    ])
-
-    const tarifas: TarifasData | undefined =
-      tarifasDoc?.temporadaAlta && tarifasDoc?.temporadaMedia && tarifasDoc?.temporadaBaja
-        ? {
-            alta: tarifasDoc.temporadaAlta,
-            media: tarifasDoc.temporadaMedia,
-            baja: tarifasDoc.temporadaBaja,
-          }
-        : undefined
-
-    return { respuestas, config, tarifas }
-  } catch {
-    return { respuestas: undefined, config: null, tarifas: undefined }
-  }
-}
-
 export default async function FAQPage() {
-  const [preguntasData, chatBot] = await Promise.all([getFAQData(), getChatBotData()])
+  const preguntasData = await getFAQData()
 
   // Group questions by category
   let categories: FAQCategory[] | undefined
@@ -120,12 +82,6 @@ export default async function FAQPage() {
         />
       )}
       <FAQClient categories={categories} />
-      <ChatBot
-        respuestas={chatBot.respuestas}
-        siteConfig={chatBot.config}
-        tarifas={chatBot.tarifas}
-        positionClassName="bottom-24 right-4 md:right-6"
-      />
     </>
   )
 }

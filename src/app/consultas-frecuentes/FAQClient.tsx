@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import { SiWhatsapp } from 'react-icons/si'
+import { SITE_CONFIG } from '@/lib/constants'
+import { trackEvent } from '@/lib/analytics'
 import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineChevronDown,
@@ -180,13 +182,18 @@ export default function FAQClient({ categories }: FAQClientProps) {
           <p className="text-white/80 mb-8">
             Estamos para ayudarte
           </p>
-          <Link
-            href="/contacto"
+          <a
+            href={`https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(
+              '¡Hola! Tengo una consulta que no encontré en las preguntas frecuentes.'
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent('whatsapp_click', { source: 'faq_cta' })}
             className="inline-flex items-center gap-2 bg-amber text-text-dark px-8 py-4 rounded-full font-semibold hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25"
           >
-            <HiOutlineChatBubbleLeftRight className="w-5 h-5" />
-            Contactanos
-          </Link>
+            <SiWhatsapp className="w-5 h-5" />
+            Consultanos por WhatsApp
+          </a>
         </div>
       </section>
     </div>

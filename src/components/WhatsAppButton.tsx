@@ -2,6 +2,7 @@
 
 import { SiWhatsapp } from 'react-icons/si'
 import { SITE_CONFIG } from '@/lib/constants'
+import { trackEvent } from '@/lib/analytics'
 
 const DEFAULT_MESSAGE = '¡Hola! Quisiera consultar disponibilidad en Complejo El Alto.'
 
@@ -23,6 +24,7 @@ export default function WhatsAppButton({ message = DEFAULT_MESSAGE }: WhatsAppBu
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackEvent('whatsapp_click', { source: 'floating' })}
       aria-label="Consultar por WhatsApp"
       className="fixed bottom-4 right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-[#25D366] shadow-xl ring-2 ring-white/50 flex items-center justify-center transition-transform duration-300 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
     >

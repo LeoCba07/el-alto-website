@@ -58,7 +58,6 @@ export default async function ContactoPage() {
   // Extract config values with fallbacks
   const horarios = config?.horarios
   const politicas = config?.politicasReserva
-  const stats = config?.estadisticas
 
   const checkIn = horarios?.checkIn || BUSINESS_HOURS.checkIn
   const checkOut = horarios?.checkOut || BUSINESS_HOURS.checkOut

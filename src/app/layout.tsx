@@ -7,9 +7,10 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ChatBot, { type ChatbotRespuesta, type TarifasData } from "@/components/ChatBot";
 import { client } from "@/sanity/lib/client";
-import { configuracionSitioQuery } from "@/sanity/lib/queries";
-import { SITE_CONFIG, CACHE_CONFIG, TRUST_STATS, BUSINESS_HOURS, RESERVATION_POLICIES } from "@/lib/constants";
+import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
+import { SITE_CONFIG, TRUST_STATS } from "@/lib/constants";
 import { SiteConfig } from "@/lib/types";
 
 // Force dynamic rendering to show Sanity updates immediately
@@ -151,12 +152,32 @@ function generateJsonLd(config: SiteConfig | null) {
   };
 }
 
+interface SanityTarifasDocument {
+  temporadaAlta?: TarifasData["alta"];
+  temporadaMedia?: TarifasData["media"];
+  temporadaBaja?: TarifasData["baja"];
+}
+
 async function getSiteData() {
   try {
-    const config = await client.fetch<SiteConfig | null>(configuracionSitioQuery);
-    return { config };
+    const [respuestas, config, tarifasDoc] = await Promise.all([
+      client.fetch<ChatbotRespuesta[]>(chatbotRespuestasQuery),
+      client.fetch<SiteConfig | null>(configuracionSitioQuery),
+      client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery),
+    ]);
+
+    const tarifas: TarifasData | undefined =
+      tarifasDoc?.temporadaAlta && tarifasDoc?.temporadaMedia && tarifasDoc?.temporadaBaja
+        ? {
+            alta: tarifasDoc.temporadaAlta,
+            media: tarifasDoc.temporadaMedia,
+            baja: tarifasDoc.temporadaBaja,
+          }
+        : undefined;
+
+    return { respuestas, config, tarifas };
   } catch {
-    return { config: null };
+    return { respuestas: undefined, config: null, tarifas: undefined };
   }
 }
 
@@ -165,7 +186,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { config } = await getSiteData();
+  const { respuestas, config, tarifas } = await getSiteData();
   const jsonLd = generateJsonLd(config);
 
   return (
@@ -205,6 +226,7 @@ export default async function RootLayout({
         <main id="main-content">{children}</main>
         <Footer config={config} />
         <WhatsAppButton />
+        <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
         <Analytics />
         <SpeedInsights />
       </body>
