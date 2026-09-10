@@ -463,7 +463,7 @@ export default function ChatBot({
         <div className="bg-forest-dark text-white p-4 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
-              <SiWhatsapp className="w-5 h-5 text-white" />
+              <HiOutlineChatBubbleLeftRight className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="font-semibold text-sm">Complejo El Alto</p>
