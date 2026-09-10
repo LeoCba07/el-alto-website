@@ -81,7 +81,10 @@ export default async function Home() {
     titulo: heroData.titulo,
     descripcion: heroData.descripcion,
     imagenes: heroData.imagenes?.map(img => ({
-      url: urlFor(img).url(),
+      // Ask for a landscape crop so Sanity honours each image's hotspot.
+      // Without explicit dimensions it returns the full asset and the hotspot
+      // is ignored, leaving object-cover to centre-crop portrait shots blindly.
+      url: urlFor(img).width(1920).height(1080).fit('crop').url(),
       alt: img.alt
     })),
   } : {}
