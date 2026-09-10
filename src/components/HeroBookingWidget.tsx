@@ -77,8 +77,17 @@ export default function HeroBookingWidget() {
 
   const labelClass =
     'block text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-forest mb-0.5'
-  const inputClass =
-    'w-full bg-transparent text-text-dark text-sm font-medium rounded-md px-1 py-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber'
+  const fieldBase =
+    'w-full bg-transparent text-sm font-medium rounded-md px-1 py-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber'
+  const inputClass = `${fieldBase} text-text-dark`
+  // iOS Safari draws an empty date input as a blank box with no dd/mm/aaaa
+  // hint, so the fields looked broken. While a date is empty and unfocused,
+  // hide the browser's own mask (where it has one) and show a single hint
+  // everywhere; focusing brings the mask back for typing on desktop.
+  const dateClass = (value: string) =>
+    `peer ${fieldBase} ${value ? 'text-text-dark' : 'text-transparent focus:text-text-dark'}`
+  const dateHintClass =
+    'pointer-events-none absolute inset-y-0 left-1 flex items-center text-sm font-medium text-text-light peer-focus:hidden'
 
   return (
     <div className="mx-auto w-full max-w-2xl">
@@ -91,28 +100,34 @@ export default function HeroBookingWidget() {
         <div className="grid grid-cols-2 sm:grid-cols-[1fr_1fr_auto_auto]">
           <div className="text-left px-4 py-3">
             <label className={labelClass} htmlFor="hero-checkin">Entrada</label>
-            <input
-              id="hero-checkin"
-              type="date"
-              value={checkIn}
-              min={today}
-              onChange={(e) => setCheckIn(e.target.value)}
-              onClick={openPicker}
-              className={inputClass}
-            />
+            <div className="relative">
+              <input
+                id="hero-checkin"
+                type="date"
+                value={checkIn}
+                min={today}
+                onChange={(e) => setCheckIn(e.target.value)}
+                onClick={openPicker}
+                className={dateClass(checkIn)}
+              />
+              {!checkIn && <span aria-hidden="true" className={dateHintClass}>Elegir fecha</span>}
+            </div>
           </div>
 
           <div className="text-left px-4 py-3 border-l border-sand">
             <label className={labelClass} htmlFor="hero-checkout">Salida</label>
-            <input
-              id="hero-checkout"
-              type="date"
-              value={checkOut}
-              min={minCheckOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-              onClick={openPicker}
-              className={inputClass}
-            />
+            <div className="relative">
+              <input
+                id="hero-checkout"
+                type="date"
+                value={checkOut}
+                min={minCheckOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                onClick={openPicker}
+                className={dateClass(checkOut)}
+              />
+              {!checkOut && <span aria-hidden="true" className={dateHintClass}>Elegir fecha</span>}
+            </div>
           </div>
 
           <div className="text-left px-4 py-3 border-t sm:border-t-0 sm:border-l border-sand">
