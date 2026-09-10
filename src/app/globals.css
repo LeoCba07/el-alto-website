@@ -85,6 +85,17 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-serif: var(--font-merriweather);
+
+  /* Nudge on a rejected hero enquiry (HeroBookingWidget); a theme animation
+     so it gets an animate-shake utility that motion-safe: can gate. */
+  --animate-shake: shake 0.4s ease-in-out;
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(7px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(3px); }
+  }
 }
 
 body {

@@ -29,23 +29,33 @@ export default function HeroBookingWidget() {
   const [checkOut, setCheckOut] = useState('')
   const [guests, setGuests] = useState(2)
   const [error, setError] = useState('')
+  const [shaking, setShaking] = useState(false)
 
   // Check-out must land after check-in, so its picker starts the day after.
   const minCheckOut = checkIn
     ? new Date(new Date(checkIn).getTime() + 86400000).toISOString().split('T')[0]
     : today
 
+  // Some guests keep pressing Consultar expecting WhatsApp to open and miss
+  // the message. Every failed press shakes the card (skipped under reduced
+  // motion); resetting first lets a repeated error shake again.
+  const fail = (message: string) => {
+    setError(message)
+    setShaking(false)
+    requestAnimationFrame(() => setShaking(true))
+  }
+
   const handleSubmit = () => {
     if (!checkIn || !checkOut) {
-      setError('Elegí las fechas de entrada y salida')
+      fail('Elegí las fechas de entrada y salida')
       return
     }
     if (checkIn < today) {
-      setError('La fecha de entrada no puede ser en el pasado')
+      fail('La fecha de entrada no puede ser en el pasado')
       return
     }
     if (checkOut <= checkIn) {
-      setError('La salida tiene que ser posterior a la entrada')
+      fail('La salida tiene que ser posterior a la entrada')
       return
     }
     setError('')
@@ -74,7 +84,10 @@ export default function HeroBookingWidget() {
     <div className="mx-auto w-full max-w-2xl">
       {/* 90%: a touch lighter than the original 95%. 80% read as too see-through,
           though contrast held (labels 5.6:1 over pure black); at 70% it fails AA. */}
-      <div className="rounded-2xl bg-cream/90 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-md overflow-hidden">
+      <div
+        className={`rounded-2xl bg-cream/90 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-md overflow-hidden ${shaking ? 'motion-safe:animate-shake' : ''}`}
+        onAnimationEnd={() => setShaking(false)}
+      >
         <div className="grid grid-cols-2 sm:grid-cols-[1fr_1fr_auto_auto]">
           <div className="text-left px-4 py-3">
             <label className={labelClass} htmlFor="hero-checkin">Entrada</label>
