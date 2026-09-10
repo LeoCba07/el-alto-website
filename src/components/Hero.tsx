@@ -98,7 +98,7 @@ export default function Hero({
           </p>
           <HeroBookingWidget />
           <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button href={linkBoton} variant="primary" size="lg" className="shadow-xl hover:shadow-amber/25">
+            <Button href={linkBoton} variant="outline-light" size="lg" className="shadow-xl">
               {textoBoton}
             </Button>
           </div>
