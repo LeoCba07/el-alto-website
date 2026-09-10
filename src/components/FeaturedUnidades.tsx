@@ -35,7 +35,7 @@ export default function FeaturedUnidades({
   const photos = fotos?.length ? fotos : defaultPhotos
 
   return (
-    <section id="unidades" className="bg-cream py-16 md:py-20">
+    <section className="bg-cream py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">
         {/* Section Header */}
         <FadeUp>

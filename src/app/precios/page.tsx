@@ -43,13 +43,13 @@ export default async function PreciosPage() {
         <div className="absolute inset-0 flex items-end">
           <div className="max-w-6xl mx-auto px-4 pb-10 w-full">
             <p className="text-amber font-medium mb-2 tracking-wide uppercase text-sm">
-              Tarifas
+              Alojamiento en Tanti
             </p>
             <h1 className="text-4xl md:text-5xl font-bold text-white font-serif mb-3">
               Precios
             </h1>
             <p className="text-white/90 max-w-xl">
-              Tarifas por noche según temporada y cantidad de personas
+              Cuánto sale por noche, según la temporada y cuántos sean
             </p>
           </div>
         </div>

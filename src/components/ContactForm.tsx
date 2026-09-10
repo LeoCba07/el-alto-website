@@ -131,15 +131,16 @@ export default function ContactForm() {
 
       {/* Dates */}
       <div>
-        <label className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
-          <HiOutlineCalendarDays className="w-4 h-4 text-amber" />
+        <p className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
+          <HiOutlineCalendarDays className="w-4 h-4 text-amber" aria-hidden="true" />
           Fechas
-        </label>
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <input
               type="date"
               id="checkIn"
+            aria-label="Fecha de entrada"
               value={checkIn}
               onChange={(e) => setCheckIn(e.target.value)}
               min={today}
@@ -159,6 +160,7 @@ export default function ContactForm() {
             <input
               type="date"
               id="checkOut"
+            aria-label="Fecha de salida"
               value={checkOut}
               onChange={(e) => setCheckOut(e.target.value)}
               min={minCheckOut}
@@ -178,13 +180,14 @@ export default function ContactForm() {
 
       {/* Guests */}
       <div>
-        <label className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
-          <HiOutlineUserGroup className="w-4 h-4 text-amber" />
+        <p className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
+          <HiOutlineUserGroup className="w-4 h-4 text-amber" aria-hidden="true" />
           Huéspedes
-        </label>
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <select
             id="adults"
+            aria-label="Cantidad de adultos"
             value={adults}
             onChange={(e) => setAdults(Number(e.target.value))}
             className="w-full px-4 py-3 rounded-xl border-2 border-sand hover:border-stone-light bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors cursor-pointer"
@@ -198,6 +201,7 @@ export default function ContactForm() {
 
           <select
             id="children"
+            aria-label="Cantidad de menores"
             value={children}
             onChange={(e) => handleChildrenChange(Number(e.target.value))}
             className="w-full px-4 py-3 rounded-xl border-2 border-sand hover:border-stone-light bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors cursor-pointer"

@@ -101,12 +101,12 @@ export default async function ContactoPage() {
             {/* Check-in/Check-out Info - Shows first on mobile, right side on desktop */}
             <div className="lg:col-span-2 lg:order-2">
               <div className="bg-forest-dark text-white rounded-2xl p-6 md:p-8 shadow-xl h-full">
-                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                <h2 className="text-xl font-bold mb-6 flex items-center gap-3">
                   <span className="w-10 h-10 bg-amber/20 rounded-full flex items-center justify-center">
                     <HiOutlineClock className="w-5 h-5 text-amber" />
                   </span>
                   Información útil
-                </h3>
+                </h2>
 
                 <div className="space-y-5">
                   <div className="flex items-start gap-4">

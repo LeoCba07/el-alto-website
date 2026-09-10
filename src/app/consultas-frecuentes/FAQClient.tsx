@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { SiWhatsapp } from 'react-icons/si'
 import { SITE_CONFIG } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
@@ -99,19 +99,26 @@ const defaultCategories: FAQCategory[] = [
 
 function QuestionItem({ q, a }: { q: string; a: string }) {
   const [isOpen, setIsOpen] = useState(false)
+  const panelId = useId()
 
   return (
     <div className="border-b border-sand last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 text-left group focus:outline-none"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        className="w-full flex items-center justify-between py-4 text-left group rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2"
       >
         <span className="font-medium text-forest-dark group-hover:text-forest pr-4">{q}</span>
         <HiOutlineChevronDown
+          aria-hidden="true"
           className={`w-5 h-5 text-amber flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
-      <div className={`overflow-hidden transition-all ${isOpen ? 'max-h-96 pb-4' : 'max-h-0'}`}>
+      {/* No max-height here: it capped answers at 384px and silently clipped
+          the longer ones. `hidden` also keeps collapsed answers out of the
+          accessibility tree, which max-h-0 did not. */}
+      <div id={panelId} role="region" hidden={!isOpen} className="pb-4">
         <p className="text-text-medium">{a}</p>
       </div>
     </div>
