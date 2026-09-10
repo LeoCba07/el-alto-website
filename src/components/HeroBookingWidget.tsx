@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type MouseEvent } from 'react'
+import { HiOutlineCalendarDays, HiOutlineUserGroup } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
@@ -75,19 +76,23 @@ export default function HeroBookingWidget() {
     )
   }
 
+  // Phones fit all three fields in one row (down to 360px), so labels track a
+  // little tighter and the date text drops to 13px there.
+  const cellClass = 'min-w-0 text-left px-2.5 sm:px-4 py-3'
   const labelClass =
-    'block text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-forest mb-0.5'
+    'flex items-center gap-1 text-[0.65rem] font-semibold uppercase tracking-[0.06em] sm:tracking-[0.12em] text-forest mb-0.5'
+  const labelIconClass = 'w-3.5 h-3.5 shrink-0'
   const fieldBase =
-    'w-full bg-transparent text-sm font-medium rounded-md px-1 py-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber'
-  const inputClass = `${fieldBase} text-text-dark`
+    'min-w-0 w-full bg-transparent font-medium rounded-md px-1 py-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber'
+  const inputClass = `${fieldBase} text-sm text-text-dark`
   // iOS Safari draws an empty date input as a blank box with no dd/mm/aaaa
   // hint, so the fields looked broken. While a date is empty and unfocused,
   // hide the browser's own mask (where it has one) and show a single hint
   // everywhere; focusing brings the mask back for typing on desktop.
   const dateClass = (value: string) =>
-    `peer ${fieldBase} ${value ? 'text-text-dark' : 'text-transparent focus:text-text-dark'}`
+    `peer ${fieldBase} text-[0.8125rem] sm:text-sm ${value ? 'text-text-dark' : 'text-transparent focus:text-text-dark'}`
   const dateHintClass =
-    'pointer-events-none absolute inset-y-0 left-1 flex items-center text-sm font-medium text-text-light peer-focus:hidden'
+    'pointer-events-none absolute inset-y-0 left-1 flex items-center text-[0.8125rem] sm:text-sm font-medium text-text-light peer-focus:hidden'
 
   return (
     <div className="mx-auto w-full max-w-2xl">
@@ -97,9 +102,14 @@ export default function HeroBookingWidget() {
         className={`rounded-2xl bg-cream/90 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-md overflow-hidden ${shaking ? 'motion-safe:animate-shake' : ''}`}
         onAnimationEnd={() => setShaking(false)}
       >
-        <div className="grid grid-cols-2 sm:grid-cols-[1fr_1fr_auto_auto]">
-          <div className="text-left px-4 py-3">
-            <label className={labelClass} htmlFor="hero-checkin">Entrada</label>
+        {/* Phones: Entrada, Salida and Personas share the first row and
+            Consultar spans the second. From sm up it is all one row. */}
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:grid-cols-[1fr_1fr_auto_auto]">
+          <div className={cellClass}>
+            <label className={labelClass} htmlFor="hero-checkin">
+              <HiOutlineCalendarDays className={labelIconClass} aria-hidden="true" />
+              Entrada
+            </label>
             <div className="relative">
               <input
                 id="hero-checkin"
@@ -114,8 +124,11 @@ export default function HeroBookingWidget() {
             </div>
           </div>
 
-          <div className="text-left px-4 py-3 border-l border-sand">
-            <label className={labelClass} htmlFor="hero-checkout">Salida</label>
+          <div className={`${cellClass} border-l border-sand`}>
+            <label className={labelClass} htmlFor="hero-checkout">
+              <HiOutlineCalendarDays className={labelIconClass} aria-hidden="true" />
+              Salida
+            </label>
             <div className="relative">
               <input
                 id="hero-checkout"
@@ -130,8 +143,11 @@ export default function HeroBookingWidget() {
             </div>
           </div>
 
-          <div className="text-left px-4 py-3 border-t sm:border-t-0 sm:border-l border-sand">
-            <label className={labelClass} htmlFor="hero-guests">Personas</label>
+          <div className={`${cellClass} border-l border-sand`}>
+            <label className={labelClass} htmlFor="hero-guests">
+              <HiOutlineUserGroup className={labelIconClass} aria-hidden="true" />
+              Personas
+            </label>
             <select
               id="hero-guests"
               value={guests}
@@ -144,11 +160,11 @@ export default function HeroBookingWidget() {
             </select>
           </div>
 
-          <div className="border-t sm:border-t-0 border-sand p-2 sm:p-2.5 flex">
+          <div className="col-span-3 sm:col-span-1 border-t sm:border-t-0 border-sand p-2 sm:p-2.5 flex">
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 text-white font-semibold text-sm py-2.5 sm:py-0 shadow-sm transition-all hover:bg-[#1eb257] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 text-white font-semibold text-sm py-3 sm:py-0 shadow-sm transition-all hover:bg-[#1eb257] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
               <SiWhatsapp className="w-4 h-4" aria-hidden="true" />
               Consultar
