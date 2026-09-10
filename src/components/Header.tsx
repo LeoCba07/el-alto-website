@@ -39,6 +39,8 @@ const navLinks = [
   },
 ]
 
+// The desktop nav (six links plus the CTA) needs about 980px; below lg it
+// overflowed, so the hamburger menu covers everything under 1024px.
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
@@ -47,7 +49,7 @@ export default function Header() {
     <>
       {/* Mobile Menu Backdrop - outside header for proper stacking */}
       <div
-        className={`md:hidden fixed inset-0 top-16 z-40 bg-black/30 transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`lg:hidden fixed inset-0 top-16 z-40 bg-black/30 transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsMenuOpen(false)}
         aria-hidden="true"
       />
@@ -74,7 +76,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href
               return (
@@ -98,7 +100,7 @@ export default function Header() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <Link
               href="/contacto"
               className="group relative inline-flex items-center gap-1.5 bg-amber text-text-dark px-5 py-2.5 rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-amber/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber focus:ring-offset-2"
@@ -112,8 +114,10 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-text-dark hover:text-forest hover:bg-forest/10 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2"
+            className="lg:hidden p-2 text-text-dark hover:text-forest hover:bg-forest/10 rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2"
             aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
           >
             <div className="relative w-6 h-6">
               <HiBars3 className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${isMenuOpen ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`} />
@@ -123,9 +127,16 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-        <div className="bg-cream/95 backdrop-blur-md border-t border-sand/50">
+      {/* Mobile Menu. Animates grid rows 0fr -> 1fr so it opens to its real
+          content height; a fixed max-h-96 clipped the "Consultar" button.
+          Capped at the screen minus the h-16 header, scrolling past that. */}
+      <div
+        id="mobile-menu"
+        inert={!isMenuOpen}
+        className={`lg:hidden grid transition-all duration-300 ease-out ${isMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+      >
+        <div className="overflow-hidden">
+        <div className="bg-cream/95 backdrop-blur-md border-t border-sand/50 max-h-[calc(100dvh-4rem)] overflow-y-auto">
           <nav className="flex flex-col px-4 py-3 space-y-1">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href
@@ -156,6 +167,7 @@ export default function Header() {
               </Link>
             </div>
           </nav>
+        </div>
         </div>
       </div>
     </header>
