@@ -49,7 +49,7 @@ export default function Hero({
   }, [nextSlide])
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative min-h-svh w-full overflow-hidden">
       {/* Background Images with Crossfade */}
       {heroImages.map((src, index) => (
         <div
@@ -72,35 +72,38 @@ export default function Hero({
       {/* Gradient overlay for better readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
-      {/* Content - Spread across full height */}
-      {/* Below sm the hero buttons span wide enough to reach the floating chat
-          and WhatsApp stack, which rises 140px from the bottom; pb-38 (152px)
-          keeps them 12px clear at any screen height. */}
-      <div className="relative z-10 flex h-full flex-col justify-between pt-32 pb-38 sm:pb-32 md:py-40">
+      {/* Content. Below md it is one centred group with fixed gaps, so tall
+          phones don't get wide empty bands between the blocks; from md up the
+          three blocks spread across the height as before.
+          min-h-svh rather than h-screen: on iOS 100vh includes the area behind
+          the browser bars, which hid the bottom of the hero and slid it under
+          the floating buttons. pt-20 clears the h-16 header; pb-38 (152px)
+          keeps the hero buttons 12px above the floating chat/WhatsApp stack,
+          which rises 140px. On screens too short for all of it, the hero
+          grows and scrolls rather than clipping. */}
+      <div className="relative z-10 flex min-h-svh flex-col justify-center gap-4 pt-20 pb-38 sm:pb-32 md:justify-between md:gap-0 md:py-40">
         {/* Top - Tagline */}
         <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
-          <p className="font-medium tracking-[0.06em] sm:tracking-[0.3em] uppercase text-[0.8125rem] sm:text-sm md:text-base text-white/90 drop-shadow-lg">
+          <p className="font-medium tracking-[0.02em] sm:tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
             {subtitulo}
           </p>
         </div>
 
         {/* Center - Main Title */}
         <div className="text-center px-6">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-3 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
             {titulo}
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
             {descripcion}
           </p>
         </div>
 
         {/* Bottom - CTA & Info */}
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
-          {/* Tighter mobile margins here (mb-4, mt-5) give back the 12px the
-              larger bottom padding takes, so short phones keep today's spacing. */}
-          {/* Normal tracking on phones: at 0.04em the line measured 326px and
-              left "PAZ" alone on a second line at 360px (312px available). */}
-          <p className="mb-4 sm:mb-5 font-medium tracking-normal sm:tracking-[0.2em] uppercase text-[0.75rem] sm:text-sm text-white drop-shadow-lg">
+          {/* 13px with normal tracking: one line from 390px (most iPhones);
+              narrower phones get two balanced lines instead of a lone "PAZ". */}
+          <p className="mb-4 sm:mb-5 font-medium tracking-normal sm:tracking-[0.2em] uppercase text-[0.8125rem] sm:text-sm text-balance text-white drop-shadow-lg">
             Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
           </p>
           <HeroBookingWidget />
