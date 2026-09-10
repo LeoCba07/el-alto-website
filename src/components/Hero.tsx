@@ -49,13 +49,15 @@ export default function Hero({
   }, [nextSlide])
 
   return (
-    // The photo spans at least lvh (browser bars collapsed) so, once iOS
-    // shrinks its bars on scroll, the next section doesn't peek in under a
-    // short hero. On phones it runs 4rem further, because iOS 26 floats a
-    // translucent bar over the page bottom and the next section showed
-    // through it on load. The content box below stays svh, the area visible
-    // on load.
-    <section className="relative min-h-[calc(100lvh+4rem)] md:min-h-lvh w-full overflow-hidden">
+    // The photo spans at least 100vh, which on iOS is the height with the
+    // browser bars collapsed, so once iOS shrinks its bars on scroll the next
+    // section doesn't peek in under a short hero. (vh rather than lvh: same
+    // size on iOS, and Chrome for iOS mispainted the page on a first open from
+    // another app with lvh.) On phones it runs 4rem further, because iOS 26
+    // floats a translucent bar over the page bottom and the next section
+    // showed through it on load. The content box below stays svh, the area
+    // visible on load.
+    <section className="relative min-h-[calc(100vh+4rem)] md:min-h-screen w-full overflow-hidden">
       {/* Background Images with Crossfade */}
       {heroImages.map((src, index) => (
         <div

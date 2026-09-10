@@ -54,7 +54,9 @@ export default function Header() {
         aria-hidden="true"
       />
 
-      <header className="fixed top-0 left-0 right-0 z-50 bg-cream/90 backdrop-blur-md border-b border-sand/50 shadow-sm">
+      {/* transform-gpu gives the fixed header its own layer; Chrome for iOS
+          left it unpainted on a first open from another app until reload. */}
+      <header className="fixed top-0 left-0 right-0 z-50 transform-gpu bg-cream/90 backdrop-blur-md border-b border-sand/50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}

@@ -431,7 +431,9 @@ export default function ChatBot({
 
   return (
     <div
-      className={`fixed ${positionClassName} z-50 transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''}`}
+      // transform-gpu: own layer, like the header and WhatsApp button, for
+      // Chrome for iOS's first-open painting.
+      className={`fixed ${positionClassName} z-50 transform-gpu transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''}`}
       style={{
         background: animationStage === 'closed' ? 'var(--color-forest)' : 'white'
       }}
