@@ -138,12 +138,12 @@ export const AMENITY_LABELS: Record<string, string> = {
   wifi: 'Wi-Fi',
   cocina: 'Cocina equipada',
   cochera: 'Cochera cubierta',
-  aire: 'Aire acondicionado',
   tv: 'TV',
 }
 
 // Shown when a unit has no amenities loaded in Sanity. Every unit currently
 // offers all of these, so an empty CMS still describes them correctly; tag a
 // unit in the Studio to override this for that unit alone. No asador here:
-// the grill area is shared (see /servicios), not part of any unit.
-export const DEFAULT_AMENITIES = ['wifi', 'cocina', 'cochera', 'aire'] as const
+// the grill area is shared (see /servicios). No air conditioning either: it
+// is a paid extra (OPTIONAL_SERVICES.acPricePerDay), not included.
+export const DEFAULT_AMENITIES = ['wifi', 'cocina', 'cochera'] as const

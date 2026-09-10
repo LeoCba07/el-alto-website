@@ -14,7 +14,6 @@ import {
   MdOutlineWifi,
   MdOutlineKitchen,
   MdOutlineLocalParking,
-  MdOutlineAcUnit,
   MdOutlineTv,
 } from 'react-icons/md'
 import { SiWhatsapp } from 'react-icons/si'
@@ -48,7 +47,6 @@ const amenityIcons: Record<string, IconType> = {
   wifi: MdOutlineWifi,
   cocina: MdOutlineKitchen,
   cochera: MdOutlineLocalParking,
-  aire: MdOutlineAcUnit,
   tv: MdOutlineTv,
 }
 
