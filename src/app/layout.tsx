@@ -144,6 +144,7 @@ function generateJsonLd(config: SiteConfig | null) {
     sameAs: [
       redes?.instagram || "https://instagram.com/complejoelalto",
       redes?.facebook || "https://facebook.com/complejoelalto",
+      redes?.youtube || "https://www.youtube.com/complejoelalto",
       redes?.tripadvisor || "https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html",
     ].filter(Boolean),
   };

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { HiOutlineMapPin, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
-import { SiInstagram, SiFacebook, SiTripadvisor } from 'react-icons/si'
+import { SiInstagram, SiFacebook, SiYoutube, SiTripadvisor } from 'react-icons/si'
 import { SITE_CONFIG } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'
 
@@ -38,6 +38,7 @@ export default function Footer({ config }: FooterProps) {
   const socialLinks = [
     { href: redes?.instagram || 'https://instagram.com/complejoelalto', label: 'Instagram', Icon: SiInstagram },
     { href: redes?.facebook || 'https://facebook.com/complejoelalto', label: 'Facebook', Icon: SiFacebook },
+    { href: redes?.youtube || 'https://www.youtube.com/complejoelalto', label: 'YouTube', Icon: SiYoutube },
     { href: redes?.tripadvisor || 'https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html', label: 'TripAdvisor', Icon: SiTripadvisor },
     // CMS-sourced URLs: only allow http(s) schemes
   ].filter((link) => /^https?:\/\//.test(link.href))
