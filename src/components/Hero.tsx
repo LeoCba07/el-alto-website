@@ -5,7 +5,7 @@ import HeroBookingWidget from './HeroBookingWidget'
 import Button from './Button'
 import { HiOutlineChevronDown } from 'react-icons/hi2'
 import { useState, useEffect, useCallback } from 'react'
-import { ANIMATION_TIMING } from '@/lib/constants'
+import { ANIMATION_TIMING, FOUNDING_YEAR } from '@/lib/constants'
 
 interface HeroImage {
   url: string
@@ -79,6 +79,9 @@ export default function Hero({
           <p className="font-medium tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
             {subtitulo}
           </p>
+          <p className="mt-2 font-medium tracking-[0.2em] uppercase text-xs md:text-sm text-white/70 drop-shadow-lg">
+            Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
+          </p>
         </div>
 
         {/* Center - Main Title */}
@@ -93,9 +96,6 @@ export default function Hero({
 
         {/* Bottom - CTA & Info */}
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
-          <p className="mb-8 text-base md:text-lg text-white tracking-wide font-semibold [text-shadow:_0_2px_8px_rgb(0_0_0_/_90%)]">
-            Desde 1996 · A 20 minutos de Villa Carlos Paz
-          </p>
           <HeroBookingWidget />
           <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button href={linkBoton} variant="outline-light" size="lg" className="shadow-xl">
