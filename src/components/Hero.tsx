@@ -98,7 +98,9 @@ export default function Hero({
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
           {/* Tighter mobile margins here (mb-4, mt-5) give back the 12px the
               larger bottom padding takes, so short phones keep today's spacing. */}
-          <p className="mb-4 sm:mb-5 font-medium tracking-[0.04em] sm:tracking-[0.2em] uppercase text-[0.75rem] sm:text-sm text-white drop-shadow-lg">
+          {/* Normal tracking on phones: at 0.04em the line measured 326px and
+              left "PAZ" alone on a second line at 360px (312px available). */}
+          <p className="mb-4 sm:mb-5 font-medium tracking-normal sm:tracking-[0.2em] uppercase text-[0.75rem] sm:text-sm text-white drop-shadow-lg">
             Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
           </p>
           <HeroBookingWidget />
