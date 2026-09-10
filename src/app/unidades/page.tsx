@@ -53,7 +53,7 @@ export default async function UnidadesPage() {
         descripcion: unidad.descripcion,
         destacado: unidad.destacado || '',
         photos: unidad.fotos?.length
-          ? unidad.fotos.map((foto) => ({ url: urlFor(foto).url(), alt: foto.alt }))
+          ? unidad.fotos.map((foto) => ({ url: urlFor(foto).width(1600).height(1000).fit('crop').url(), alt: foto.alt }))
           : fallbackPhotos[unidad.tipo] || [],
       }))
     : undefined

@@ -90,7 +90,9 @@ export default async function Home() {
   } : {}
 
   const unidadesDestacadasProps = unidadesDestacadas ? {
-    fotos: unidadesDestacadas.fotos?.map(img => ({ url: urlFor(img).url(), alt: img.alt })),
+    // Ask Sanity for the carousel's 16:10 crop. Without dimensions it returns
+    // the original -- up to 12000x9000 here -- for Next to resize on every miss.
+    fotos: unidadesDestacadas.fotos?.map(img => ({ url: urlFor(img).width(1600).height(1000).fit('crop').url(), alt: img.alt })),
     insignia: unidadesDestacadas.insignia,
     tituloPanelInfo: unidadesDestacadas.tituloPanelInfo,
     descripcionPanelInfo: unidadesDestacadas.descripcionPanelInfo,

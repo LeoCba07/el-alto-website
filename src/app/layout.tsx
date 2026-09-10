@@ -28,7 +28,9 @@ const geistSans = Geist({
 const merriweather = Merriweather({
   variable: "--font-merriweather",
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  // Every font-serif in the app is paired with font-bold; 300, 400 and 900
+  // were downloaded on each first visit and never drawn.
+  weight: ["700"],
 });
 
 const baseUrl = SITE_CONFIG.BASE_URL;
