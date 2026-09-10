@@ -73,7 +73,10 @@ export default function Hero({
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
       {/* Content - Spread across full height */}
-      <div className="relative z-10 flex h-full flex-col justify-between py-32 md:py-40">
+      {/* Below sm the hero buttons span wide enough to reach the floating chat
+          and WhatsApp stack, which rises 140px from the bottom; pb-38 (152px)
+          keeps them 12px clear at any screen height. */}
+      <div className="relative z-10 flex h-full flex-col justify-between pt-32 pb-38 sm:pb-32 md:py-40">
         {/* Top - Tagline */}
         <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
           <p className="font-medium tracking-[0.06em] sm:tracking-[0.3em] uppercase text-[0.7rem] sm:text-sm md:text-base text-white/90 drop-shadow-lg">
@@ -93,13 +96,20 @@ export default function Hero({
 
         {/* Bottom - CTA & Info */}
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
-          <p className="mb-5 font-medium tracking-[0.04em] sm:tracking-[0.2em] uppercase text-[0.75rem] sm:text-sm text-white drop-shadow-lg">
+          {/* Tighter mobile margins here (mb-4, mt-5) give back the 12px the
+              larger bottom padding takes, so short phones keep today's spacing. */}
+          <p className="mb-4 sm:mb-5 font-medium tracking-[0.04em] sm:tracking-[0.2em] uppercase text-[0.75rem] sm:text-sm text-white drop-shadow-lg">
             Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
           </p>
           <HeroBookingWidget />
-          <div className="mt-7 sm:mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button href={linkBoton} variant="outline-light" size="md" className="shadow-xl md:px-8 md:py-4 md:text-lg">
+          {/* Two buttons share one row even at 375px, so they start at the small
+              size and grow back to the usual size from sm up. */}
+          <div className="mt-5 sm:mt-8 flex flex-row justify-center gap-3 sm:gap-4">
+            <Button href={linkBoton} variant="outline-light" size="sm" className="shadow-xl sm:px-8 sm:py-3 sm:text-base md:py-4 md:text-lg">
               {textoBoton}
+            </Button>
+            <Button href="/precios" variant="outline-light" size="sm" className="shadow-xl sm:px-8 sm:py-3 sm:text-base md:py-4 md:text-lg">
+              Ver precios
             </Button>
           </div>
         </div>
