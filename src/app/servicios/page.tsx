@@ -35,6 +35,7 @@ const iconPaths: Record<string, string> = {
   climate: 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z',
   safe: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
   hairdryer: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z',
+  grill: 'M4 10h16a8 6 0 01-16 0zM8.5 15.5L7 21m8.5-5.5L17 21M10 3.5c.8.8.8 1.7 0 2.5m4-2.5c.8.8.8 1.7 0 2.5',
   car: 'M8 17h.01M16 17h.01M3 11l1.5-5.5A2 2 0 016.4 4h11.2a2 2 0 011.9 1.5L21 11M3 11v6a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-6M3 11h18',
   kids: 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
   gym: 'M3 12h1m16 0h1m-15.5 0h-1V8.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v7a.5.5 0 01-.5.5H5a.5.5 0 01-.5-.5V12zm12 0h1v3.5a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-7a.5.5 0 01.5-.5h1a.5.5 0 01.5.5V12zm-9.5 0h9',
@@ -200,6 +201,7 @@ export default async function ServiciosPage() {
                   En el complejo
                 </h3>
                 <div className="space-y-3">
+                  <AmenityRow icon="grill" label="Zona de parrilla" pill="Uso común" />
                   <AmenityRow icon="car" label="Cochera techada" pill="1 por unidad" />
                   <AmenityRow icon="kids" label="Sala de juegos para chicos" />
                   <AmenityRow icon="map" label="Info turística y excursiones" />
