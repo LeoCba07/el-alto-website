@@ -72,9 +72,9 @@ export default function HeroBookingWidget() {
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      {/* 80% keeps labels at 5.6:1 and text at 8.9:1 even over pure black;
-          at 70% the green labels drop below 4.5:1. */}
-      <div className="rounded-2xl bg-cream/80 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-md overflow-hidden">
+      {/* 90%: a touch lighter than the original 95%. 80% read as too see-through,
+          though contrast held (labels 5.6:1 over pure black); at 70% it fails AA. */}
+      <div className="rounded-2xl bg-cream/90 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-md overflow-hidden">
         <div className="grid grid-cols-2 sm:grid-cols-[1fr_1fr_auto_auto]">
           <div className="text-left px-4 py-3">
             <label className={labelClass} htmlFor="hero-checkin">Entrada</label>
