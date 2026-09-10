@@ -45,7 +45,9 @@ export default function Footer({ config }: FooterProps) {
 
   return (
     <footer className="bg-forest-dark text-white">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Below lg the centred text runs under the floating chat and WhatsApp
+          buttons, which stack up to 140px from the bottom; leave room for them. */}
+      <div className="max-w-6xl mx-auto px-4 pt-8 pb-40 lg:pb-8">
         {/* Top row: Brand + Nav + Social */}
         <div className="flex flex-col items-center lg:flex-row lg:justify-between gap-6 pb-6 border-b border-cream/10">
           {/* Brand */}

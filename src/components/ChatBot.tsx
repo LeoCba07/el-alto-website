@@ -158,7 +158,8 @@ export default function ChatBot({
   respuestas,
   siteConfig,
   tarifas,
-  positionClassName = 'bottom-24 right-4 md:right-6',
+  // Sits 12px above the WhatsApp button (bottom-4 + h-14 = 72px, + 12 = 84px).
+  positionClassName = 'bottom-21 right-4 md:right-6',
 }: ChatBotProps) {
   const router = useRouter()
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
