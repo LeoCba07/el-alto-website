@@ -100,7 +100,7 @@ export default function Hero({
 
           {/* Center - Main Title */}
           <div className="text-center px-6">
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
+            <h1 className="text-[4.0625rem] md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
               {titulo}
             </h1>
             <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
