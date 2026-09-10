@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import HeroBookingWidget from './HeroBookingWidget'
 import Button from './Button'
 import { HiOutlineChevronDown } from 'react-icons/hi2'
 import { useState, useEffect, useCallback } from 'react'
@@ -95,12 +96,10 @@ export default function Hero({
           <p className="mb-8 text-base md:text-lg text-white tracking-wide font-semibold [text-shadow:_0_2px_8px_rgb(0_0_0_/_90%)]">
             Desde 1996 · A 20 minutos de Villa Carlos Paz
           </p>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <HeroBookingWidget />
+          <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Button href={linkBoton} variant="primary" size="lg" className="shadow-xl hover:shadow-amber/25">
               {textoBoton}
-            </Button>
-            <Button href="/contacto" variant="secondary" size="lg" className="shadow-xl">
-              Consultar disponibilidad
             </Button>
           </div>
         </div>
