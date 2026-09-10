@@ -13,6 +13,8 @@ export interface Video {
   id: string
   titulo: string
   descripcion?: string
+  // Resolved on the server by youtubeThumbnail().
+  thumb: string
 }
 
 export interface VideosSectionProps {
@@ -22,10 +24,8 @@ export interface VideosSectionProps {
 
 // A standard YouTube embed loads about 1 MB of player per video up front.
 // Show the thumbnail instead, and only mount the player once someone asks for it.
-function LiteYouTube({ id, titulo }: Video) {
+function LiteYouTube({ id, titulo, thumb }: Video) {
   const [playing, setPlaying] = useState(false)
-  // Older uploads have no maxres thumbnail; hqdefault always exists.
-  const [thumb, setThumb] = useState(`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`)
 
   if (playing) {
     return (
@@ -49,16 +49,7 @@ function LiteYouTube({ id, titulo }: Video) {
       aria-label={`Reproducir video: ${titulo}`}
       className="group absolute inset-0 w-full h-full cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-amber"
     >
-      <Image
-        src={thumb}
-        alt=""
-        fill
-        unoptimized
-        className="object-cover"
-        onError={() => {
-          if (thumb.includes('maxresdefault')) setThumb(`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
-        }}
-      />
+      <Image src={thumb} alt="" fill unoptimized className="object-cover" />
       <span className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
       <span className="absolute inset-0 flex items-center justify-center">
         <span className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/90 text-forest-dark shadow-lg group-hover:scale-110 transition-transform">

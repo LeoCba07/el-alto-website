@@ -10,7 +10,7 @@ import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
 import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery, testimoniosQuery, atraccionesCercanasQuery, videosInicioQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
-import { youtubeId } from '@/lib/youtube'
+import { youtubeId, youtubeThumbnail } from '@/lib/youtube'
 import { SiteConfig } from '@/lib/types'
 import type { TestimonialsProps } from '@/components/Testimonials'
 import type { LocationTeaserProps } from '@/components/LocationTeaser'
@@ -121,17 +121,21 @@ export default async function Home() {
     : {}
 
   // No hardcoded fallback: with nothing in Sanity the section simply isn't rendered.
-  const videos = sanityVideos.flatMap(v => {
-    const id = youtubeId(v.url)
-    return id && v.titulo ? [{ id, titulo: v.titulo, descripcion: v.descripcion, fechaPublicacion: v.fechaPublicacion }] : []
-  })
+  const videos = await Promise.all(
+    sanityVideos
+      .flatMap(v => {
+        const id = youtubeId(v.url)
+        return id && v.titulo ? [{ id, titulo: v.titulo, descripcion: v.descripcion, fechaPublicacion: v.fechaPublicacion }] : []
+      })
+      .map(async v => ({ ...v, thumb: await youtubeThumbnail(v.id) }))
+  )
 
   const videosJsonLd = videos.map(v => ({
     '@context': 'https://schema.org',
     '@type': 'VideoObject',
     name: v.titulo,
     description: v.descripcion || v.titulo,
-    thumbnailUrl: `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`,
+    thumbnailUrl: v.thumb,
     uploadDate: v.fechaPublicacion,
     embedUrl: `https://www.youtube.com/embed/${v.id}`,
     contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
