@@ -32,7 +32,7 @@ export default function Hero({
   titulo = 'El Alto',
   descripcion = 'Tranquilidad serrana con calidez familiar',
   imagenes,
-  textoBoton = 'Ver alojamientos',
+  textoBoton = 'Ver unidades',
   linkBoton = '/unidades',
 }: HeroProps) {
   const heroImages = imagenes?.length ? imagenes.map(img => img.url) : defaultImages
@@ -79,9 +79,6 @@ export default function Hero({
           <p className="font-medium tracking-[0.06em] sm:tracking-[0.3em] uppercase text-[0.7rem] sm:text-sm md:text-base text-white/90 drop-shadow-lg">
             {subtitulo}
           </p>
-          <p className="mt-1.5 font-medium tracking-[0.08em] sm:tracking-[0.2em] uppercase text-[0.65rem] sm:text-xs md:text-sm text-white/70 drop-shadow-lg">
-            Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
-          </p>
         </div>
 
         {/* Center - Main Title */}
@@ -96,9 +93,12 @@ export default function Hero({
 
         {/* Bottom - CTA & Info */}
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
+          <p className="mb-5 font-medium tracking-[0.04em] sm:tracking-[0.2em] uppercase text-[0.75rem] sm:text-sm text-white/85 drop-shadow-lg">
+            Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
+          </p>
           <HeroBookingWidget />
-          <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button href={linkBoton} variant="outline-light" size="lg" className="shadow-xl">
+          <div className="mt-7 sm:mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Button href={linkBoton} variant="outline-light" size="md" className="shadow-xl md:px-8 md:py-4 md:text-lg">
               {textoBoton}
             </Button>
           </div>
