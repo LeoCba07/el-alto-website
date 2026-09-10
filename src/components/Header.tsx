@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { HiOutlineHome, HiOutlineHomeModern, HiOutlineSquares2X2, HiOutlineChatBubbleBottomCenterText, HiOutlineClipboardDocumentList, HiBars3, HiXMark, HiOutlineChevronRight } from 'react-icons/hi2'
+import { HiOutlineHome, HiOutlineHomeModern, HiOutlineCurrencyDollar, HiOutlineSquares2X2, HiOutlineChatBubbleBottomCenterText, HiOutlineClipboardDocumentList, HiBars3, HiXMark, HiOutlineChevronRight } from 'react-icons/hi2'
 
 const navLinks = [
   {
@@ -16,6 +16,11 @@ const navLinks = [
     href: '/unidades',
     label: 'Unidades',
     Icon: HiOutlineHomeModern,
+  },
+  {
+    href: '/precios',
+    label: 'Precios',
+    Icon: HiOutlineCurrencyDollar,
   },
   {
     href: '/servicios',

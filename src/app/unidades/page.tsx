@@ -1,8 +1,8 @@
 import { client } from '@/sanity/lib/client'
-import { unidadesQuery, tarifasTemporadaQuery } from '@/sanity/lib/queries'
+import { unidadesQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { DEFAULT_AMENITIES } from '@/lib/constants'
-import UnidadesClient, { UnidadType, TarifasData } from './UnidadesClient'
+import UnidadesClient, { UnidadType } from './UnidadesClient'
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
@@ -22,12 +22,6 @@ interface SanityUnidad {
   }>
 }
 
-interface SanityTarifasDocument {
-  temporadaAlta?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  temporadaMedia?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  temporadaBaja?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-}
-
 async function getUnidadesData() {
   try {
     const unidades = await client.fetch<SanityUnidad[]>(unidadesQuery)
@@ -37,29 +31,8 @@ async function getUnidadesData() {
   }
 }
 
-async function getTarifasData(): Promise<TarifasData | null> {
-  try {
-    const tarifasDoc = await client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery)
-
-    if (!tarifasDoc?.temporadaAlta || !tarifasDoc?.temporadaMedia || !tarifasDoc?.temporadaBaja) {
-      return null
-    }
-
-    return {
-      alta: tarifasDoc.temporadaAlta,
-      media: tarifasDoc.temporadaMedia,
-      baja: tarifasDoc.temporadaBaja,
-    }
-  } catch {
-    return null
-  }
-}
-
 export default async function UnidadesPage() {
-  const [unidadesData, tarifasData] = await Promise.all([
-    getUnidadesData(),
-    getTarifasData()
-  ])
+  const unidadesData = await getUnidadesData()
 
   // Fallback photos for each unit type
   const fallbackPhotos: Record<string, string[]> = {
@@ -85,5 +58,5 @@ export default async function UnidadesPage() {
       }))
     : undefined
 
-  return <UnidadesClient unidades={unidades} tarifas={tarifasData} />
+  return <UnidadesClient unidades={unidades} />
 }

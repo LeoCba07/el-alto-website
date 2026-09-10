@@ -50,3 +50,15 @@ export interface SiteConfig {
 export function getConfigValue<T>(value: T | undefined, fallback: T): T {
   return value !== undefined ? value : fallback
 }
+
+export interface TarifaTemporada {
+  nombre: string
+  periodo: string
+  precios: { capacidad: string; precio: number }[]
+}
+
+export interface TarifasData {
+  alta: TarifaTemporada
+  media: TarifaTemporada
+  baja: TarifaTemporada
+}

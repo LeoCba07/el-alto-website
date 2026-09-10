@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Unidades y Tarifas",
+  title: "Unidades",
   description:
-    "12 unidades con capacidad de 2 a 6 personas. Dúplex, estándar, compactas y para parejas. Tarifas actualizadas por temporada.",
+    "12 unidades con capacidad de 2 a 6 personas en Tanti, Córdoba. Monoambientes para parejas, unidades familiares y de dos plantas para grupos.",
   alternates: {
     canonical: "/unidades",
   },
   openGraph: {
-    title: "Unidades y Tarifas | Complejo El Alto",
+    title: "Unidades | Complejo El Alto",
     description:
-      "12 unidades con capacidad de 2 a 6 personas en Tanti, Córdoba. Consulta disponibilidad y tarifas.",
+      "12 unidades con capacidad de 2 a 6 personas en Tanti, Córdoba. Consultá disponibilidad.",
     url: "/unidades",
     images: ["/og-image.jpg"],
   },

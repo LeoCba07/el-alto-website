@@ -10,6 +10,7 @@ import { SiteConfig } from '@/lib/types'
 const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/unidades', label: 'Unidades' },
+  { href: '/precios', label: 'Precios' },
   { href: '/servicios', label: 'Servicios' },
   { href: '/normas', label: 'Normas' },
   { href: '/consultas-frecuentes', label: 'Preguntas' },

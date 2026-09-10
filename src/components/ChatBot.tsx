@@ -56,7 +56,7 @@ function getTarifasSummaryFromData(tarifas?: TarifasData): string {
 
 // Links to pages for "Para más información"
 const INFO_LINKS: Record<string, { url: string; label: string }> = {
-  tarifas: { url: '/unidades#tarifas', label: 'ver todas las tarifas' },
+  tarifas: { url: '/precios', label: 'ver todas las tarifas' },
   servicios: { url: '/servicios', label: 'ver todos los servicios' },
   mas_servicios: { url: '/servicios', label: 'ver servicios' },
   ubicacion: { url: '/contacto', label: 'ver ubicación' },
@@ -273,7 +273,7 @@ export default function ChatBot({
 
     // Handle special actions
     if (option === 'ver_tarifas') {
-      router.push('/unidades#tarifas')
+      router.push('/precios')
       return
     }
     if (option === 'ver_unidades') {
