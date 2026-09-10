@@ -76,10 +76,10 @@ export default function Hero({
       <div className="relative z-10 flex h-full flex-col justify-between py-32 md:py-40">
         {/* Top - Tagline */}
         <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
-          <p className="font-medium tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
+          <p className="font-medium tracking-[0.06em] sm:tracking-[0.3em] uppercase text-[0.7rem] sm:text-sm md:text-base text-white/90 drop-shadow-lg">
             {subtitulo}
           </p>
-          <p className="mt-2 font-medium tracking-[0.2em] uppercase text-xs md:text-sm text-white/70 drop-shadow-lg">
+          <p className="mt-1.5 font-medium tracking-[0.08em] sm:tracking-[0.2em] uppercase text-[0.65rem] sm:text-xs md:text-sm text-white/70 drop-shadow-lg">
             Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
           </p>
         </div>
