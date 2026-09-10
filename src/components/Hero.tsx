@@ -78,33 +78,35 @@ export default function Hero({
       {/* Gradient overlay for better readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
-      {/* Content. Below md the blocks share the spare height evenly (above,
-          between and below, never less than 12px apart), so tall phones get
-          neither the old wide bands nor a cramped group with empty space
-          under it; from md up the three blocks spread across the height as
+      {/* Content. Below md the bottom block (Desde line, widget, buttons)
+          rests on the floor, and the tagline and title share the height above
+          it evenly, never less than 12px apart. From md up the wrapper is
+          display: contents, so the three blocks spread across the height as
           before.
           min-h-svh rather than h-screen: on iOS 100vh includes the area behind
           the browser bars, which hid the bottom of the hero and slid it under
-          the floating buttons. pt-20 clears the h-16 header; pb-38 (152px)
-          keeps the hero buttons 12px above the floating chat/WhatsApp stack,
-          which rises 140px. On screens too short for all of it, the hero
-          grows and scrolls rather than clipping. */}
-      <div className="relative z-10 flex min-h-svh flex-col justify-evenly gap-3 pt-20 pb-38 sm:pb-32 md:justify-between md:gap-0 md:py-40">
-        {/* Top - Tagline */}
-        <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
-          <p className="font-medium tracking-[0.02em] sm:tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
-            {subtitulo}
-          </p>
-        </div>
+          the floating buttons. pt-18 clears the h-16 header by 8px; pb-38
+          (152px) is the floor, keeping the hero buttons 12px above the
+          floating chat/WhatsApp stack, which rises 140px. On screens too short
+          for all of it, the hero grows and scrolls rather than clipping. */}
+      <div className="relative z-10 flex min-h-svh flex-col justify-evenly gap-3 pt-18 pb-38 sm:pb-32 md:justify-between md:gap-0 md:py-40">
+        <div className="flex flex-1 flex-col justify-evenly gap-3 md:contents">
+          {/* Top - Tagline */}
+          <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
+            <p className="font-medium tracking-[0.02em] sm:tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
+              {subtitulo}
+            </p>
+          </div>
 
-        {/* Center - Main Title */}
-        <div className="text-center px-6">
-          <h1 className="text-[3.375rem] sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
-            {titulo}
-          </h1>
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
-            {descripcion}
-          </p>
+          {/* Center - Main Title */}
+          <div className="text-center px-6">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
+              {titulo}
+            </h1>
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
+              {descripcion}
+            </p>
+          </div>
         </div>
 
         {/* Bottom - CTA & Info */}
