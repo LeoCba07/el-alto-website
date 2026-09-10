@@ -44,6 +44,23 @@ export default defineType({
       description: 'Ej: "Hasta 6", "2 a 4"',
     }),
     defineField({
+      name: 'amenities',
+      title: 'Qué incluye',
+      type: 'array',
+      description: 'Se muestran como iconos en la unidad. Si lo dejás vacío se muestran los servicios comunes a todas.',
+      of: [{ type: 'string' }],
+      options: {
+        list: [
+          { title: 'Wi-Fi', value: 'wifi' },
+          { title: 'Cocina equipada', value: 'cocina' },
+          { title: 'Cochera cubierta', value: 'cochera' },
+          { title: 'Asador propio', value: 'asador' },
+          { title: 'Aire acondicionado', value: 'aire' },
+          { title: 'TV', value: 'tv' },
+        ],
+      },
+    }),
+    defineField({
       name: 'cantidad',
       title: 'Cantidad de unidades',
       type: 'number',

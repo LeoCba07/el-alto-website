@@ -1,6 +1,7 @@
 import { client } from '@/sanity/lib/client'
 import { unidadesQuery, tarifasTemporadaQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
+import { DEFAULT_AMENITIES } from '@/lib/constants'
 import UnidadesClient, { UnidadType, TarifasData } from './UnidadesClient'
 
 // Force dynamic rendering to show Sanity updates immediately
@@ -9,13 +10,12 @@ export const dynamic = 'force-dynamic'
 interface SanityUnidad {
   _id: string
   nombre: string
-  slug?: { current: string }
   tipo: string
   descripcion: string
   destacado?: string
   capacidadTexto: string
-  capacidadMaxima: number
   cantidad: number
+  amenities?: string[]
   fotos?: Array<{
     asset: { _ref: string }
     alt?: string
@@ -76,6 +76,7 @@ export default async function UnidadesPage() {
         nombre: unidad.nombre,
         capacidad: unidad.capacidadTexto,
         cantidad: unidad.cantidad,
+        amenities: unidad.amenities?.length ? unidad.amenities : [...DEFAULT_AMENITIES],
         descripcion: unidad.descripcion,
         destacado: unidad.destacado || '',
         photos: unidad.fotos?.length

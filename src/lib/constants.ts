@@ -132,3 +132,18 @@ export const formatTimeDisplay = (time: string): string => {
 // Tarifas are now managed exclusively in Sanity Studio
 // See: src/sanity/schemaTypes/tarifaTemporada.ts
 // To seed initial data: node scripts/seed-tarifas.mjs
+
+// Amenities shown per unit. Keys match the option list in the `unidad` schema.
+export const AMENITY_LABELS: Record<string, string> = {
+  wifi: 'Wi-Fi',
+  cocina: 'Cocina equipada',
+  cochera: 'Cochera cubierta',
+  asador: 'Asador propio',
+  aire: 'Aire acondicionado',
+  tv: 'TV',
+}
+
+// Shown when a unit has no amenities loaded in Sanity. Every unit currently
+// offers all of these, so an empty CMS still describes them correctly; tag a
+// unit in the Studio to override this for that unit alone.
+export const DEFAULT_AMENITIES = ['wifi', 'cocina', 'cochera', 'asador', 'aire'] as const

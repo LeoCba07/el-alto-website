@@ -13,11 +13,19 @@ import {
   HiOutlineClipboardDocumentList,
   HiOutlineChatBubbleLeftRight,
 } from 'react-icons/hi2'
-import { MdOutlinePool } from 'react-icons/md'
+import {
+  MdOutlinePool,
+  MdOutlineWifi,
+  MdOutlineKitchen,
+  MdOutlineLocalParking,
+  MdOutlineOutdoorGrill,
+  MdOutlineAcUnit,
+  MdOutlineTv,
+} from 'react-icons/md'
 import { SiWhatsapp } from 'react-icons/si'
 import { IconType } from 'react-icons'
 import PhotoCarousel, { CarouselPhoto } from '@/components/PhotoCarousel'
-import { RESERVATION_POLICIES, OPTIONAL_SERVICES } from '@/lib/constants'
+import { RESERVATION_POLICIES, OPTIONAL_SERVICES, DEFAULT_AMENITIES, AMENITY_LABELS } from '@/lib/constants'
 
 export interface UnidadType {
   id: string
@@ -27,6 +35,7 @@ export interface UnidadType {
   cantidad: number
   descripcion: string
   destacado: string
+  amenities: string[]
   photos: CarouselPhoto[]
 }
 
@@ -48,6 +57,15 @@ export interface UnidadesClientProps {
   tarifas?: TarifasData | null
 }
 
+const amenityIcons: Record<string, IconType> = {
+  wifi: MdOutlineWifi,
+  cocina: MdOutlineKitchen,
+  cochera: MdOutlineLocalParking,
+  asador: MdOutlineOutdoorGrill,
+  aire: MdOutlineAcUnit,
+  tv: MdOutlineTv,
+}
+
 const iconMap: Record<string, IconType> = {
   duplex: HiOutlineSquare3Stack3D,
   standard: HiOutlineHome,
@@ -61,6 +79,7 @@ const defaultUnidades: UnidadType[] = [
     tipo: 'duplex',
     nombre: 'Dúplex',
     capacidad: 'Hasta 6',
+    amenities: [...DEFAULT_AMENITIES],
     cantidad: 2,
     descripcion: 'Dos plantas amplias con living-comedor abajo y dormitorios arriba. Ideales para familias o grupos.',
     destacado: 'Máxima capacidad',
@@ -75,6 +94,7 @@ const defaultUnidades: UnidadType[] = [
     tipo: 'standard',
     nombre: 'Estándar',
     capacidad: '2 a 4',
+    amenities: [...DEFAULT_AMENITIES],
     cantidad: 4,
     descripcion: 'Amplias y completas, con todo lo necesario para una estadía confortable.',
     destacado: 'Las más populares',
@@ -89,6 +109,7 @@ const defaultUnidades: UnidadType[] = [
     tipo: 'compact',
     nombre: 'Compactas',
     capacidad: '2 a 3',
+    amenities: [...DEFAULT_AMENITIES],
     cantidad: 4,
     descripcion: 'Funcionales y acogedoras, con excelente relación precio-calidad.',
     destacado: 'Mejor precio',
@@ -102,6 +123,7 @@ const defaultUnidades: UnidadType[] = [
     tipo: 'couple',
     nombre: 'Parejas',
     capacidad: '2',
+    amenities: [...DEFAULT_AMENITIES],
     cantidad: 2,
     descripcion: 'Íntimas y románticas, perfectas para una escapada en pareja.',
     destacado: 'Románticas',
@@ -207,15 +229,18 @@ export default function UnidadesClient({ unidades, tarifas }: UnidadesClientProp
                     {displayedUnit.destacado}
                   </span>
                   <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
-                    Unidades {displayedUnit.nombre}
+                    {displayedUnit.nombre}
                   </h2>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 mb-6 pb-6 border-b border-sand">
-                <div className="flex items-center gap-2 bg-forest-dark/5 px-4 py-2 rounded-full">
-                  <HiOutlineUserGroup className="w-5 h-5 text-forest" />
-                  <span className="font-semibold text-forest-dark">{displayedUnit.capacidad} personas</span>
+              <div className="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-sand">
+                <div className="flex items-center gap-2.5 bg-amber/15 border border-amber/40 px-4 py-2.5 rounded-xl">
+                  <HiOutlineUserGroup className="w-6 h-6 text-amber-dark shrink-0" aria-hidden="true" />
+                  <span className="text-lg font-bold text-forest-dark leading-none">
+                    {displayedUnit.capacidad}
+                    <span className="font-medium text-text-medium text-sm"> personas</span>
+                  </span>
                 </div>
                 <div className="text-sm text-text-medium">
                   {displayedUnit.cantidad} {displayedUnit.cantidad === 1 ? 'unidad disponible' : 'unidades disponibles'}
@@ -225,6 +250,27 @@ export default function UnidadesClient({ unidades, tarifas }: UnidadesClientProp
               <p className="text-text-medium mb-6 leading-relaxed">
                 {displayedUnit.descripcion}
               </p>
+
+              {displayedUnit.amenities.length > 0 && (
+                <div className="mb-6 pb-6 border-b border-sand">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-text-light mb-3">
+                    Qué incluye
+                  </p>
+                  <ul className="grid grid-cols-2 gap-y-2.5 gap-x-3">
+                    {displayedUnit.amenities.map((key) => {
+                      const Icon = amenityIcons[key]
+                      const label = AMENITY_LABELS[key]
+                      if (!Icon || !label) return null
+                      return (
+                        <li key={key} className="flex items-center gap-2 text-sm text-text-medium">
+                          <Icon className="w-4 h-4 text-forest shrink-0" aria-hidden="true" />
+                          <span>{label}</span>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              )}
 
               <Link
                 href="/contacto"

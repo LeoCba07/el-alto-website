@@ -18,19 +18,16 @@ export const unidadesQuery = groq`
   *[_type == "unidad"] | order(orden asc) {
     _id,
     nombre,
-    slug,
     tipo,
     descripcion,
     destacado,
     capacidadTexto,
-    capacidadMaxima,
     cantidad,
     amenities,
     fotos[] {
       asset->,
       alt
     },
-    precioBase
   }
 `
 
@@ -43,7 +40,6 @@ export const unidadBySlugQuery = groq`
     descripcion,
     destacado,
     capacidadTexto,
-    capacidadMaxima,
     cantidad,
     amenities,
     fotos[] {
