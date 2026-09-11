@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { trackEvent } from '@/lib/analytics'
 import {
   HiXMark,
@@ -175,6 +175,23 @@ export default function ChatBot({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const lastMessageRef = useRef<HTMLDivElement>(null)
   const [showPulse, setShowPulse] = useState(true)
+
+  // On the homepage the hero already carries the enquiry widget and the
+  // WhatsApp button, so the assistant waits until the hero is mostly scrolled
+  // past. Pages without a hero show it straight away. It starts hidden so the
+  // homepage doesn't flash it before this runs.
+  const pathname = usePathname()
+  const [pastHero, setPastHero] = useState(false)
+  useEffect(() => {
+    const hero = document.getElementById('hero')
+    const check = () => setPastHero(!hero || hero.getBoundingClientRect().bottom < window.innerHeight * 0.5)
+    const frame = requestAnimationFrame(check)
+    if (hero) window.addEventListener('scroll', check, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', check)
+    }
+  }, [pathname])
 
   // Extract config values with fallbacks to constants
   const horarios = siteConfig?.horarios
@@ -429,11 +446,15 @@ export default function ChatBot({
     }
   }
 
+  // Once open it stays put, even if the guest scrolls back up to the hero.
+  const hiddenOnHero = !pastHero && animationStage === 'closed'
+
   return (
     <div
+      inert={hiddenOnHero}
       // transform-gpu: own layer, like the header and WhatsApp button, for
       // Chrome for iOS's first-open painting.
-      className={`fixed ${positionClassName} z-50 transform-gpu transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''}`}
+      className={`fixed ${positionClassName} z-50 transform-gpu transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''} ${hiddenOnHero ? 'opacity-0 translate-y-4 pointer-events-none' : ''}`}
       style={{
         background: animationStage === 'closed' ? 'var(--color-forest)' : 'white'
       }}

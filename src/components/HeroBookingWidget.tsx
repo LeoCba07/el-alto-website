@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, type MouseEvent } from 'react'
-import { HiOutlineCalendarDays, HiOutlineUserGroup } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
@@ -76,12 +75,14 @@ export default function HeroBookingWidget() {
     )
   }
 
-  // Phones fit all three fields in one row (down to 360px), so labels track a
-  // little tighter and the date text drops to 13px there.
-  const cellClass = 'min-w-0 text-left px-2.5 sm:px-4 py-3'
+  // Phones fit all three fields in one row (down to 360px), so labels shrink
+  // and track tighter and the date text drops to 13px there; a wider
+  // "Personas" squeezed the dates until "Elegir fecha" clipped. Labels carry
+  // no icons: the date inputs already draw their own calendar glyph, and two
+  // per cell read as clutter.
+  const cellClass = 'min-w-0 text-left px-2 sm:px-4 py-3'
   const labelClass =
-    'flex items-center gap-1 text-[0.65rem] font-semibold uppercase tracking-[0.06em] sm:tracking-[0.12em] text-forest mb-0.5'
-  const labelIconClass = 'w-3.5 h-3.5 shrink-0'
+    'block text-[0.65rem] sm:text-[0.6875rem] font-semibold uppercase tracking-[0.06em] sm:tracking-[0.1em] text-forest mb-0.5'
   const fieldBase =
     'min-w-0 w-full bg-transparent font-medium rounded-md px-1 py-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber'
   const inputClass = `${fieldBase} text-sm text-text-dark`
@@ -96,10 +97,10 @@ export default function HeroBookingWidget() {
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      {/* 90%: a touch lighter than the original 95%. 80% read as too see-through,
-          though contrast held (labels 5.6:1 over pure black); at 70% it fails AA. */}
+      {/* Solid cream: at 90% with a blur the photo tinted it a little
+          differently on every slide, which read as grey rather than glass. */}
       <div
-        className={`rounded-2xl bg-cream/90 shadow-2xl ring-1 ring-text-dark/10 backdrop-blur-md overflow-hidden ${shaking ? 'motion-safe:animate-shake' : ''}`}
+        className={`rounded-2xl bg-cream shadow-2xl ring-1 ring-text-dark/10 overflow-hidden ${shaking ? 'motion-safe:animate-shake' : ''}`}
         onAnimationEnd={() => setShaking(false)}
       >
         {/* Phones: Entrada, Salida and Personas share the first row and
@@ -107,7 +108,6 @@ export default function HeroBookingWidget() {
         <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:grid-cols-[1fr_1fr_auto_auto]">
           <div className={cellClass}>
             <label className={labelClass} htmlFor="hero-checkin">
-              <HiOutlineCalendarDays className={labelIconClass} aria-hidden="true" />
               Entrada
             </label>
             <div className="relative">
@@ -126,7 +126,6 @@ export default function HeroBookingWidget() {
 
           <div className={`${cellClass} border-l border-sand`}>
             <label className={labelClass} htmlFor="hero-checkout">
-              <HiOutlineCalendarDays className={labelIconClass} aria-hidden="true" />
               Salida
             </label>
             <div className="relative">
@@ -145,7 +144,6 @@ export default function HeroBookingWidget() {
 
           <div className={`${cellClass} border-l border-sand`}>
             <label className={labelClass} htmlFor="hero-guests">
-              <HiOutlineUserGroup className={labelIconClass} aria-hidden="true" />
               Personas
             </label>
             <select
@@ -161,12 +159,14 @@ export default function HeroBookingWidget() {
           </div>
 
           <div className="col-span-3 sm:col-span-1 border-t sm:border-t-0 border-sand p-2 sm:p-2.5 flex">
+            {/* Brand forest rather than WhatsApp green: white on #25D366 is
+                about 2:1. The green stays on the glyph, which is the cue. */}
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 text-white font-semibold text-sm py-3 sm:py-0 shadow-sm transition-all hover:bg-[#1eb257] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-forest-dark px-5 text-white font-semibold text-sm py-3 sm:py-0 shadow-sm transition-all hover:bg-forest hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber"
             >
-              <SiWhatsapp className="w-4 h-4" aria-hidden="true" />
+              <SiWhatsapp className="w-4 h-4 text-[#25D366]" aria-hidden="true" />
               Consultar
             </button>
           </div>

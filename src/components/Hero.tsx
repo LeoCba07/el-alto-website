@@ -1,10 +1,10 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import HeroBookingWidget from './HeroBookingWidget'
-import Button from './Button'
 import { HiOutlineChevronDown } from 'react-icons/hi2'
-import { useState, useEffect, useCallback } from 'react'
+import { Fragment, useState, useEffect, useCallback } from 'react'
 import { ANIMATION_TIMING, FOUNDING_YEAR } from '@/lib/constants'
 
 interface HeroImage {
@@ -28,9 +28,9 @@ const defaultImages = [
 ]
 
 export default function Hero({
-  subtitulo = 'Complejo de alojamiento en Tanti, Córdoba',
+  subtitulo = `Tanti · Sierras de Córdoba · Desde ${FOUNDING_YEAR}`,
   titulo = 'El Alto',
-  descripcion = 'Tranquilidad serrana con calidez familiar',
+  descripcion = 'Tranquilidad serrana, a 20 minutos de Villa Carlos Paz',
   imagenes,
   textoBoton = 'Ver unidades',
   linkBoton = '/unidades',
@@ -68,6 +68,11 @@ export default function Hero({
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
+  const secondaryLinks = [
+    { href: linkBoton, label: textoBoton },
+    { href: '/precios', label: 'Ver precios' },
+  ]
+
   return (
     // The photo spans at least 100vh, which on iOS is the height with the
     // browser bars collapsed, so once iOS shrinks its bars on scroll the next
@@ -100,23 +105,25 @@ export default function Hero({
       {/* Gradient overlay for better readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
-      {/* Content. Below md the bottom block (Desde line, widget, buttons)
-          rests on the floor, and the tagline and title share the height above
-          it evenly, never less than 12px apart. From md up the wrapper is
+      {/* Content. Below md the bottom block (widget and links) rests on the
+          floor, and the tagline and title share the height above it evenly,
+          never less than 12px apart. From md up the wrapper is
           display: contents, so the three blocks spread across the height as
           before.
           The measured visible height (--hero-vh, see the effect above) rather
           than h-screen: on iOS 100vh includes the area behind the browser
           bars, which hid the bottom of the hero and slid it under the
           floating buttons. pt-18 clears the h-16 header by 8px; pb-38
-          (152px) is the floor, keeping the hero buttons 12px above the
-          floating chat/WhatsApp stack, which rises 140px. On screens too short
-          for all of it, the hero grows and scrolls rather than clipping. */}
+          (152px) is the floor, keeping the hero links 12px above the
+          floating chat/WhatsApp stack, which rises 140px (the chat stays
+          hidden over the hero, see ChatBot). On screens too short for all of
+          it, the hero grows and scrolls rather than clipping. */}
       <div className="relative z-10 flex min-h-[var(--hero-vh,100vh)] flex-col justify-evenly gap-3 pt-18 pb-38 sm:pb-32 md:justify-between md:gap-0 md:py-40">
         <div className="flex flex-1 flex-col justify-evenly gap-3 md:contents">
-          {/* Top - Tagline */}
+          {/* Top - Tagline. Carries place and age, so the hero needs no
+              second caps line near the widget. */}
           <div className="text-center px-6 animate-fade-in-down opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.tagline}s`, animationFillMode: 'forwards' }}>
-            <p className="font-medium tracking-[0.02em] sm:tracking-[0.3em] uppercase text-sm md:text-base text-white/90 drop-shadow-lg">
+            <p className="font-medium tracking-[0.08em] sm:tracking-[0.18em] uppercase text-xs sm:text-sm text-balance text-white/85 drop-shadow-lg">
               {subtitulo}
             </p>
           </div>
@@ -126,29 +133,39 @@ export default function Hero({
             <h1 className="text-[4.0625rem] md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
               {titulo}
             </h1>
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white text-balance drop-shadow-xl animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
-              {descripcion}
+            {/* Regular rather than light: thin white type dissolved into the photo. */}
+            <p className="max-w-2xl mx-auto text-lg sm:text-xl md:text-2xl font-normal text-white text-balance drop-shadow-xl [text-shadow:_0_1px_12px_rgb(0_0_0_/_45%)] animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.subtitle}s`, animationFillMode: 'forwards' }}>
+              {/* Each comma-separated clause is an inline-block, so a phone
+                  breaks "Tranquilidad serrana, / a 20 minutos…" rather than
+                  "…a 20 / minutos". A clause too long for the line still wraps
+                  inside itself. */}
+              {descripcion.split(', ').map((clause, i, clauses) => (
+                <Fragment key={i}>
+                  {i > 0 && ' '}
+                  <span className="inline-block">{clause}{i < clauses.length - 1 && ','}</span>
+                </Fragment>
+              ))}
             </p>
           </div>
         </div>
 
-        {/* Bottom - CTA & Info */}
+        {/* Bottom - CTA */}
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
-          {/* 13px with normal tracking: one line from 390px (most iPhones);
-              narrower phones get two balanced lines instead of a lone "PAZ". */}
-          <p className="mb-4 sm:mb-5 font-medium tracking-normal sm:tracking-[0.2em] uppercase text-[0.8125rem] sm:text-sm text-balance text-white drop-shadow-lg">
-            Desde {FOUNDING_YEAR} · A 20 minutos de Villa Carlos Paz
-          </p>
           <HeroBookingWidget />
-          {/* Two buttons share one row even at 375px, so they start at the small
-              size and grow back to the usual size from sm up. */}
-          <div className="mt-5 sm:mt-8 flex flex-row justify-center gap-3 sm:gap-4">
-            <Button href={linkBoton} variant="outline-light" size="sm" className="shadow-xl sm:px-8 sm:py-3 sm:text-base md:py-4 md:text-lg">
-              {textoBoton}
-            </Button>
-            <Button href="/precios" variant="outline-light" size="sm" className="shadow-xl sm:px-8 sm:py-3 sm:text-base md:py-4 md:text-lg">
-              Ver precios
-            </Button>
+          {/* One segmented pill: the widget's Consultar is the main action, so
+              the two links read as a single secondary control. */}
+          <div className="mt-5 sm:mt-7 flex justify-center">
+            <div className="inline-flex divide-x divide-white/40 overflow-hidden rounded-full border border-white/70 bg-black/15">
+              {secondaryLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="px-5 py-2 sm:px-7 sm:py-2.5 text-sm sm:text-base font-medium text-white transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:bg-white/25"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
