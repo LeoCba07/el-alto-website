@@ -81,13 +81,13 @@ function AnimatedStat({
   return (
     <div className="flex items-center gap-3 group">
       <div className="w-10 h-10 bg-amber/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-5 h-5 text-amber" />
+        <Icon className="w-5 h-5 text-amber-dark" />
       </div>
       <div>
-        <span className="font-bold text-white text-lg">
-          {prefix}{count}<span className="text-white/70 font-normal">{suffix}</span>
+        <span className="font-bold text-forest-dark text-lg">
+          {prefix}{count}<span className="text-text-light font-normal">{suffix}</span>
         </span>
-        <p className="text-white/70 text-sm">{label}</p>
+        <p className="text-text-medium text-sm">{label}</p>
       </div>
     </div>
   )
@@ -105,7 +105,7 @@ export default function TrustSignals({ stats }: TrustSignalsProps) {
 
   useEffect(() => {
     if (isInView) {
-      // Show amber highlight briefly, then return to white
+      // Show amber highlight briefly, then return to forest
       const showTimer = setTimeout(() => setShowShine(true), ANIMATION_TIMING.trustSignalsInterval)
       const hideTimer = setTimeout(() => setShowShine(false), ANIMATION_TIMING.trustSignalsInterval + 800)
       return () => {
@@ -116,7 +116,7 @@ export default function TrustSignals({ stats }: TrustSignalsProps) {
   }, [isInView])
 
   return (
-    <section ref={ref} className="bg-forest-dark py-6 border-b border-white/10">
+    <section ref={ref} className="bg-white py-6">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
           <AnimatedStat
@@ -144,13 +144,13 @@ export default function TrustSignals({ stats }: TrustSignalsProps) {
           />
           <div className="flex items-center gap-3 group">
             <div className="w-10 h-10 bg-amber/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <TbHomeHeart className="w-5 h-5 text-amber" />
+              <TbHomeHeart className="w-5 h-5 text-amber-dark" />
             </div>
             <div>
-              <span className={`font-bold text-lg transition-colors duration-500 ${showShine ? 'text-amber' : 'text-white'}`}>
+              <span className={`font-bold text-lg transition-colors duration-500 ${showShine ? 'text-amber-dark' : 'text-forest-dark'}`}>
                 Familiar
               </span>
-              <p className="text-white/70 text-sm">atendido por dueños</p>
+              <p className="text-text-medium text-sm">atendido por dueños</p>
             </div>
           </div>
         </div>
