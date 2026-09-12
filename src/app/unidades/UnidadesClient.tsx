@@ -202,7 +202,7 @@ export default function UnidadesClient({ unidades }: UnidadesClientProps) {
           >
             {/* Photo Gallery - Takes more space */}
             <div className="lg:col-span-3">
-              <PhotoCarousel key={displayedUnit.id} photos={displayedUnit.photos} altPrefix={`Unidad ${displayedUnit.nombre}`} />
+              <PhotoCarousel key={displayedUnit.id} photos={displayedUnit.photos} altPrefix={displayedUnit.nombre} />
             </div>
 
             {/* Unit Info */}

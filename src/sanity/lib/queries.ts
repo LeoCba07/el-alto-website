@@ -158,6 +158,15 @@ export const chatbotRespuestasQuery = groq`
   }
 `
 
+// Unidades, as the assistant names them in its answer
+export const chatbotUnidadesQuery = groq`
+  *[_type == "unidad"] | order(orden asc) {
+    nombre,
+    capacidadTexto,
+    cantidad
+  }
+`
+
 // Servicios Destacados (feature cards on the homepage and /servicios).
 // Every servicio is one of these photo cards.
 export const serviciosDestacadosQuery = groq`

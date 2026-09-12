@@ -11,7 +11,8 @@ export default defineType({
       type: 'string',
       description: 'Identificador único (ej: servicios, ubicacion)',
       options: {
-        // No "tarifas": the assistant builds that answer from the live prices.
+        // No "tarifas" or "unidades": the assistant builds those answers from
+        // the prices and the unit documents.
         list: [
           { title: 'Disponibilidad', value: 'disponibilidad' },
           { title: 'Servicios', value: 'servicios' },
@@ -19,7 +20,6 @@ export default defineType({
           { title: 'Ubicación', value: 'ubicacion' },
           { title: 'Cómo llegar', value: 'como_llegar' },
           { title: 'Check-in/Check-out', value: 'checkin' },
-          { title: 'Unidades', value: 'unidades' },
           { title: 'Mascotas', value: 'mascotas' },
           { title: 'Formas de pago', value: 'pago' },
         ],

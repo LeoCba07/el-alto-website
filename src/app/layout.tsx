@@ -8,10 +8,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { WhatsAppNumberProvider } from "@/components/WhatsAppNumber";
-import ChatBot, { type ChatbotRespuesta } from "@/components/ChatBot";
+import ChatBot, { type ChatbotRespuesta, type ChatbotUnidad } from "@/components/ChatBot";
 import type { TarifasData } from "@/lib/types";
 import { client } from "@/sanity/lib/client";
-import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
+import { chatbotRespuestasQuery, chatbotUnidadesQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
 import { SITE_CONFIG, TRUST_STATS } from "@/lib/constants";
 import { SiteConfig } from "@/lib/types";
 
@@ -160,10 +160,11 @@ interface SanityTarifasDocument {
 
 async function getSiteData() {
   try {
-    const [respuestas, config, tarifasDoc] = await Promise.all([
+    const [respuestas, config, tarifasDoc, unidades] = await Promise.all([
       client.fetch<ChatbotRespuesta[]>(chatbotRespuestasQuery),
       client.fetch<SiteConfig | null>(configuracionSitioQuery),
       client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery),
+      client.fetch<ChatbotUnidad[]>(chatbotUnidadesQuery),
     ]);
 
     const tarifas: TarifasData | undefined =
@@ -175,9 +176,9 @@ async function getSiteData() {
           }
         : undefined;
 
-    return { respuestas, config, tarifas };
+    return { respuestas, config, tarifas, unidades };
   } catch {
-    return { respuestas: undefined, config: null, tarifas: undefined };
+    return { respuestas: undefined, config: null, tarifas: undefined, unidades: undefined };
   }
 }
 
@@ -186,7 +187,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { respuestas, config, tarifas } = await getSiteData();
+  const { respuestas, config, tarifas, unidades } = await getSiteData();
   const jsonLd = generateJsonLd(config);
 
   return (
@@ -237,7 +238,7 @@ export default async function RootLayout({
           <main id="main-content">{children}</main>
           <Footer config={config} />
           <WhatsAppButton />
-          <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
+          <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} unidades={unidades} />
         </WhatsAppNumberProvider>
         <Analytics />
         <SpeedInsights />

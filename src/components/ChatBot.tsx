@@ -26,10 +26,18 @@ export interface ChatbotRespuesta {
   respuesta: string
 }
 
+// What the assistant needs from each unidad document to describe it
+export interface ChatbotUnidad {
+  nombre: string
+  capacidadTexto?: string
+  cantidad?: number
+}
+
 export interface ChatBotProps {
   respuestas?: ChatbotRespuesta[]
   siteConfig?: SiteConfig | null
   tarifas?: TarifasData
+  unidades?: ChatbotUnidad[]
   /**
    * Where the widget anchors itself. Defaults to the bottom-right corner;
    * pass a raised position where the WhatsApp button already sits there.
@@ -47,6 +55,18 @@ function getTarifasSummaryFromData(tarifas?: TarifasData): string {
   return `Las tarifas varían según temporada y capacidad. Temporada baja: desde $${minBaja.toLocaleString('es-AR')}/noche. Temporada alta: hasta $${maxAlta.toLocaleString('es-AR')}/noche (para 6 personas).`
 }
 
+// Built from the unidad documents, like the tarifas answer, so it can't drift
+// from /unidades. Undefined without data, so the default answer takes over.
+function getUnidadesSummaryFromData(unidades?: ChatbotUnidad[]): string | undefined {
+  if (!unidades?.length) return undefined
+  const total = unidades.reduce((sum, u) => sum + (u.cantidad ?? 0), 0)
+  const names = unidades.map((u) =>
+    u.capacidadTexto ? `${u.nombre} (${u.capacidadTexto.toLowerCase()} personas)` : u.nombre
+  )
+  const list = new Intl.ListFormat('es', { type: 'conjunction' }).format(names)
+  return `Tenemos ${total ? `${total} unidades` : 'estas unidades'}: ${list}. Todas equipadas con cocina, baño privado y calefacción.`
+}
+
 // Links to pages for "Para más información"
 const INFO_LINKS: Record<string, { url: string; label: string }> = {
   tarifas: { url: '/precios', label: 'ver todas las tarifas' },
@@ -57,7 +77,7 @@ const INFO_LINKS: Record<string, { url: string; label: string }> = {
   checkin: { url: '/normas', label: 'ver horarios y normas' },
   unidades: { url: '/unidades', label: 'ver unidades' },
   mascotas: { url: '/normas', label: 'ver normas' },
-  pago: { url: '/unidades', label: 'ver info de reservas' },
+  pago: { url: '/precios', label: 'ver precios y cómo reservar' },
 }
 
 // Default FAQ Data - answers to common questions
@@ -151,6 +171,7 @@ export default function ChatBot({
   respuestas,
   siteConfig,
   tarifas,
+  unidades,
   // Sits 12px above the WhatsApp button (bottom-4 + h-14 = 72px, + 12 = 84px).
   positionClassName = 'bottom-21 right-4 md:right-6',
 }: ChatBotProps) {
@@ -210,6 +231,10 @@ export default function ChatBot({
         ...DEFAULT_FAQ_DATA.tarifas,
         answer: getTarifasSummaryFromData(tarifas),
       },
+      unidades: {
+        ...DEFAULT_FAQ_DATA.unidades,
+        answer: getUnidadesSummaryFromData(unidades) ?? DEFAULT_FAQ_DATA.unidades.answer,
+      },
       checkin: {
         answer: `Check-in: desde las ${checkInTime} hs (llegada máxima ${latestArrival} hs). Check-out: hasta las ${checkOutTime} hs. Late check-out hasta ${lateCheckOut} hs con ${lateCheckOutFee}% adicional.`,
         followUp: ['consultar_disponibilidad', 'otra_pregunta']
@@ -224,17 +249,18 @@ export default function ChatBot({
 
     const sanityData: Record<string, { answer: string; followUp: string[] }> = {}
     respuestas.forEach((r) => {
-      // Skip tarifas from chatbotRespuesta - we use Sanity tarifas data instead
-      if (r.clave === 'tarifas') return
+      // Skip tarifas and unidades from chatbotRespuesta: those answers are
+      // built from the prices and the unit documents instead
+      if (r.clave === 'tarifas' || r.clave === 'unidades') return
       sanityData[r.clave] = {
         answer: r.respuesta,
         // Only the text comes from the Studio: the buttons are wiring, kept here.
         followUp: dynamicDefaults[r.clave]?.followUp || ['consultar_disponibilidad', 'otra_pregunta']
       }
     })
-    // Merge with base (tarifas answer is already set from Sanity tarifas)
+    // Merge with base (tarifas and unidades are already set from Sanity data)
     return { ...dynamicDefaults, ...sanityData }
-  }, [respuestas, tarifas, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights])
+  }, [respuestas, tarifas, unidades, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights])
 
   const WHATSAPP_NUMBER = useWhatsAppNumber()
 
