@@ -4,6 +4,7 @@ import { useState, type MouseEvent } from 'react'
 import { SiWhatsapp } from 'react-icons/si'
 import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
+import { DEFAULT_MESSAGE as GENERIC_ENQUIRY } from './WhatsAppButton'
 
 const MAX_GUESTS = 6
 
@@ -36,9 +37,12 @@ export default function HeroBookingWidget() {
     ? new Date(new Date(checkIn).getTime() + 86400000).toISOString().split('T')[0]
     : today
 
-  // Some guests keep pressing Consultar expecting WhatsApp to open and miss
-  // the message. Every failed press shakes the card (skipped under reduced
-  // motion); resetting first lets a repeated error shake again.
+  // Some guests, often older ones, press Consultar without picking dates.
+  // Rather than stop them, the enquiry goes out with whatever is there: no
+  // dates sends the floating button's generic message, a single date goes in
+  // as it is. Only dates that can't be right are stopped, since they would
+  // reach the owner as a wrong enquiry. Those shake the card (skipped under
+  // reduced motion); resetting first lets a repeated error shake again.
   const fail = (message: string) => {
     setError(message)
     setShaking(false)
@@ -46,28 +50,32 @@ export default function HeroBookingWidget() {
   }
 
   const handleSubmit = () => {
-    if (!checkIn || !checkOut) {
-      fail('Elegí las fechas de entrada y salida')
-      return
-    }
-    if (checkIn < today) {
+    if (checkIn && checkIn < today) {
       fail('La fecha de entrada no puede ser en el pasado')
       return
     }
-    if (checkOut <= checkIn) {
+    if (checkIn && checkOut && checkOut <= checkIn) {
       fail('La salida tiene que ser posterior a la entrada')
       return
     }
     setError('')
 
-    const msg =
-      `¡Hola! Quisiera consultar disponibilidad en El Alto:\n\n` +
-      `Entrada: ${formatDateAR(checkIn)}\n` +
-      `Salida: ${formatDateAR(checkOut)}\n` +
-      `Personas: ${guests}\n\n` +
-      `¡Gracias!`
+    const dates = [
+      checkIn && `Entrada: ${formatDateAR(checkIn)}`,
+      checkOut && `Salida: ${formatDateAR(checkOut)}`,
+    ].filter(Boolean)
+    const msg = dates.length
+      ? `¡Hola! Quisiera consultar disponibilidad en El Alto:\n\n` +
+        `${dates.join('\n')}\n` +
+        `Personas: ${guests}\n\n` +
+        `¡Gracias!`
+      : GENERIC_ENQUIRY
 
-    trackEvent('whatsapp_click', { source: 'hero_widget' })
+    // fechas shows in GA4 how many enquiries skip the dates.
+    trackEvent('whatsapp_click', {
+      source: 'hero_widget',
+      fechas: dates.length === 2 ? 'ambas' : dates.length === 1 ? 'una' : 'ninguna',
+    })
     window.open(
       `https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,
       '_blank',

@@ -4,7 +4,8 @@ import { SiWhatsapp } from 'react-icons/si'
 import { SITE_CONFIG } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
 
-const DEFAULT_MESSAGE = '¡Hola! Quisiera consultar disponibilidad en Complejo El Alto.'
+// Also sent by the hero widget when Consultar is pressed without dates.
+export const DEFAULT_MESSAGE = '¡Hola! Quisiera consultar disponibilidad en Complejo El Alto.'
 
 export interface WhatsAppButtonProps {
   /** Pre-filled message. Falls back to a generic availability enquiry. */
