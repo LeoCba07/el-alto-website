@@ -9,6 +9,9 @@ import { ANIMATION_TIMING, FOUNDING_YEAR } from '@/lib/constants'
 interface HeroImage {
   url: string
   alt?: string
+  // Art-directed Sanity crops (see the homepage); local fallbacks have none.
+  landscapeSrcSet?: string
+  portraitSrcSet?: string
 }
 
 interface HeroProps {
@@ -34,8 +37,7 @@ export default function Hero({
   textoBoton = 'Ver unidades',
   linkBoton = '/unidades',
 }: HeroProps) {
-  const heroImages = imagenes?.length ? imagenes.map(img => img.url) : defaultImages
-  const heroAlts = imagenes?.length ? imagenes.map(img => img.alt || 'El Alto - Alojamiento en las sierras') : defaultImages.map(() => 'El Alto - Alojamiento en las sierras')
+  const heroImages: HeroImage[] = imagenes?.length ? imagenes : defaultImages.map((url) => ({ url }))
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextSlide = useCallback(() => {
@@ -83,23 +85,44 @@ export default function Hero({
     // height (--hero-vh), the area visible on load.
     <section className="relative min-h-[calc(100vh+4rem)] md:min-h-screen w-full overflow-hidden">
       {/* Background Images with Crossfade */}
-      {heroImages.map((src, index) => (
-        <div
-          key={src}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentIndex ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <Image
-            src={src}
-            alt={heroAlts[index]}
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority={index === 0}
-          />
-        </div>
-      ))}
+      {heroImages.map((img, index) => {
+        const alt = img.alt || 'El Alto - Alojamiento en las sierras'
+        return (
+          <div
+            key={img.url}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {img.portraitSrcSet && img.landscapeSrcSet ? (
+              // Sanity already serves each crop at each width, so this skips
+              // next/image, whose 1200px cap and flat 100vw blurred the photos
+              // on phones. sizes is the photo's drawn width under object-cover:
+              // the hero's height times the crop's aspect where that exceeds
+              // the screen width (the hero is 100vh + 4rem tall on phones).
+              <picture>
+                <source
+                  media="(orientation: portrait)"
+                  srcSet={img.portraitSrcSet}
+                  sizes="(max-aspect-ratio: 9/16) calc(56.25vh + 36px), 100vw"
+                />
+                <img
+                  src={img.url}
+                  srcSet={img.landscapeSrcSet}
+                  sizes="(max-aspect-ratio: 16/9) 178vh, 100vw"
+                  alt={alt}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  fetchPriority={index === 0 ? 'high' : 'low'}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </picture>
+            ) : (
+              <Image src={img.url} alt={alt} fill sizes="100vw" className="object-cover" priority={index === 0} />
+            )}
+          </div>
+        )
+      })}
 
       {/* Gradient overlay for better readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />

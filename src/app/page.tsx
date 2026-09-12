@@ -69,6 +69,18 @@ async function fetchOr<T>(query: string, fallback: T): Promise<T> {
   }
 }
 
+type SanityImage = Parameters<typeof urlFor>[0]
+
+// Hero crops come straight from Sanity's CDN, toward each image's hotspot
+// (Sanity only honours it when given a target size).
+function heroCrop(img: SanityImage, width: number, height: number) {
+  return urlFor(img).width(width).height(height).fit('crop').auto('format').url()
+}
+
+function heroSrcSet(img: SanityImage, widths: number[], heightRatio: number) {
+  return widths.map((w) => `${heroCrop(img, w, Math.round(w * heightRatio))} ${w}w`).join(', ')
+}
+
 async function getHomeData() {
   const [heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, videos] = await Promise.all([
     fetchOr<SanityHeroSection | null>(heroSectionQuery, null),
@@ -89,10 +101,12 @@ export default async function Home() {
     titulo: heroData.titulo,
     descripcion: heroData.descripcion,
     imagenes: heroData.imagenes?.map(img => ({
-      // Ask for a landscape crop so Sanity honours each image's hotspot.
-      // Without explicit dimensions it returns the full asset and the hotspot
-      // is ignored, leaving object-cover to centre-crop portrait shots blindly.
-      url: urlFor(img).width(1920).height(1080).fit('crop').url(),
+      // Art-directed: a 16:9 crop for landscape screens and a 9:16 one for
+      // portrait. A single 16:9 crop left phones showing a thin band of it,
+      // stretched about four times (Next also capped it at 1200px wide).
+      url: heroCrop(img, 1920, 1080),
+      landscapeSrcSet: heroSrcSet(img, [1280, 1920, 2560], 9 / 16),
+      portraitSrcSet: heroSrcSet(img, [640, 960, 1280], 16 / 9),
       alt: img.alt
     })),
   } : {}
