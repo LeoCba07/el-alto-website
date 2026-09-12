@@ -1,5 +1,6 @@
 import Hero from '@/components/Hero'
 import TrustSignals from '@/components/TrustSignals'
+import BookingWidget from '@/components/BookingWidget'
 import FeaturedUnidades from '@/components/FeaturedUnidades'
 import ServicesHighlights from '@/components/ServicesHighlights'
 import LocationTeaser from '@/components/LocationTeaser'
@@ -144,6 +145,17 @@ export default async function Home() {
       </section>
       <section id="trust-signals">
         <TrustSignals stats={config?.estadisticas} />
+      </section>
+      {/* The enquiry sits here rather than over the hero, where it covered the
+          photos. The dark band continues the trust strip above it. */}
+      <section id="consulta" aria-labelledby="consulta-titulo" className="bg-forest-dark px-4 pt-10 pb-12 md:pt-12 md:pb-14">
+        <h2 id="consulta-titulo" className="text-center font-serif text-2xl md:text-3xl font-bold text-white mb-2">
+          Consultá disponibilidad
+        </h2>
+        <p className="text-center text-white/70 mb-6 md:mb-8">
+          Elegí las fechas y te respondemos por WhatsApp
+        </p>
+        <BookingWidget />
       </section>
       <section id="unidades">
         <FeaturedUnidades {...unidadesDestacadasProps} />

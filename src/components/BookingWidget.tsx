@@ -31,11 +31,12 @@ function localISODate(date: Date) {
 const subscribeNever = () => () => {}
 
 /**
- * Availability enquiry bar for the hero. Collects the three things every
- * enquiry starts with and hands them to WhatsApp already written out, so the
- * guest sends a complete question instead of "hola, tienen lugar?".
+ * Availability enquiry bar, on the homepage just below the hero. Collects the
+ * three things every enquiry starts with and hands them to WhatsApp already
+ * written out, so the guest sends a complete question instead of "hola, tienen
+ * lugar?".
  */
-export default function HeroBookingWidget() {
+export default function BookingWidget() {
   // Read in the browser only (empty on the server): the server's clock is UTC,
   // and a `min` rendered from it would stay in place after hydration.
   const today = useSyncExternalStore(subscribeNever, () => localISODate(new Date()), () => '')
@@ -91,7 +92,7 @@ export default function HeroBookingWidget() {
 
     // fechas shows in GA4 how many enquiries skip the dates.
     trackEvent('whatsapp_click', {
-      source: 'hero_widget',
+      source: 'home_widget',
       fechas: dates.length === 2 ? 'ambas' : dates.length === 1 ? 'una' : 'ninguna',
     })
     window.open(
@@ -133,12 +134,12 @@ export default function HeroBookingWidget() {
             Consultar spans the second. From sm up it is all one row. */}
         <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:grid-cols-[1fr_1fr_auto_auto]">
           <div className={cellClass}>
-            <label className={labelClass} htmlFor="hero-checkin">
+            <label className={labelClass} htmlFor="consulta-checkin">
               Entrada
             </label>
             <div className="relative">
               <input
-                id="hero-checkin"
+                id="consulta-checkin"
                 type="date"
                 value={checkIn}
                 min={today || undefined}
@@ -151,12 +152,12 @@ export default function HeroBookingWidget() {
           </div>
 
           <div className={`${cellClass} border-l border-sand`}>
-            <label className={labelClass} htmlFor="hero-checkout">
+            <label className={labelClass} htmlFor="consulta-checkout">
               Salida
             </label>
             <div className="relative">
               <input
-                id="hero-checkout"
+                id="consulta-checkout"
                 type="date"
                 value={checkOut}
                 min={minCheckOut || undefined}
@@ -169,11 +170,11 @@ export default function HeroBookingWidget() {
           </div>
 
           <div className={`${cellClass} border-l border-sand`}>
-            <label className={labelClass} htmlFor="hero-guests">
+            <label className={labelClass} htmlFor="consulta-guests">
               Personas
             </label>
             <select
-              id="hero-guests"
+              id="consulta-guests"
               value={guests}
               onChange={(e) => setGuests(Number(e.target.value))}
               className={`${inputClass} sm:w-16`}

@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import HeroBookingWidget from './HeroBookingWidget'
 import { HiOutlineChevronDown } from 'react-icons/hi2'
 import { Fragment, useState, useEffect, useCallback } from 'react'
 import { ANIMATION_TIMING, FOUNDING_YEAR } from '@/lib/constants'
@@ -105,7 +104,7 @@ export default function Hero({
       {/* Gradient overlay for better readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
 
-      {/* Content. Below md the bottom block (widget and links) rests on the
+      {/* Content. Below md the bottom block (the links) rests on the
           floor, and the tagline and title share the height above it evenly,
           never less than 12px apart. From md up the wrapper is
           display: contents, so the three blocks spread across the height as
@@ -149,12 +148,10 @@ export default function Hero({
           </div>
         </div>
 
-        {/* Bottom - CTA */}
+        {/* Bottom - links, as one segmented pill. The enquiry widget sits
+            below the hero (see the homepage), so the photos stay clear. */}
         <div className="text-center px-6 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.cta}s`, animationFillMode: 'forwards' }}>
-          <HeroBookingWidget />
-          {/* One segmented pill: the widget's Consultar is the main action, so
-              the two links read as a single secondary control. */}
-          <div className="mt-5 sm:mt-7 flex justify-center">
+          <div className="flex justify-center">
             <div className="inline-flex divide-x divide-white/40 overflow-hidden rounded-full border border-white/70 bg-black/15">
               {secondaryLinks.map((link) => (
                 <Link

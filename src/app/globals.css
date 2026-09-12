@@ -86,7 +86,7 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-serif: var(--font-merriweather);
 
-  /* Nudge on a rejected hero enquiry (HeroBookingWidget); a theme animation
+  /* Nudge on a rejected enquiry (BookingWidget); a theme animation
      so it gets an animate-shake utility that motion-safe: can gate. */
   --animate-shake: shake 0.4s ease-in-out;
   @keyframes shake {

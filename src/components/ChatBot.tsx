@@ -191,9 +191,8 @@ export default function ChatBot({
   const lastMessageRef = useRef<HTMLDivElement>(null)
   const [showPulse, setShowPulse] = useState(true)
 
-  // On the homepage the hero already carries the enquiry widget and the
-  // WhatsApp button, so the assistant waits until the hero is mostly scrolled
-  // past. Pages without a hero show it straight away. It starts hidden so the
+  // On the homepage the hero already carries its links and the WhatsApp
+  // button, so the assistant waits until the hero is mostly scrolled past. Pages without a hero show it straight away. It starts hidden so the
   // homepage doesn't flash it before this runs.
   const pathname = usePathname()
   const [pastHero, setPastHero] = useState(false)
