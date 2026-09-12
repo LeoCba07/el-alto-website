@@ -57,7 +57,8 @@ Todas las unidades cuentan con cocina equipada, Wi-Fi gratuito y cochera cubiert
 ## Páginas
 
 - [Inicio](https://www.complejoelalto.com.ar/): presentación del complejo
-- [Unidades](https://www.complejoelalto.com.ar/unidades): detalle y tarifas por temporada de cada tipo de unidad
+- [Unidades](https://www.complejoelalto.com.ar/unidades): detalle de cada tipo de unidad
+- [Precios](https://www.complejoelalto.com.ar/precios): tarifas por noche según la temporada y la cantidad de personas
 - [Servicios](https://www.complejoelalto.com.ar/servicios): instalaciones y servicios opcionales
 - [Consultas frecuentes](https://www.complejoelalto.com.ar/consultas-frecuentes): preguntas habituales sobre reservas, pagos y estadía
 - [Normas](https://www.complejoelalto.com.ar/normas): normas de convivencia del complejo
@@ -66,5 +67,5 @@ Todas las unidades cuentan con cocina equipada, Wi-Fi gratuito y cochera cubiert
 ## Notas
 
 Las tarifas varían según la temporada (alta, media y baja) y la cantidad de
-personas. Los precios actualizados están publicados en la página de unidades.
+personas. Los precios actualizados están publicados en la página de precios.
 Las reservas y consultas de disponibilidad se gestionan por WhatsApp.

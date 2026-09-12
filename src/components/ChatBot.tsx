@@ -17,20 +17,14 @@ import {
 } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { PiPawPrint } from 'react-icons/pi'
-import { SITE_CONFIG, BUSINESS_HOURS, RESERVATION_POLICIES, formatDateAR } from '@/lib/constants'
-import { SiteConfig } from '@/lib/types'
+import { BUSINESS_HOURS, RESERVATION_POLICIES, formatDateAR } from '@/lib/constants'
+import type { SiteConfig, TarifasData } from '@/lib/types'
+import { useWhatsAppNumber } from './WhatsAppNumber'
 
 export interface ChatbotRespuesta {
   clave: string
   respuesta: string
   opcionesSeguimiento?: string[]
-}
-
-// Tarifas data structure (matches what comes from Sanity)
-export interface TarifasData {
-  alta: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  media: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
 }
 
 export interface ChatBotProps {
@@ -47,7 +41,7 @@ export interface ChatBotProps {
 // Generate tarifas summary from Sanity data
 function getTarifasSummaryFromData(tarifas?: TarifasData): string {
   if (!tarifas) {
-    return 'Consultá las tarifas actualizadas por WhatsApp o en nuestra página de unidades.'
+    return 'Consultá las tarifas actualizadas por WhatsApp o en nuestra página de precios.'
   }
   const minBaja = Math.min(...tarifas.baja.precios.map(p => p.precio))
   const maxAlta = Math.max(...tarifas.alta.precios.map(p => p.precio))
@@ -242,7 +236,7 @@ export default function ChatBot({
     return { ...dynamicDefaults, ...sanityData }
   }, [respuestas, tarifas, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights])
 
-  const WHATSAPP_NUMBER = siteConfig?.numeroWhatsapp || SITE_CONFIG.WHATSAPP_NUMBER
+  const WHATSAPP_NUMBER = useWhatsAppNumber()
 
   const isOpen = animationStage === 'open'
 

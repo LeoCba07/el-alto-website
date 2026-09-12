@@ -1,8 +1,8 @@
 'use client'
 
 import { SiWhatsapp } from 'react-icons/si'
-import { SITE_CONFIG } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
+import { useWhatsAppNumber } from './WhatsAppNumber'
 
 // Also sent by the hero widget when Consultar is pressed without dates.
 export const DEFAULT_MESSAGE = '¡Hola! Quisiera consultar disponibilidad en Complejo El Alto.'
@@ -18,7 +18,8 @@ export interface WhatsAppButtonProps {
  * rather than an on-site widget wearing the same icon.
  */
 export default function WhatsAppButton({ message = DEFAULT_MESSAGE }: WhatsAppButtonProps) {
-  const href = `https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  const whatsappNumber = useWhatsAppNumber()
+  const href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
 
   return (
     <a

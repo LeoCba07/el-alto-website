@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, type MouseEvent } from 'react'
+import { useState, useSyncExternalStore, type MouseEvent } from 'react'
 import { SiWhatsapp } from 'react-icons/si'
-import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
+import { formatDateAR } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
 import { DEFAULT_MESSAGE as GENERIC_ENQUIRY } from './WhatsAppButton'
+import { useWhatsAppNumber } from './WhatsAppNumber'
 
 const MAX_GUESTS = 6
 
@@ -19,13 +20,26 @@ function openPicker(e: MouseEvent<HTMLInputElement>) {
   }
 }
 
+// The guest's local calendar date as YYYY-MM-DD. toISOString() is UTC, which
+// in Argentina (UTC-3) turns 21:00 into tomorrow and blocks today's date.
+function localISODate(date: Date) {
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+}
+
+// The date never needs re-subscribing to; see `today` below.
+const subscribeNever = () => () => {}
+
 /**
  * Availability enquiry bar for the hero. Collects the three things every
  * enquiry starts with and hands them to WhatsApp already written out, so the
  * guest sends a complete question instead of "hola, tienen lugar?".
  */
 export default function HeroBookingWidget() {
-  const today = new Date().toISOString().split('T')[0]
+  // Read in the browser only (empty on the server): the server's clock is UTC,
+  // and a `min` rendered from it would stay in place after hydration.
+  const today = useSyncExternalStore(subscribeNever, () => localISODate(new Date()), () => '')
+  const whatsappNumber = useWhatsAppNumber()
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
   const [guests, setGuests] = useState(2)
@@ -34,7 +48,11 @@ export default function HeroBookingWidget() {
 
   // Check-out must land after check-in, so its picker starts the day after.
   const minCheckOut = checkIn
-    ? new Date(new Date(checkIn).getTime() + 86400000).toISOString().split('T')[0]
+    ? (() => {
+        const next = new Date(`${checkIn}T00:00:00`)
+        next.setDate(next.getDate() + 1)
+        return localISODate(next)
+      })()
     : today
 
   // Some guests, often older ones, press Consultar without picking dates.
@@ -77,7 +95,7 @@ export default function HeroBookingWidget() {
       fechas: dates.length === 2 ? 'ambas' : dates.length === 1 ? 'una' : 'ninguna',
     })
     window.open(
-      `https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`,
       '_blank',
       'noopener,noreferrer'
     )
@@ -123,7 +141,7 @@ export default function HeroBookingWidget() {
                 id="hero-checkin"
                 type="date"
                 value={checkIn}
-                min={today}
+                min={today || undefined}
                 onChange={(e) => setCheckIn(e.target.value)}
                 onClick={openPicker}
                 className={dateClass(checkIn)}
@@ -141,7 +159,7 @@ export default function HeroBookingWidget() {
                 id="hero-checkout"
                 type="date"
                 value={checkOut}
-                min={minCheckOut}
+                min={minCheckOut || undefined}
                 onChange={(e) => setCheckOut(e.target.value)}
                 onClick={openPicker}
                 className={dateClass(checkOut)}

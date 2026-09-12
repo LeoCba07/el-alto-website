@@ -19,10 +19,19 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      // Named `ubicacion` for historical reasons: it has always held the
+      // platform the review came from, which the site shows with its logo.
       name: 'ubicacion',
-      title: 'Ubicación',
+      title: 'Fuente',
       type: 'string',
-      description: 'Ciudad o provincia del huésped',
+      description: 'Plataforma donde se publicó la reseña',
+      options: {
+        list: [
+          { title: 'TripAdvisor', value: 'TripAdvisor' },
+          { title: 'Google', value: 'Google' },
+        ],
+        layout: 'radio',
+      },
     }),
     defineField({
       name: 'rating',

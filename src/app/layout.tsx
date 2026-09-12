@@ -7,7 +7,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import ChatBot, { type ChatbotRespuesta, type TarifasData } from "@/components/ChatBot";
+import { WhatsAppNumberProvider } from "@/components/WhatsAppNumber";
+import ChatBot, { type ChatbotRespuesta } from "@/components/ChatBot";
+import type { TarifasData } from "@/lib/types";
 import { client } from "@/sanity/lib/client";
 import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
 import { SITE_CONFIG, TRUST_STATS } from "@/lib/constants";
@@ -223,17 +225,20 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${merriweather.variable} antialiased`}
       >
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-forest-dark focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-amber"
-        >
-          Saltar al contenido principal
-        </a>
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer config={config} />
-        <WhatsAppButton />
-        <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
+        {/* Every WhatsApp link reads the Studio's number from here. */}
+        <WhatsAppNumberProvider number={config?.numeroWhatsapp}>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-forest-dark focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-amber"
+          >
+            Saltar al contenido principal
+          </a>
+          <Header />
+          <main id="main-content">{children}</main>
+          <Footer config={config} />
+          <WhatsAppButton />
+          <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
+        </WhatsAppNumberProvider>
         <Analytics />
         <SpeedInsights />
       </body>

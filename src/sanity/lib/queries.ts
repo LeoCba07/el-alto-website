@@ -85,24 +85,10 @@ export const testimoniosQuery = groq`
   }
 `
 
-// Atracciones Cercanas
-export const atraccionesCercanasQuery = groq`
-  *[_type == "atraccionCercana"] {
-    _id,
-    nombre,
-    descripcion,
-    distancia,
-    tipo,
-    imagen {
-      asset->,
-      alt
-    }
-  }
-`
-
 // Tarifas por Temporada (single document with all 3 seasons)
 export const tarifasTemporadaQuery = groq`
   *[_type == "tarifaTemporada"][0] {
+    temporadaVigente,
     temporadaAlta {
       nombre,
       periodo,

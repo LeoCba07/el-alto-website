@@ -7,18 +7,6 @@ import { MdOutlineDirectionsBus, MdOutlinePool, MdOutlineTheaterComedy } from 'r
 import { TbMountain, TbTrees } from 'react-icons/tb'
 import { IconType } from 'react-icons'
 import { FadeUp, StaggerGrid } from './ScrollAnimations'
-import { urlFor } from '@/sanity/lib/image'
-import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
-
-export interface LocationTeaserProps {
-  atracciones?: {
-    _id: string
-    nombre?: string
-    distancia?: string
-    tipo?: string
-    imagen?: SanityImageSource & { alt?: string }
-  }[]
-}
 
 const conveniences: { place: string; distance: string; Icon: IconType }[] = [
   { place: 'Centro de Tanti', distance: '600 m', Icon: HiOutlineBuildingStorefront },
@@ -27,9 +15,9 @@ const conveniences: { place: string; distance: string; Icon: IconType }[] = [
   { place: 'Balneario', distance: '5 min', Icon: MdOutlinePool },
 ]
 
-// Shown while no atraccionCercana documents exist in Sanity. The images are
-// local files, so the section keeps working on an empty CMS.
-const fallbackAttractions = [
+// A fixed list: these places don't change, so they live here rather than in
+// the Studio. The images are local files.
+const nearbyAttractions = [
   {
     name: 'Cascada Los Helechos',
     distance: '5 min',
@@ -56,16 +44,7 @@ const fallbackAttractions = [
   },
 ]
 
-export default function LocationTeaser({ atracciones }: LocationTeaserProps) {
-  const nearbyAttractions = atracciones?.length
-    ? atracciones.map((a) => ({
-        name: a.nombre ?? '',
-        distance: a.distancia ?? '',
-        image: a.imagen ? urlFor(a.imagen).width(600).height(800).url() : '/images/placeholder.jpg',
-        tag: a.tipo ? a.tipo.charAt(0).toUpperCase() + a.tipo.slice(1) : '',
-      }))
-    : fallbackAttractions
-
+export default function LocationTeaser() {
   return (
     <section className="bg-cream py-16 md:py-20">
       <div className="max-w-6xl mx-auto px-4">

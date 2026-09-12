@@ -10,23 +10,25 @@ import type { TarifasData } from '@/lib/types'
 export const dynamic = 'force-dynamic'
 
 interface SanityTarifasDocument {
+  temporadaVigente?: string
   temporadaAlta?: TarifasData['alta']
   temporadaMedia?: TarifasData['media']
   temporadaBaja?: TarifasData['baja']
 }
 
-async function getTarifasData(): Promise<TarifasData | null> {
+async function getTarifasData(): Promise<{ tarifas: TarifasData | null; temporada: string | null }> {
   try {
     const doc = await client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery)
-    if (!doc?.temporadaAlta || !doc?.temporadaMedia || !doc?.temporadaBaja) return null
-    return { alta: doc.temporadaAlta, media: doc.temporadaMedia, baja: doc.temporadaBaja }
+    const temporada = doc?.temporadaVigente?.trim() || null
+    if (!doc?.temporadaAlta || !doc?.temporadaMedia || !doc?.temporadaBaja) return { tarifas: null, temporada }
+    return { tarifas: { alta: doc.temporadaAlta, media: doc.temporadaMedia, baja: doc.temporadaBaja }, temporada }
   } catch {
-    return null
+    return { tarifas: null, temporada: null }
   }
 }
 
 export default async function PreciosPage() {
-  const tarifas = await getTarifasData()
+  const { tarifas, temporada } = await getTarifasData()
 
   return (
     <div className="min-h-screen bg-cream">
@@ -55,7 +57,7 @@ export default async function PreciosPage() {
         </div>
       </section>
 
-      <TarifasTable tarifas={tarifas} />
+      <TarifasTable tarifas={tarifas} temporada={temporada} />
 
       <ComoReservar />
 

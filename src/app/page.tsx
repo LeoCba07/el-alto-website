@@ -8,15 +8,13 @@ import VideosSection from '@/components/VideosSection'
 import FinalCTA from '@/components/FinalCTA'
 import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
-import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery, testimoniosQuery, atraccionesCercanasQuery, videosInicioQuery } from '@/sanity/lib/queries'
+import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery, testimoniosQuery, videosInicioQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { youtubeId, youtubeThumbnail } from '@/lib/youtube'
 import { SiteConfig } from '@/lib/types'
 import type { TestimonialsProps } from '@/components/Testimonials'
-import type { LocationTeaserProps } from '@/components/LocationTeaser'
 
 type Testimonio = NonNullable<TestimonialsProps['testimonios']>[number]
-type Atraccion = NonNullable<LocationTeaserProps['atracciones']>[number]
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
@@ -57,36 +55,33 @@ interface SanityVideo {
   descripcion?: string
 }
 
-async function getHomeData() {
+// Each read fails on its own: a hiccup in one section's query shouldn't throw
+// the others away and put the whole homepage on its fallbacks.
+async function fetchOr<T>(query: string, fallback: T): Promise<T> {
   try {
-    const [heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones, videos] = await Promise.all([
-      client.fetch<SanityHeroSection | null>(heroSectionQuery),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery),
-      client.fetch<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery),
-      client.fetch<ServicioDestacado[]>(serviciosDestacadosQuery),
-      client.fetch<Testimonio[]>(testimoniosQuery),
-      client.fetch<Atraccion[]>(atraccionesCercanasQuery),
-      client.fetch<SanityVideo[] | null>(videosInicioQuery),
-    ])
-    return {
-      heroData,
-      config,
-      unidadesDestacadas,
-      serviciosDestacados: serviciosDestacados || [],
-      testimonios: testimonios || [],
-      atracciones: atracciones || [],
-      videos: videos || [],
-    }
+    return (await client.fetch<T | null>(query)) ?? fallback
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('Failed to fetch home data:', error)
     }
-    return { heroData: null, config: null, unidadesDestacadas: null, serviciosDestacados: [], testimonios: [], atracciones: [], videos: [] }
+    return fallback
   }
 }
 
+async function getHomeData() {
+  const [heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, videos] = await Promise.all([
+    fetchOr<SanityHeroSection | null>(heroSectionQuery, null),
+    fetchOr<SiteConfig | null>(configuracionSitioQuery, null),
+    fetchOr<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery, null),
+    fetchOr<ServicioDestacado[]>(serviciosDestacadosQuery, []),
+    fetchOr<Testimonio[]>(testimoniosQuery, []),
+    fetchOr<SanityVideo[]>(videosInicioQuery, []),
+  ])
+  return { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, videos }
+}
+
 export default async function Home() {
-  const { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, atracciones, videos: sanityVideos } = await getHomeData()
+  const { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, videos: sanityVideos } = await getHomeData()
 
   const heroProps = heroData ? {
     subtitulo: heroData.subtitulo,
@@ -143,7 +138,7 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen">
-      <SectionIndicator />
+      <SectionIndicator hasVideos={videos.length > 0} />
       <section id="hero">
         <Hero {...heroProps} />
       </section>
@@ -157,7 +152,7 @@ export default async function Home() {
         <ServicesHighlights {...highlightsProps} />
       </section>
       <section id="ubicacion">
-        <LocationTeaser atracciones={atracciones} />
+        <LocationTeaser />
       </section>
       <section id="testimonios">
         <Testimonials testimonios={testimonios} />

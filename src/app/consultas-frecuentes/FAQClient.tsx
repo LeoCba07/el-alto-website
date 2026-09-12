@@ -2,8 +2,8 @@
 
 import { useId, useState } from 'react'
 import { SiWhatsapp } from 'react-icons/si'
-import { SITE_CONFIG } from '@/lib/constants'
 import { trackEvent } from '@/lib/analytics'
+import { useWhatsAppNumber } from '@/components/WhatsAppNumber'
 import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineChevronDown,
@@ -126,6 +126,7 @@ function QuestionItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function FAQClient({ categories }: FAQClientProps) {
+  const whatsappNumber = useWhatsAppNumber()
   const faqCategories = categories?.length ? categories : defaultCategories
   const [activeCategory, setActiveCategory] = useState(faqCategories[0].id)
   const active = faqCategories.find((c) => c.id === activeCategory)!
@@ -190,7 +191,7 @@ export default function FAQClient({ categories }: FAQClientProps) {
             Estamos para ayudarte
           </p>
           <a
-            href={`https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${encodeURIComponent(
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
               '¡Hola! Tengo una consulta que no encontré en las preguntas frecuentes.'
             )}`}
             target="_blank"

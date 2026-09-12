@@ -5,18 +5,24 @@ import type { TarifaTemporada, TarifasData } from '@/lib/types'
 
 export interface TarifasTableProps {
   tarifas?: TarifasData | null
+  /** The season the prices belong to, e.g. "2025/26", set in the Studio. */
+  temporada?: string | null
 }
 
 /** Seasonal rate cards. Shared by /precios and anywhere else rates are shown. */
-export default function TarifasTable({ tarifas }: TarifasTableProps) {
+export default function TarifasTable({ tarifas, temporada }: TarifasTableProps) {
   return (
   <section id="tarifas" className="py-12 md:py-16 bg-cream-dark">
     <div className="max-w-6xl mx-auto px-4">
       <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif text-center mb-3">
         Tarifas por noche
       </h2>
+      {/* The season sits next to the prices in the Studio; with none set the
+          line drops it rather than show a stale year. */}
       <p className="text-text-medium text-center mb-8 text-sm">
-        Temporada 2025/26 · Precios en pesos argentinos · No incluye desayuno
+        {[temporada && `Temporada ${temporada}`, 'Precios en pesos argentinos', 'No incluye desayuno']
+          .filter(Boolean)
+          .join(' · ')}
       </p>
 
       {tarifas ? (

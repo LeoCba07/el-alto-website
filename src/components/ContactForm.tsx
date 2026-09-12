@@ -9,9 +9,11 @@ import {
   HiOutlineUserGroup,
   HiOutlineChatBubbleBottomCenterText
 } from 'react-icons/hi2'
-import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
+import { formatDateAR } from '@/lib/constants'
+import { useWhatsAppNumber } from './WhatsAppNumber'
 
 export default function ContactForm() {
+  const whatsappNumber = useWhatsAppNumber()
   const [nombre, setNombre] = useState('')
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
@@ -92,7 +94,7 @@ export default function ContactForm() {
 
     if (!validate()) return
 
-    const whatsappUrl = `https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${generateWhatsAppMessage()}`
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${generateWhatsAppMessage()}`
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 
