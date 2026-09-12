@@ -14,14 +14,14 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Servicios e Instalaciones',
   description:
-    'Pileta, quincho, desayuno incluido, Wi-Fi gratis y estacionamiento. Todos los servicios del Complejo El Alto en Tanti, Córdoba.',
+    'Pileta, quincho, Wi-Fi gratis y estacionamiento. Todos los servicios del Complejo El Alto en Tanti, Córdoba.',
   alternates: {
     canonical: '/servicios',
   },
   openGraph: {
     title: 'Servicios e Instalaciones | Complejo El Alto',
     description:
-      'Pileta, quincho, desayuno incluido, Wi-Fi gratis y estacionamiento en Tanti, Córdoba.',
+      'Pileta, quincho, Wi-Fi gratis y estacionamiento en Tanti, Córdoba.',
     url: '/servicios',
     images: ['/og-image.jpg'],
   },
@@ -240,7 +240,7 @@ export default async function ServiciosPage() {
                   <p className="text-sm text-text-medium ml-7">
                     Desayuno seco servido en tu unidad.
                   </p>
-                  <p className="text-sm text-text-light mt-1 ml-7">Disponibilidad limitada</p>
+                  <p className="text-sm text-text-light mt-1 ml-7">Servicio opcional y limitado</p>
                 </div>
               </div>
               <p className="mt-4 text-sm text-text-light">

@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     template: "%s | Complejo El Alto",
   },
   description:
-    `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort en Tanti. Pileta, quincho, desayuno incluido.`,
+    `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort en Tanti. Pileta, quincho, Wi-Fi y cochera cubierta.`,
   keywords: [
     "alojamiento en Tanti",
     "alojamiento Tanti Córdoba",

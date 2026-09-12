@@ -11,7 +11,6 @@ import {
 } from 'react-icons/hi2'
 import { MdOutlinePool, MdOutlineLocalParking, MdOutlineWaterDrop } from 'react-icons/md'
 import { PiPawPrint } from 'react-icons/pi'
-import { GiTowel } from 'react-icons/gi'
 import { client } from '@/sanity/lib/client'
 import { configuracionSitioQuery } from '@/sanity/lib/queries'
 import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
@@ -165,13 +164,6 @@ export default async function NormasPage() {
                   <div>
                     <p className="font-medium text-forest-dark">Volumen moderado</p>
                     <p className="text-text-medium text-sm">Para disfrutar la tranquilidad serrana.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <GiTowel className="w-6 h-6 text-amber flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-forest-dark">Toallones de pileta</p>
-                    <p className="text-text-medium text-sm">Disponibles en recepción si los necesitás.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
