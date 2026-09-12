@@ -62,7 +62,7 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="group flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-forest focus:ring-offset-2 rounded-lg"
+            className="group flex items-center gap-2.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2"
           >
             <Image
               src="/icon-512.png"
