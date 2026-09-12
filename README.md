@@ -10,7 +10,7 @@ The old WordPress site had placeholder text, spelling errors, and a broken conta
 
 ## The Solution
 
-- **Enquiry widget in the hero.** Guests pick check-in, check-out and guest count, and WhatsApp opens with the message already written. Missing or invalid dates are flagged before anything is sent.
+- **Enquiry widget right below the hero.** Guests pick check-in, check-out and guest count, and WhatsApp opens with the message already written. Impossible dates are flagged before anything is sent; with no dates, it still opens WhatsApp with a generic message.
 - **Contact form & chatbot** that collect the same details before handing off to WhatsApp, plus a floating WhatsApp button on every page.
 - **Sanity CMS.** The owner updates prices himself (they change weekly with Argentine inflation), as well as units, homepage videos and the rest of the content.
 - **Prices page** of its own, the most visited part of the old site.
@@ -25,9 +25,10 @@ Next.js 16 · TypeScript · Tailwind CSS 4 · Sanity · Vercel · Google Analyti
 ## Screenshots
 
 <p>
-  <img src="public/screenshots/el-alto-1.png" width="32%" alt="Hero Section">
-  <img src="public/screenshots/el-alto-2.png" width="32%" alt="Cabin Cards">
-  <img src="public/screenshots/el-alto-3.png" width="32%" alt="Contact Form">
+  <img src="public/screenshots/el-alto-1.jpg" width="49%" alt="Homepage hero">
+  <img src="public/screenshots/el-alto-2.jpg" width="49%" alt="Enquiry widget below the hero">
+  <img src="public/screenshots/el-alto-3.jpg" width="49%" alt="Units page">
+  <img src="public/screenshots/el-alto-4.jpg" width="49%" alt="Prices page">
 </p>
 
 ## Setup
