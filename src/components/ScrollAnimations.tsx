@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, ReactNode } from 'react'
 
 // Hook to detect when element is in view - exported for reuse
-export function useInView(threshold = 0.1) {
+export function useInView(threshold = 0.1, rootMargin?: string) {
   const ref = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
 
@@ -15,7 +15,7 @@ export function useInView(threshold = 0.1) {
           observer.disconnect()
         }
       },
-      { threshold }
+      { threshold, rootMargin }
     )
 
     if (ref.current) {
@@ -23,7 +23,7 @@ export function useInView(threshold = 0.1) {
     }
 
     return () => observer.disconnect()
-  }, [threshold])
+  }, [threshold, rootMargin])
 
   return { ref, isInView }
 }

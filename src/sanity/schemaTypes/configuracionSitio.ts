@@ -33,7 +33,7 @@ export default defineType({
           name: 'checkIn',
           title: 'Check-in',
           type: 'string',
-          description: 'Hora de entrada (ej: "13:30")',
+          description: 'Hora de entrada (ej: "13:00")',
         },
         {
           name: 'checkOut',
@@ -57,7 +57,7 @@ export default defineType({
           name: 'llegadaMaxima',
           title: 'Llegada máxima',
           type: 'string',
-          description: 'Hora máxima de llegada (ej: "20:00")',
+          description: 'Hora máxima de llegada (ej: "19:00")',
         },
         {
           name: 'pileta',
@@ -65,7 +65,7 @@ export default defineType({
           type: 'object',
           fields: [
             { name: 'apertura', title: 'Apertura', type: 'string', description: 'Ej: "9:30"' },
-            { name: 'cierre', title: 'Cierre', type: 'string', description: 'Ej: "22:00"' },
+            { name: 'cierre', title: 'Cierre', type: 'string', description: 'Ej: "21:00"' },
           ],
         },
         {
@@ -131,6 +131,9 @@ export default defineType({
           title: 'Años de experiencia',
           type: 'number',
           description: 'Años desde que inició el complejo',
+          // No longer read: the site derives years from FOUNDING_YEAR. Hidden
+          // rather than removed so the stored value doesn't show as unknown.
+          hidden: true,
         },
         {
           name: 'tripAdvisorRating',
@@ -143,6 +146,9 @@ export default defineType({
           title: 'Rating máximo TripAdvisor',
           type: 'number',
           description: 'Generalmente 5',
+          // No longer read: TripAdvisor's scale is always 5 (TRUST_STATS).
+          // Hidden rather than removed so the stored value doesn't show as unknown.
+          hidden: true,
         },
         {
           name: 'cantidadResenas',

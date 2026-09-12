@@ -9,12 +9,14 @@ import { IconType } from 'react-icons'
 import { FadeUp, StaggerGrid } from './ScrollAnimations'
 
 const conveniences: { place: string; distance: string; Icon: IconType }[] = [
-  { place: 'Centro de Tanti', distance: '500 m', Icon: HiOutlineBuildingStorefront },
-  { place: 'Villa Carlos Paz', distance: '10 min', Icon: MdOutlineTheaterComedy },
+  { place: 'Centro de Tanti', distance: '600 m', Icon: HiOutlineBuildingStorefront },
+  { place: 'Villa Carlos Paz', distance: '20 min', Icon: MdOutlineTheaterComedy },
   { place: 'Terminal', distance: '600 m', Icon: MdOutlineDirectionsBus },
   { place: 'Balneario', distance: '5 min', Icon: MdOutlinePool },
 ]
 
+// A fixed list: these places don't change, so they live here rather than in
+// the Studio. The images are local files.
 const nearbyAttractions = [
   {
     name: 'Cascada Los Helechos',
@@ -30,7 +32,7 @@ const nearbyAttractions = [
   },
   {
     name: 'Villa Carlos Paz',
-    distance: '10 min',
+    distance: '20 min',
     image: '/images/villa-carlos-paz.jpg',
     tag: 'Entretenimiento',
   },

@@ -6,8 +6,23 @@ import { FiExternalLink } from 'react-icons/fi'
 import { SiTripadvisor, SiGoogle } from 'react-icons/si'
 import { RiDoubleQuotesL } from 'react-icons/ri'
 import { FadeUp, StaggerGrid } from './ScrollAnimations'
+import { TRUST_STATS } from '@/lib/constants'
 
-const testimonials = [
+export interface TestimonialsProps {
+  testimonios?: {
+    _id: string
+    nombre?: string
+    ubicacion?: string
+    comentario?: string
+    rating?: number
+  }[]
+  // From the Studio's Configuración, like the trust strip at the top.
+  tripAdvisorRating?: number
+}
+
+// Shown when Sanity has no testimonios loaded, mirroring the documents that
+// are there today so an empty CMS never blanks the section.
+const fallbackTestimonials = [
   {
     quote: 'Excelente atención, muy buena relación precio-calidad. Volvemos siempre!',
     author: 'María L.',
@@ -44,7 +59,26 @@ function StarRating({ rating }: { rating: number }) {
   )
 }
 
-export default function Testimonials() {
+// The CMS stores the platform ("TripAdvisor", "Google") in `ubicacion`.
+function sourceIcon(source?: string) {
+  const key = source?.toLowerCase() ?? ''
+  if (key.includes('tripadvisor')) return SiTripadvisor
+  if (key.includes('google')) return SiGoogle
+  return RiDoubleQuotesL
+}
+
+export default function Testimonials({ testimonios, tripAdvisorRating }: TestimonialsProps) {
+  const rating = tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating
+  const testimonials = testimonios?.length
+    ? testimonios.map((t) => ({
+        quote: t.comentario ?? '',
+        author: t.nombre ?? '',
+        source: t.ubicacion ?? '',
+        Icon: sourceIcon(t.ubicacion),
+        rating: t.rating ?? 5,
+      }))
+    : fallbackTestimonials
+
   return (
     <section className="bg-forest-dark py-16 md:py-20 overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 overflow-hidden">
@@ -59,7 +93,7 @@ export default function Testimonials() {
             </h2>
             <div className="flex items-center justify-center gap-2 text-white/80">
               <SiTripadvisor className="w-5 h-5 text-amber" />
-              <span>4.6/5 en TripAdvisor · Travelers&apos; Choice Top 10%</span>
+              <span>{rating}/{TRUST_STATS.tripAdvisorMaxRating} en TripAdvisor · Travelers&apos; Choice Top 10%</span>
             </div>
           </div>
         </FadeUp>

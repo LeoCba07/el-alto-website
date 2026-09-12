@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { HiOutlineMapPin, HiOutlinePhone, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
-import { SiInstagram, SiFacebook, SiTripadvisor } from 'react-icons/si'
+import { HiOutlineMapPin, HiOutlineEnvelope, HiOutlineDevicePhoneMobile } from 'react-icons/hi2'
+import { SiInstagram, SiFacebook, SiYoutube, SiTripadvisor } from 'react-icons/si'
 import { SITE_CONFIG } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'
 
 const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/unidades', label: 'Unidades' },
+  { href: '/precios', label: 'Precios' },
   { href: '/servicios', label: 'Servicios' },
   { href: '/normas', label: 'Normas' },
   { href: '/consultas-frecuentes', label: 'Preguntas' },
@@ -37,13 +38,16 @@ export default function Footer({ config }: FooterProps) {
   const socialLinks = [
     { href: redes?.instagram || 'https://instagram.com/complejoelalto', label: 'Instagram', Icon: SiInstagram },
     { href: redes?.facebook || 'https://facebook.com/complejoelalto', label: 'Facebook', Icon: SiFacebook },
+    { href: redes?.youtube || 'https://www.youtube.com/complejoelalto', label: 'YouTube', Icon: SiYoutube },
     { href: redes?.tripadvisor || 'https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html', label: 'TripAdvisor', Icon: SiTripadvisor },
     // CMS-sourced URLs: only allow http(s) schemes
   ].filter((link) => /^https?:\/\//.test(link.href))
 
   return (
     <footer className="bg-forest-dark text-white">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Below lg the centred text runs under the floating chat and WhatsApp
+          buttons, which stack up to 140px from the bottom; leave room for them. */}
+      <div className="max-w-6xl mx-auto px-4 pt-8 pb-40 lg:pb-8">
         {/* Top row: Brand + Nav + Social */}
         <div className="flex flex-col items-center lg:flex-row lg:justify-between gap-6 pb-6 border-b border-cream/10">
           {/* Brand */}

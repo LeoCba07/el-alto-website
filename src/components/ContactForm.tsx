@@ -9,9 +9,12 @@ import {
   HiOutlineUserGroup,
   HiOutlineChatBubbleBottomCenterText
 } from 'react-icons/hi2'
-import { SITE_CONFIG, formatDateAR } from '@/lib/constants'
+import { formatDateAR } from '@/lib/constants'
+import { useWhatsAppNumber } from './WhatsAppNumber'
 
-export default function ContactForm() {
+// The hours come from the Studio's Configuración, read by /contacto.
+export default function ContactForm({ checkInTime, checkOutTime }: { checkInTime: string; checkOutTime: string }) {
+  const whatsappNumber = useWhatsAppNumber()
   const [nombre, setNombre] = useState('')
   const [checkIn, setCheckIn] = useState('')
   const [checkOut, setCheckOut] = useState('')
@@ -92,7 +95,7 @@ export default function ContactForm() {
 
     if (!validate()) return
 
-    const whatsappUrl = `https://wa.me/${SITE_CONFIG.WHATSAPP_NUMBER}?text=${generateWhatsAppMessage()}`
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${generateWhatsAppMessage()}`
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
 
@@ -131,15 +134,16 @@ export default function ContactForm() {
 
       {/* Dates */}
       <div>
-        <label className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
-          <HiOutlineCalendarDays className="w-4 h-4 text-amber" />
+        <p className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
+          <HiOutlineCalendarDays className="w-4 h-4 text-amber" aria-hidden="true" />
           Fechas
-        </label>
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <input
               type="date"
               id="checkIn"
+            aria-label="Fecha de entrada"
               value={checkIn}
               onChange={(e) => setCheckIn(e.target.value)}
               min={today}
@@ -151,7 +155,7 @@ export default function ContactForm() {
               <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkIn}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
-              Entrada · desde 13:30 hs
+              Entrada · desde {checkInTime} hs
             </p>
           </div>
 
@@ -159,6 +163,7 @@ export default function ContactForm() {
             <input
               type="date"
               id="checkOut"
+            aria-label="Fecha de salida"
               value={checkOut}
               onChange={(e) => setCheckOut(e.target.value)}
               min={minCheckOut}
@@ -170,7 +175,7 @@ export default function ContactForm() {
               <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkOut}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
-              Salida · hasta 10:00 hs
+              Salida · hasta {checkOutTime} hs
             </p>
           </div>
         </div>
@@ -178,13 +183,14 @@ export default function ContactForm() {
 
       {/* Guests */}
       <div>
-        <label className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
-          <HiOutlineUserGroup className="w-4 h-4 text-amber" />
+        <p className="flex items-center gap-2 text-sm font-medium text-forest-dark mb-2">
+          <HiOutlineUserGroup className="w-4 h-4 text-amber" aria-hidden="true" />
           Huéspedes
-        </label>
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <select
             id="adults"
+            aria-label="Cantidad de adultos"
             value={adults}
             onChange={(e) => setAdults(Number(e.target.value))}
             className="w-full px-4 py-3 rounded-xl border-2 border-sand hover:border-stone-light bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors cursor-pointer"
@@ -198,6 +204,7 @@ export default function ContactForm() {
 
           <select
             id="children"
+            aria-label="Cantidad de menores"
             value={children}
             onChange={(e) => handleChildrenChange(Number(e.target.value))}
             className="w-full px-4 py-3 rounded-xl border-2 border-sand hover:border-stone-light bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors cursor-pointer"

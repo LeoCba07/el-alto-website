@@ -32,9 +32,7 @@ export interface SiteConfig {
     }
   }
   estadisticas?: {
-    anosExperiencia?: number
     tripAdvisorRating?: number
-    tripAdvisorMaxRating?: number
     cantidadResenas?: number
     rankingEnTanti?: number
   }
@@ -49,4 +47,16 @@ export interface SiteConfig {
 // Helper to get value with fallback
 export function getConfigValue<T>(value: T | undefined, fallback: T): T {
   return value !== undefined ? value : fallback
+}
+
+export interface TarifaTemporada {
+  nombre: string
+  periodo: string
+  precios: { capacidad: string; precio: number }[]
+}
+
+export interface TarifasData {
+  alta: TarifaTemporada
+  media: TarifaTemporada
+  baja: TarifaTemporada
 }

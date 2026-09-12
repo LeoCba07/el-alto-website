@@ -9,17 +9,17 @@ export default defineType({
       name: 'clave',
       title: 'Clave',
       type: 'string',
-      description: 'Identificador único (ej: tarifas, servicios, ubicacion)',
+      description: 'Identificador único (ej: servicios, ubicacion)',
       options: {
+        // No "tarifas" or "unidades": the assistant builds those answers from
+        // the prices and the unit documents.
         list: [
-          { title: 'Tarifas', value: 'tarifas' },
           { title: 'Disponibilidad', value: 'disponibilidad' },
           { title: 'Servicios', value: 'servicios' },
           { title: 'Más servicios', value: 'mas_servicios' },
           { title: 'Ubicación', value: 'ubicacion' },
           { title: 'Cómo llegar', value: 'como_llegar' },
           { title: 'Check-in/Check-out', value: 'checkin' },
-          { title: 'Unidades', value: 'unidades' },
           { title: 'Mascotas', value: 'mascotas' },
           { title: 'Formas de pago', value: 'pago' },
         ],
@@ -52,6 +52,9 @@ export default defineType({
         ],
       },
       description: 'Botones que aparecen después de la respuesta',
+      // No longer read: the buttons are wiring, set per answer in ChatBot.tsx.
+      // Hidden rather than removed so the stored values don't show as unknown.
+      hidden: true,
     }),
   ],
   preview: {

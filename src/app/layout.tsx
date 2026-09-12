@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Merriweather } from "next/font/google";
+import { Geist, Merriweather } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ChatBot from "@/components/ChatBot";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import { WhatsAppNumberProvider } from "@/components/WhatsAppNumber";
+import ChatBot, { type ChatbotRespuesta, type ChatbotUnidad } from "@/components/ChatBot";
+import type { TarifasData } from "@/lib/types";
 import { client } from "@/sanity/lib/client";
-import { chatbotRespuestasQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
-import { SITE_CONFIG, CACHE_CONFIG, TRUST_STATS, BUSINESS_HOURS, RESERVATION_POLICIES } from "@/lib/constants";
+import { chatbotRespuestasQuery, chatbotUnidadesQuery, configuracionSitioQuery, tarifasTemporadaQuery } from "@/sanity/lib/queries";
+import { SITE_CONFIG, TRUST_STATS } from "@/lib/constants";
 import { SiteConfig } from "@/lib/types";
 
 // Force dynamic rendering to show Sanity updates immediately
@@ -24,15 +27,12 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 const merriweather = Merriweather({
   variable: "--font-merriweather",
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  // Every font-serif in the app is paired with font-bold; 300, 400 and 900
+  // were downloaded on each first visit and never drawn.
+  weight: ["700"],
 });
 
 const baseUrl = SITE_CONFIG.BASE_URL;
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     template: "%s | Complejo El Alto",
   },
   description:
-    "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti. Pileta, quincho, desayuno incluido.",
+    `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort en Tanti. Pileta, quincho, Wi-Fi y cochera cubierta.`,
   keywords: [
     "alojamiento en Tanti",
     "alojamiento Tanti Córdoba",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     description:
-      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
+      `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort.`,
     url: baseUrl,
     siteName: "Complejo El Alto",
     locale: "es_AR",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Complejo El Alto | Alojamiento en Tanti, Córdoba",
     description:
-      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort.",
+      `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort.`,
     images: ["/og-image.jpg"],
   },
   icons: {
@@ -105,7 +105,7 @@ function generateJsonLd(config: SiteConfig | null) {
     "@type": "LodgingBusiness",
     name: "Complejo El Alto",
     description:
-      "Alojamiento en las sierras de Córdoba. Más de 28 años brindando tranquilidad y confort en Tanti.",
+      `Alojamiento en las sierras de Córdoba. Más de ${TRUST_STATS.yearsExperience} años brindando tranquilidad y confort en Tanti.`,
     url: baseUrl,
     logo: `${baseUrl}/icon-512.png`,
     image: `${baseUrl}/og-image.jpg`,
@@ -141,55 +141,44 @@ function generateJsonLd(config: SiteConfig | null) {
       "@type": "AggregateRating",
       ratingValue: String(stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating),
       reviewCount: String(stats?.cantidadResenas ?? TRUST_STATS.reviewCount),
-      bestRating: String(stats?.tripAdvisorMaxRating ?? TRUST_STATS.tripAdvisorMaxRating),
+      bestRating: String(TRUST_STATS.tripAdvisorMaxRating),
     },
     sameAs: [
       redes?.instagram || "https://instagram.com/complejoelalto",
       redes?.facebook || "https://facebook.com/complejoelalto",
+      redes?.youtube || "https://www.youtube.com/complejoelalto",
       redes?.tripadvisor || "https://www.tripadvisor.com.ar/Hotel_Review-g1122037-d3439400-Reviews-Complejo_El_Alto-Tanti_Province_of_Cordoba_Central_Argentina.html",
     ].filter(Boolean),
   };
 }
 
-interface ChatbotData {
-  clave: string;
-  respuesta: string;
-  opcionesSeguimiento?: string[];
-}
-
-export interface TarifasData {
-  alta: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  media: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-}
-
 interface SanityTarifasDocument {
-  temporadaAlta?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  temporadaMedia?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
-  temporadaBaja?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] };
+  temporadaAlta?: TarifasData["alta"];
+  temporadaMedia?: TarifasData["media"];
+  temporadaBaja?: TarifasData["baja"];
 }
 
 async function getSiteData() {
   try {
-    const [respuestas, config, tarifasDoc] = await Promise.all([
-      client.fetch<ChatbotData[]>(chatbotRespuestasQuery),
+    const [respuestas, config, tarifasDoc, unidades] = await Promise.all([
+      client.fetch<ChatbotRespuesta[]>(chatbotRespuestasQuery),
       client.fetch<SiteConfig | null>(configuracionSitioQuery),
       client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery),
+      client.fetch<ChatbotUnidad[]>(chatbotUnidadesQuery),
     ]);
 
-    // Transform tarifas document into the expected structure
-    let tarifas: TarifasData | undefined = undefined;
-    if (tarifasDoc?.temporadaAlta && tarifasDoc?.temporadaMedia && tarifasDoc?.temporadaBaja) {
-      tarifas = {
-        alta: tarifasDoc.temporadaAlta,
-        media: tarifasDoc.temporadaMedia,
-        baja: tarifasDoc.temporadaBaja,
-      };
-    }
+    const tarifas: TarifasData | undefined =
+      tarifasDoc?.temporadaAlta && tarifasDoc?.temporadaMedia && tarifasDoc?.temporadaBaja
+        ? {
+            alta: tarifasDoc.temporadaAlta,
+            media: tarifasDoc.temporadaMedia,
+            baja: tarifasDoc.temporadaBaja,
+          }
+        : undefined;
 
-    return { respuestas, config, tarifas };
+    return { respuestas, config, tarifas, unidades };
   } catch {
-    return { respuestas: undefined, config: null, tarifas: undefined };
+    return { respuestas: undefined, config: null, tarifas: undefined, unidades: undefined };
   }
 }
 
@@ -198,12 +187,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { respuestas, config, tarifas } = await getSiteData();
+  const { respuestas, config, tarifas, unidades } = await getSiteData();
   const jsonLd = generateJsonLd(config);
 
   return (
-    <html lang="es">
+    // suppressHydrationWarning: the head script below sets --hero-vh on
+    // <html> before React hydrates it.
+    <html lang="es" suppressHydrationWarning>
       <head>
+        {/* Sets the hero's visible height before first paint, so it doesn't
+            render at 100vh and then jump once Hero's effect measures it. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.style.setProperty('--hero-vh',window.innerHeight+'px')",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
@@ -226,18 +224,22 @@ export default async function RootLayout({
         )}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${merriweather.variable} antialiased`}
+        className={`${geistSans.variable} ${merriweather.variable} antialiased`}
       >
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-forest-dark focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-amber"
-        >
-          Saltar al contenido principal
-        </a>
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer config={config} />
-        <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} />
+        {/* Every WhatsApp link reads the Studio's number from here. */}
+        <WhatsAppNumberProvider number={config?.numeroWhatsapp}>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-forest-dark focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-amber"
+          >
+            Saltar al contenido principal
+          </a>
+          <Header />
+          <main id="main-content">{children}</main>
+          <Footer config={config} />
+          <WhatsAppButton />
+          <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} unidades={unidades} />
+        </WhatsAppNumberProvider>
         <Analytics />
         <SpeedInsights />
       </body>

@@ -11,9 +11,8 @@ import {
 } from 'react-icons/hi2'
 import { MdOutlinePool, MdOutlineLocalParking, MdOutlineWaterDrop } from 'react-icons/md'
 import { PiPawPrint } from 'react-icons/pi'
-import { GiTowel } from 'react-icons/gi'
 import { client } from '@/sanity/lib/client'
-import { normasQuery, configuracionSitioQuery } from '@/sanity/lib/queries'
+import { configuracionSitioQuery } from '@/sanity/lib/queries'
 import { BUSINESS_HOURS, RESERVATION_POLICIES } from '@/lib/constants'
 import { SiteConfig } from '@/lib/types'
 
@@ -34,31 +33,16 @@ export const metadata: Metadata = {
   },
 }
 
-interface SanityNorma {
-  _id: string
-  titulo: string
-  descripcion?: string
-  icono: string
-  categoria: string
-  tipo: string
-  horario?: string
-  detalle?: string
-}
-
-async function getNormasData() {
+async function getConfig() {
   try {
-    const [normas, config] = await Promise.all([
-      client.fetch<SanityNorma[]>(normasQuery),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery)
-    ])
-    return { normas, config }
+    return await client.fetch<SiteConfig | null>(configuracionSitioQuery)
   } catch {
-    return { normas: null, config: null }
+    return null
   }
 }
 
 export default async function NormasPage() {
-  const { config } = await getNormasData()
+  const config = await getConfig()
 
   // Extract config values with fallbacks
   const horarios = config?.horarios
@@ -180,13 +164,6 @@ export default async function NormasPage() {
                   <div>
                     <p className="font-medium text-forest-dark">Volumen moderado</p>
                     <p className="text-text-medium text-sm">Para disfrutar la tranquilidad serrana.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <GiTowel className="w-6 h-6 text-amber flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-forest-dark">Toallones de pileta</p>
-                    <p className="text-text-medium text-sm">Disponibles en recepción si los necesitás.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">

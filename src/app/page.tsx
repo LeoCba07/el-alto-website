@@ -1,15 +1,21 @@
 import Hero from '@/components/Hero'
 import TrustSignals from '@/components/TrustSignals'
+import BookingWidget from '@/components/BookingWidget'
 import FeaturedUnidades from '@/components/FeaturedUnidades'
 import ServicesHighlights from '@/components/ServicesHighlights'
 import LocationTeaser from '@/components/LocationTeaser'
 import Testimonials from '@/components/Testimonials'
+import VideosSection from '@/components/VideosSection'
 import FinalCTA from '@/components/FinalCTA'
 import SectionIndicator from '@/components/SectionIndicator'
 import { client } from '@/sanity/lib/client'
-import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery } from '@/sanity/lib/queries'
+import { heroSectionQuery, configuracionSitioQuery, unidadesDestacadasQuery, serviciosDestacadosQuery, testimoniosQuery, videosInicioQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
+import { youtubeId, youtubeThumbnail } from '@/lib/youtube'
 import { SiteConfig } from '@/lib/types'
+import type { TestimonialsProps } from '@/components/Testimonials'
+
+type Testimonio = NonNullable<TestimonialsProps['testimonios']>[number]
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
@@ -42,38 +48,73 @@ interface ServicioDestacado {
   }
 }
 
-async function getHomeData() {
+interface SanityVideo {
+  _key: string
+  titulo?: string
+  url?: string
+  fechaPublicacion?: string
+  descripcion?: string
+}
+
+// Each read fails on its own: a hiccup in one section's query shouldn't throw
+// the others away and put the whole homepage on its fallbacks.
+async function fetchOr<T>(query: string, fallback: T): Promise<T> {
   try {
-    const [heroData, config, unidadesDestacadas, serviciosDestacados] = await Promise.all([
-      client.fetch<SanityHeroSection | null>(heroSectionQuery),
-      client.fetch<SiteConfig | null>(configuracionSitioQuery),
-      client.fetch<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery),
-      client.fetch<ServicioDestacado[]>(serviciosDestacadosQuery),
-    ])
-    return { heroData, config, unidadesDestacadas, serviciosDestacados: serviciosDestacados || [] }
+    return (await client.fetch<T | null>(query)) ?? fallback
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('Failed to fetch home data:', error)
     }
-    return { heroData: null, config: null, unidadesDestacadas: null, serviciosDestacados: [] }
+    return fallback
   }
 }
 
+type SanityImage = Parameters<typeof urlFor>[0]
+
+// Hero crops come straight from Sanity's CDN, toward each image's hotspot
+// (Sanity only honours it when given a target size).
+function heroCrop(img: SanityImage, width: number, height: number) {
+  return urlFor(img).width(width).height(height).fit('crop').auto('format').url()
+}
+
+function heroSrcSet(img: SanityImage, widths: number[], heightRatio: number) {
+  return widths.map((w) => `${heroCrop(img, w, Math.round(w * heightRatio))} ${w}w`).join(', ')
+}
+
+async function getHomeData() {
+  const [heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, videos] = await Promise.all([
+    fetchOr<SanityHeroSection | null>(heroSectionQuery, null),
+    fetchOr<SiteConfig | null>(configuracionSitioQuery, null),
+    fetchOr<SanityUnidadesDestacadas | null>(unidadesDestacadasQuery, null),
+    fetchOr<ServicioDestacado[]>(serviciosDestacadosQuery, []),
+    fetchOr<Testimonio[]>(testimoniosQuery, []),
+    fetchOr<SanityVideo[]>(videosInicioQuery, []),
+  ])
+  return { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, videos }
+}
+
 export default async function Home() {
-  const { heroData, config, unidadesDestacadas, serviciosDestacados } = await getHomeData()
+  const { heroData, config, unidadesDestacadas, serviciosDestacados, testimonios, videos: sanityVideos } = await getHomeData()
 
   const heroProps = heroData ? {
     subtitulo: heroData.subtitulo,
     titulo: heroData.titulo,
     descripcion: heroData.descripcion,
     imagenes: heroData.imagenes?.map(img => ({
-      url: urlFor(img).url(),
+      // Art-directed: a 16:9 crop for landscape screens and a 9:16 one for
+      // portrait. A single 16:9 crop left phones showing a thin band of it,
+      // stretched about four times (Next also capped it at 1200px wide).
+      url: heroCrop(img, 1920, 1080),
+      landscapeSrcSet: heroSrcSet(img, [1280, 1920, 2560], 9 / 16),
+      portraitSrcSet: heroSrcSet(img, [640, 960, 1280], 16 / 9),
       alt: img.alt
     })),
   } : {}
 
   const unidadesDestacadasProps = unidadesDestacadas ? {
-    fotos: unidadesDestacadas.fotos?.map(img => ({ url: urlFor(img).url(), alt: img.alt })),
+    // Ask Sanity for the carousel's 16:10 crop. Without dimensions it returns
+    // the original -- up to 12000x9000 here -- for Next to resize on every miss.
+    fotos: unidadesDestacadas.fotos?.map(img => ({ url: urlFor(img).width(1600).height(1000).fit('crop').url(), alt: img.alt })),
     insignia: unidadesDestacadas.insignia,
     tituloPanelInfo: unidadesDestacadas.tituloPanelInfo,
     descripcionPanelInfo: unidadesDestacadas.descripcionPanelInfo,
@@ -89,14 +130,46 @@ export default async function Home() {
       }
     : {}
 
+  // No hardcoded fallback: with nothing in Sanity the section simply isn't rendered.
+  const videos = await Promise.all(
+    sanityVideos
+      .flatMap(v => {
+        const id = youtubeId(v.url)
+        return id && v.titulo ? [{ id, titulo: v.titulo, descripcion: v.descripcion, fechaPublicacion: v.fechaPublicacion }] : []
+      })
+      .map(async v => ({ ...v, thumb: await youtubeThumbnail(v.id) }))
+  )
+
+  const videosJsonLd = videos.map(v => ({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: v.titulo,
+    description: v.descripcion || v.titulo,
+    thumbnailUrl: v.thumb,
+    uploadDate: v.fechaPublicacion,
+    embedUrl: `https://www.youtube.com/embed/${v.id}`,
+    contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
+  }))
+
   return (
     <div className="min-h-screen">
-      <SectionIndicator />
+      <SectionIndicator hasVideos={videos.length > 0} />
       <section id="hero">
         <Hero {...heroProps} />
       </section>
       <section id="trust-signals">
         <TrustSignals stats={config?.estadisticas} />
+      </section>
+      {/* The enquiry sits here rather than over the hero, where it covered the
+          photos. The dark band continues the trust strip above it. */}
+      <section id="consulta" aria-labelledby="consulta-titulo" className="bg-forest-dark px-4 pt-10 pb-12 md:pt-12 md:pb-14">
+        <h2 id="consulta-titulo" className="text-center font-serif text-2xl md:text-3xl font-bold text-white mb-2">
+          Consultá disponibilidad
+        </h2>
+        <p className="text-center text-white/70 mb-6 md:mb-8">
+          Elegí las fechas y te respondemos por WhatsApp
+        </p>
+        <BookingWidget />
       </section>
       <section id="unidades">
         <FeaturedUnidades {...unidadesDestacadasProps} />
@@ -108,8 +181,17 @@ export default async function Home() {
         <LocationTeaser />
       </section>
       <section id="testimonios">
-        <Testimonials />
+        <Testimonials testimonios={testimonios} tripAdvisorRating={config?.estadisticas?.tripAdvisorRating} />
       </section>
+      {videos.length > 0 && (
+        <section id="videos">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(videosJsonLd).replace(/</g, '\\u003c') }}
+          />
+          <VideosSection videos={videos} channelUrl={config?.redesSociales?.youtube} />
+        </section>
+      )}
       <section id="contacto">
         <FinalCTA />
       </section>

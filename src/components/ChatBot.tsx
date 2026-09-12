@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { trackEvent } from '@/lib/analytics'
 import {
   HiXMark,
   HiOutlineCalendarDays,
@@ -16,41 +17,59 @@ import {
 } from 'react-icons/hi2'
 import { SiWhatsapp } from 'react-icons/si'
 import { PiPawPrint } from 'react-icons/pi'
-import { SITE_CONFIG, BUSINESS_HOURS, RESERVATION_POLICIES, formatDateAR } from '@/lib/constants'
-import { SiteConfig } from '@/lib/types'
+import { BUSINESS_HOURS, RESERVATION_POLICIES, formatDateAR } from '@/lib/constants'
+import type { SiteConfig, TarifasData } from '@/lib/types'
+import { useWhatsAppNumber } from './WhatsAppNumber'
 
 export interface ChatbotRespuesta {
   clave: string
   respuesta: string
-  opcionesSeguimiento?: string[]
 }
 
-// Tarifas data structure (matches what comes from Sanity)
-export interface TarifasData {
-  alta: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  media: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  baja: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
+// What the assistant needs from each unidad document to describe it
+export interface ChatbotUnidad {
+  nombre: string
+  capacidadTexto?: string
+  cantidad?: number
 }
 
 export interface ChatBotProps {
   respuestas?: ChatbotRespuesta[]
   siteConfig?: SiteConfig | null
   tarifas?: TarifasData
+  unidades?: ChatbotUnidad[]
+  /**
+   * Where the widget anchors itself. Defaults to the bottom-right corner;
+   * pass a raised position where the WhatsApp button already sits there.
+   */
+  positionClassName?: string
 }
 
 // Generate tarifas summary from Sanity data
 function getTarifasSummaryFromData(tarifas?: TarifasData): string {
   if (!tarifas) {
-    return 'Consultá las tarifas actualizadas por WhatsApp o en nuestra página de unidades.'
+    return 'Consultá las tarifas actualizadas por WhatsApp o en nuestra página de precios.'
   }
   const minBaja = Math.min(...tarifas.baja.precios.map(p => p.precio))
   const maxAlta = Math.max(...tarifas.alta.precios.map(p => p.precio))
   return `Las tarifas varían según temporada y capacidad. Temporada baja: desde $${minBaja.toLocaleString('es-AR')}/noche. Temporada alta: hasta $${maxAlta.toLocaleString('es-AR')}/noche (para 6 personas).`
 }
 
+// Built from the unidad documents, like the tarifas answer, so it can't drift
+// from /unidades. Undefined without data, so the default answer takes over.
+function getUnidadesSummaryFromData(unidades?: ChatbotUnidad[]): string | undefined {
+  if (!unidades?.length) return undefined
+  const total = unidades.reduce((sum, u) => sum + (u.cantidad ?? 0), 0)
+  const names = unidades.map((u) =>
+    u.capacidadTexto ? `${u.nombre} (${u.capacidadTexto.toLowerCase()} personas)` : u.nombre
+  )
+  const list = new Intl.ListFormat('es', { type: 'conjunction' }).format(names)
+  return `Tenemos ${total ? `${total} unidades` : 'estas unidades'}: ${list}. Todas equipadas con cocina, baño privado y calefacción.`
+}
+
 // Links to pages for "Para más información"
 const INFO_LINKS: Record<string, { url: string; label: string }> = {
-  tarifas: { url: '/unidades#tarifas', label: 'ver todas las tarifas' },
+  tarifas: { url: '/precios', label: 'ver todos los precios' },
   servicios: { url: '/servicios', label: 'ver todos los servicios' },
   mas_servicios: { url: '/servicios', label: 'ver servicios' },
   ubicacion: { url: '/contacto', label: 'ver ubicación' },
@@ -58,7 +77,7 @@ const INFO_LINKS: Record<string, { url: string; label: string }> = {
   checkin: { url: '/normas', label: 'ver horarios y normas' },
   unidades: { url: '/unidades', label: 'ver unidades' },
   mascotas: { url: '/normas', label: 'ver normas' },
-  pago: { url: '/unidades', label: 'ver info de reservas' },
+  pago: { url: '/precios', label: 'ver precios y cómo reservar' },
 }
 
 // Default FAQ Data - answers to common questions
@@ -77,15 +96,15 @@ const DEFAULT_FAQ_DATA: Record<string, { answer: string; followUp: string[] }> =
     followUp: ['mas_servicios', 'consultar_disponibilidad', 'otra_pregunta']
   },
   mas_servicios: {
-    answer: 'También contamos con: pileta al aire libre (climatizada en primavera/otoño), quincho con asadores para uso común, jardín con vistas a las sierras, y estamos a 500m del centro de Tanti.',
+    answer: 'También contamos con: pileta al aire libre (climatizada en primavera/otoño), quincho con asadores para uso común, jardín con vistas a las sierras, y estamos a 600m del centro de Tanti.',
     followUp: ['consultar_disponibilidad', 'otra_pregunta']
   },
   ubicacion: {
-    answer: 'Estamos en Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba. A solo 10 minutos de Villa Carlos Paz y 500m del centro de Tanti.',
+    answer: 'Estamos en Ruta Provincial N°28 y San Martín 1130, Tanti, Córdoba. A solo 20 minutos de Villa Carlos Paz y 600m del centro de Tanti.',
     followUp: ['como_llegar', 'consultar_disponibilidad', 'otra_pregunta']
   },
   como_llegar: {
-    answer: 'Desde Córdoba Capital: tomar Ruta 20 hacia Villa Carlos Paz, luego Ruta 28 hacia Tanti (10 min). Nuestra entrada está sobre la Ruta 28. ¿Necesitás el link de Google Maps?',
+    answer: 'Desde Córdoba Capital: tomar Ruta 20 hacia Villa Carlos Paz, luego Ruta 28 hacia Tanti (20 min). Nuestra entrada está sobre la Ruta 28. ¿Necesitás el link de Google Maps?',
     followUp: ['ver_mapa', 'consultar_disponibilidad', 'otra_pregunta']
   },
   checkin: {
@@ -111,7 +130,8 @@ const MAIN_MENU_OPTIONS = ['disponibilidad', 'unidades', 'tarifas', 'servicios',
 
 // Quick reply button options with icons (matching site-wide icon usage)
 const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<{ className?: string }> }> = {
-  tarifas: { label: 'Tarifas', icon: HiOutlineCreditCard },
+  // Keys stay "tarifas" so the chatbot_option events keep their names in GA4.
+  tarifas: { label: 'Precios', icon: HiOutlineCreditCard },
   disponibilidad: { label: 'Disponibilidad', icon: HiOutlineCalendarDays },
   servicios: { label: 'Servicios', icon: HiOutlineSquares2X2 },
   ubicacion: { label: 'Ubicación', icon: HiOutlineMapPin },
@@ -120,7 +140,7 @@ const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<
   mascotas: { label: 'Mascotas', icon: PiPawPrint },
   pago: { label: 'Formas de pago', icon: HiOutlineCreditCard },
   consultar_disponibilidad: { label: 'Consultar disponibilidad', icon: HiOutlineCalendarDays },
-  ver_tarifas: { label: 'Ver tarifas', icon: HiOutlineArrowTopRightOnSquare },
+  ver_tarifas: { label: 'Ver precios', icon: HiOutlineArrowTopRightOnSquare },
   ver_unidades: { label: 'Ver unidades', icon: HiOutlineArrowTopRightOnSquare },
   mas_servicios: { label: 'Más servicios', icon: HiOutlineSquares2X2 },
   como_llegar: { label: 'Cómo llegar', icon: HiOutlineMapPin },
@@ -148,7 +168,14 @@ type BookingData = {
   childrenAges: number[]
 }
 
-export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProps) {
+export default function ChatBot({
+  respuestas,
+  siteConfig,
+  tarifas,
+  unidades,
+  // Sits 12px above the WhatsApp button (bottom-4 + h-14 = 72px, + 12 = 84px).
+  positionClassName = 'bottom-21 right-4 md:right-6',
+}: ChatBotProps) {
   const router = useRouter()
   const [animationStage, setAnimationStage] = useState<'closed' | 'bar' | 'open'>('closed')
   const [messages, setMessages] = useState<Message[]>([])
@@ -163,6 +190,22 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const lastMessageRef = useRef<HTMLDivElement>(null)
   const [showPulse, setShowPulse] = useState(true)
+
+  // On the homepage the hero already carries its links and the WhatsApp
+  // button, so the assistant waits until the hero is mostly scrolled past. Pages without a hero show it straight away. It starts hidden so the
+  // homepage doesn't flash it before this runs.
+  const pathname = usePathname()
+  const [pastHero, setPastHero] = useState(false)
+  useEffect(() => {
+    const hero = document.getElementById('hero')
+    const check = () => setPastHero(!hero || hero.getBoundingClientRect().bottom < window.innerHeight * 0.5)
+    const frame = requestAnimationFrame(check)
+    if (hero) window.addEventListener('scroll', check, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', check)
+    }
+  }, [pathname])
 
   // Extract config values with fallbacks to constants
   const horarios = siteConfig?.horarios
@@ -188,6 +231,10 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
         ...DEFAULT_FAQ_DATA.tarifas,
         answer: getTarifasSummaryFromData(tarifas),
       },
+      unidades: {
+        ...DEFAULT_FAQ_DATA.unidades,
+        answer: getUnidadesSummaryFromData(unidades) ?? DEFAULT_FAQ_DATA.unidades.answer,
+      },
       checkin: {
         answer: `Check-in: desde las ${checkInTime} hs (llegada máxima ${latestArrival} hs). Check-out: hasta las ${checkOutTime} hs. Late check-out hasta ${lateCheckOut} hs con ${lateCheckOutFee}% adicional.`,
         followUp: ['consultar_disponibilidad', 'otra_pregunta']
@@ -202,23 +249,26 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
 
     const sanityData: Record<string, { answer: string; followUp: string[] }> = {}
     respuestas.forEach((r) => {
-      // Skip tarifas from chatbotRespuesta - we use Sanity tarifas data instead
-      if (r.clave === 'tarifas') return
+      // Skip tarifas and unidades from chatbotRespuesta: those answers are
+      // built from the prices and the unit documents instead
+      if (r.clave === 'tarifas' || r.clave === 'unidades') return
       sanityData[r.clave] = {
         answer: r.respuesta,
-        followUp: r.opcionesSeguimiento || ['consultar_disponibilidad', 'otra_pregunta']
+        // Only the text comes from the Studio: the buttons are wiring, kept here.
+        followUp: dynamicDefaults[r.clave]?.followUp || ['consultar_disponibilidad', 'otra_pregunta']
       }
     })
-    // Merge with base (tarifas answer is already set from Sanity tarifas)
+    // Merge with base (tarifas and unidades are already set from Sanity data)
     return { ...dynamicDefaults, ...sanityData }
-  }, [respuestas, tarifas, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights])
+  }, [respuestas, tarifas, unidades, checkInTime, checkOutTime, lateCheckOut, lateCheckOutFee, latestArrival, depositPercent, depositPercentShort, shortStayMaxNights])
 
-  const WHATSAPP_NUMBER = siteConfig?.numeroWhatsapp || SITE_CONFIG.WHATSAPP_NUMBER
+  const WHATSAPP_NUMBER = useWhatsAppNumber()
 
   const isOpen = animationStage === 'open'
 
   // Handle opening animation: closed → bar → open
   const handleOpen = () => {
+    trackEvent('chatbot_open')
     setShowPulse(false)
     setAnimationStage('bar')
     setTimeout(() => {
@@ -255,12 +305,13 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
   }
 
   const handleOptionClick = (option: string) => {
+    trackEvent('chatbot_option', { option })
     // Add user's selection as a message
     addMessage({ type: 'user', text: QUICK_REPLIES[option]?.label || option })
 
     // Handle special actions
     if (option === 'ver_tarifas') {
-      router.push('/unidades#tarifas')
+      router.push('/precios')
       return
     }
     if (option === 'ver_unidades') {
@@ -383,6 +434,7 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
 
     msg += `\nTienen disponibilidad? Gracias!`
 
+    trackEvent('whatsapp_click', { source: 'chatbot' })
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
   }
@@ -410,13 +462,19 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
       case 'bar':
         return 'w-[calc(100vw-2rem)] md:w-96 h-14 rounded-full'
       case 'open':
-        return 'w-[calc(100vw-2rem)] md:w-96 h-[min(28rem,calc(100vh-6rem))] rounded-2xl'
+        return 'w-[calc(100vw-2rem)] md:w-96 h-[min(28rem,calc(100vh-11rem))] rounded-2xl'
     }
   }
 
+  // Once open it stays put, even if the guest scrolls back up to the hero.
+  const hiddenOnHero = !pastHero && animationStage === 'closed'
+
   return (
     <div
-      className={`fixed bottom-4 right-4 md:right-6 z-50 transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''}`}
+      inert={hiddenOnHero}
+      // transform-gpu: own layer, like the header and WhatsApp button, for
+      // Chrome for iOS's first-open painting.
+      className={`fixed ${positionClassName} z-50 transform-gpu transition-all duration-300 ease-in-out shadow-xl ${getDimensions()} ${animationStage === 'closed' ? 'ring-2 ring-white/50' : ''} ${hiddenOnHero ? 'opacity-0 translate-y-4 pointer-events-none' : ''}`}
       style={{
         background: animationStage === 'closed' ? 'var(--color-forest)' : 'white'
       }}
@@ -449,10 +507,10 @@ export default function ChatBot({ respuestas, siteConfig, tarifas }: ChatBotProp
         <div className="bg-forest-dark text-white p-4 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
-              <SiWhatsapp className="w-5 h-5 text-white" />
+              <HiOutlineChatBubbleLeftRight className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <p className="font-semibold text-sm">Complejo El Alto</p>
+            <div className="min-w-0">
+              <p className="font-semibold text-sm truncate">Asistente de Complejo El Alto</p>
               <p className="text-xs text-white/60">Tanti, Córdoba</p>
             </div>
           </div>

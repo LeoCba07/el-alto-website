@@ -1,7 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useId, useState } from 'react'
+import { SiWhatsapp } from 'react-icons/si'
+import { trackEvent } from '@/lib/analytics'
+import { useWhatsAppNumber } from '@/components/WhatsAppNumber'
 import {
   HiOutlineChatBubbleLeftRight,
   HiOutlineChevronDown,
@@ -90,26 +92,33 @@ const defaultCategories: FAQCategory[] = [
       { pregunta: '¿Están cerca del centro?', respuesta: 'Sí, a 6 cuadras. El río y El Diquecito también están cerca.' },
       { pregunta: '¿Hay supermercados?', respuesta: 'Despensas a 100m, supermercado grande a 3 cuadras.' },
       { pregunta: '¿Cómo llego en colectivo?', respuesta: 'Terminal a 6 cuadras. Parada más cercana a 150m.' },
-      { pregunta: '¿A cuánto está Villa Carlos Paz?', respuesta: 'A 10 minutos en auto.' },
+      { pregunta: '¿A cuánto está Villa Carlos Paz?', respuesta: 'A 20 minutos en auto.' },
     ],
   },
 ]
 
 function QuestionItem({ q, a }: { q: string; a: string }) {
   const [isOpen, setIsOpen] = useState(false)
+  const panelId = useId()
 
   return (
     <div className="border-b border-sand last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 text-left group focus:outline-none"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        className="w-full flex items-center justify-between py-4 text-left group rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2"
       >
         <span className="font-medium text-forest-dark group-hover:text-forest pr-4">{q}</span>
         <HiOutlineChevronDown
+          aria-hidden="true"
           className={`w-5 h-5 text-amber flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
-      <div className={`overflow-hidden transition-all ${isOpen ? 'max-h-96 pb-4' : 'max-h-0'}`}>
+      {/* No max-height here: it capped answers at 384px and silently clipped
+          the longer ones. `hidden` also keeps collapsed answers out of the
+          accessibility tree, which max-h-0 did not. */}
+      <div id={panelId} role="region" hidden={!isOpen} className="pb-4">
         <p className="text-text-medium">{a}</p>
       </div>
     </div>
@@ -117,6 +126,7 @@ function QuestionItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function FAQClient({ categories }: FAQClientProps) {
+  const whatsappNumber = useWhatsAppNumber()
   const faqCategories = categories?.length ? categories : defaultCategories
   const [activeCategory, setActiveCategory] = useState(faqCategories[0].id)
   const active = faqCategories.find((c) => c.id === activeCategory)!
@@ -180,13 +190,18 @@ export default function FAQClient({ categories }: FAQClientProps) {
           <p className="text-white/80 mb-8">
             Estamos para ayudarte
           </p>
-          <Link
-            href="/contacto"
+          <a
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+              '¡Hola! Tengo una consulta que no encontré en las preguntas frecuentes.'
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent('whatsapp_click', { source: 'faq_cta' })}
             className="inline-flex items-center gap-2 bg-amber text-text-dark px-8 py-4 rounded-full font-semibold hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25"
           >
-            <HiOutlineChatBubbleLeftRight className="w-5 h-5" />
-            Contactanos
-          </Link>
+            <SiWhatsapp className="w-5 h-5" />
+            Consultanos por WhatsApp
+          </a>
         </div>
       </section>
     </div>

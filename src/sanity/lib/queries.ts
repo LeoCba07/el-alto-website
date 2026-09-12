@@ -18,65 +18,15 @@ export const unidadesQuery = groq`
   *[_type == "unidad"] | order(orden asc) {
     _id,
     nombre,
-    slug,
     tipo,
     descripcion,
     destacado,
     capacidadTexto,
-    capacidadMaxima,
     cantidad,
-    amenities,
     fotos[] {
       asset->,
       alt
     },
-    precioBase
-  }
-`
-
-export const unidadBySlugQuery = groq`
-  *[_type == "unidad" && slug.current == $slug][0] {
-    _id,
-    nombre,
-    slug,
-    tipo,
-    descripcion,
-    destacado,
-    capacidadTexto,
-    capacidadMaxima,
-    cantidad,
-    amenities,
-    fotos[] {
-      asset->,
-      alt
-    },
-    precioBase
-  }
-`
-
-// Normas
-export const normasQuery = groq`
-  *[_type == "norma"] | order(categoria asc, orden asc) {
-    _id,
-    titulo,
-    descripcion,
-    icono,
-    categoria,
-    tipo,
-    horario,
-    detalle
-  }
-`
-
-export const normasPorCategoriaQuery = groq`
-  *[_type == "norma" && categoria == $categoria] | order(orden asc) {
-    _id,
-    titulo,
-    descripcion,
-    icono,
-    tipo,
-    horario,
-    detalle
   }
 `
 
@@ -90,14 +40,6 @@ export const preguntasFrecuentesQuery = groq`
   }
 `
 
-export const preguntasPorCategoriaQuery = groq`
-  *[_type == "preguntaFrecuente" && categoria == $categoria] | order(orden asc) {
-    _id,
-    pregunta,
-    respuesta
-  }
-`
-
 // Testimonios
 export const testimoniosQuery = groq`
   *[_type == "testimonio"] | order(orden asc) {
@@ -105,34 +47,14 @@ export const testimoniosQuery = groq`
     nombre,
     ubicacion,
     comentario,
-    rating,
-    fecha,
-    foto {
-      asset->,
-      alt
-    }
-  }
-`
-
-// Atracciones Cercanas
-export const atraccionesCercanasQuery = groq`
-  *[_type == "atraccionCercana"] | order(distancia asc) {
-    _id,
-    nombre,
-    descripcion,
-    distancia,
-    tiempo,
-    categoria,
-    imagen {
-      asset->,
-      alt
-    }
+    rating
   }
 `
 
 // Tarifas por Temporada (single document with all 3 seasons)
 export const tarifasTemporadaQuery = groq`
   *[_type == "tarifaTemporada"][0] {
+    temporadaVigente,
     temporadaAlta {
       nombre,
       periodo,
@@ -194,9 +116,7 @@ export const configuracionSitioQuery = groq`
       }
     },
     estadisticas {
-      anosExperiencia,
       tripAdvisorRating,
-      tripAdvisorMaxRating,
       cantidadResenas,
       rankingEnTanti
     },
@@ -219,18 +139,38 @@ export const unidadesDestacadasQuery = groq`
   }
 `
 
+// Videos (Home)
+export const videosInicioQuery = groq`
+  *[_type == "videosInicio"][0].videos[] {
+    _key,
+    titulo,
+    url,
+    fechaPublicacion,
+    descripcion
+  }
+`
+
 // Chatbot Respuestas
 export const chatbotRespuestasQuery = groq`
   *[_type == "chatbotRespuesta"] {
     clave,
-    respuesta,
-    opcionesSeguimiento
+    respuesta
   }
 `
 
-// Servicios Destacados (for feature cards on /servicios page)
+// Unidades, as the assistant names them in its answer
+export const chatbotUnidadesQuery = groq`
+  *[_type == "unidad"] | order(orden asc) {
+    nombre,
+    capacidadTexto,
+    cantidad
+  }
+`
+
+// Servicios Destacados (feature cards on the homepage and /servicios).
+// Every servicio is one of these photo cards.
 export const serviciosDestacadosQuery = groq`
-  *[_type == "servicio" && categoria == "destacado"] | order(orden asc) {
+  *[_type == "servicio"] | order(orden asc) {
     _id,
     nombre,
     descripcion,

@@ -1,7 +1,8 @@
 import { client } from '@/sanity/lib/client'
-import { unidadesQuery, tarifasTemporadaQuery } from '@/sanity/lib/queries'
+import { unidadesQuery } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
-import UnidadesClient, { UnidadType, TarifasData } from './UnidadesClient'
+import { DEFAULT_AMENITIES } from '@/lib/constants'
+import UnidadesClient, { UnidadType } from './UnidadesClient'
 
 // Force dynamic rendering to show Sanity updates immediately
 export const dynamic = 'force-dynamic'
@@ -9,23 +10,15 @@ export const dynamic = 'force-dynamic'
 interface SanityUnidad {
   _id: string
   nombre: string
-  slug?: { current: string }
   tipo: string
   descripcion: string
   destacado?: string
   capacidadTexto: string
-  capacidadMaxima: number
   cantidad: number
   fotos?: Array<{
     asset: { _ref: string }
     alt?: string
   }>
-}
-
-interface SanityTarifasDocument {
-  temporadaAlta?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  temporadaMedia?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
-  temporadaBaja?: { nombre: string; periodo: string; precios: { capacidad: string; precio: number }[] }
 }
 
 async function getUnidadesData() {
@@ -37,29 +30,8 @@ async function getUnidadesData() {
   }
 }
 
-async function getTarifasData(): Promise<TarifasData | null> {
-  try {
-    const tarifasDoc = await client.fetch<SanityTarifasDocument | null>(tarifasTemporadaQuery)
-
-    if (!tarifasDoc?.temporadaAlta || !tarifasDoc?.temporadaMedia || !tarifasDoc?.temporadaBaja) {
-      return null
-    }
-
-    return {
-      alta: tarifasDoc.temporadaAlta,
-      media: tarifasDoc.temporadaMedia,
-      baja: tarifasDoc.temporadaBaja,
-    }
-  } catch {
-    return null
-  }
-}
-
 export default async function UnidadesPage() {
-  const [unidadesData, tarifasData] = await Promise.all([
-    getUnidadesData(),
-    getTarifasData()
-  ])
+  const unidadesData = await getUnidadesData()
 
   // Fallback photos for each unit type
   const fallbackPhotos: Record<string, string[]> = {
@@ -76,13 +48,14 @@ export default async function UnidadesPage() {
         nombre: unidad.nombre,
         capacidad: unidad.capacidadTexto,
         cantidad: unidad.cantidad,
+        amenities: [...DEFAULT_AMENITIES],
         descripcion: unidad.descripcion,
         destacado: unidad.destacado || '',
         photos: unidad.fotos?.length
-          ? unidad.fotos.map((foto) => ({ url: urlFor(foto).url(), alt: foto.alt }))
+          ? unidad.fotos.map((foto) => ({ url: urlFor(foto).width(1600).height(1000).fit('crop').url(), alt: foto.alt }))
           : fallbackPhotos[unidad.tipo] || [],
       }))
     : undefined
 
-  return <UnidadesClient unidades={unidades} tarifas={tarifasData} />
+  return <UnidadesClient unidades={unidades} />
 }

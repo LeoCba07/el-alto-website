@@ -35,15 +35,15 @@ export const SITE_CONFIG = {
 
 // Business hours (fallbacks - prefer Sanity configuracionSitio when available)
 export const BUSINESS_HOURS = {
-  checkIn: '13:30',
+  checkIn: '13:00',
   checkOut: '10:00',
   lateCheckOut: '18:00',
   lateCheckOutFee: 50, // percentage
   poolOpen: '9:30',
-  poolClose: '22:00',
+  poolClose: '21:00',
   receptionOpen: '9:00',
   receptionClose: '19:00',
-  latestArrival: '20:00',
+  latestArrival: '19:00',
 } as const
 
 // Reservation policies (single source of truth)
@@ -75,8 +75,12 @@ export const OPTIONAL_SERVICES = {
 } as const
 
 // Trust signals / stats
+// The complex opened in 1996. Deriving the figure keeps every mention in sync
+// and correct across new years, instead of drifting apart as hardcoded copies.
+export const FOUNDING_YEAR = 1996
+
 export const TRUST_STATS = {
-  yearsExperience: 28,
+  yearsExperience: new Date().getFullYear() - FOUNDING_YEAR,
   tripAdvisorRating: 4.6,
   tripAdvisorMaxRating: 5,
   reviewCount: 150,
@@ -128,3 +132,17 @@ export const formatTimeDisplay = (time: string): string => {
 // Tarifas are now managed exclusively in Sanity Studio
 // See: src/sanity/schemaTypes/tarifaTemporada.ts
 // To seed initial data: node scripts/seed-tarifas.mjs
+
+// Amenities shown per unit.
+export const AMENITY_LABELS: Record<string, string> = {
+  wifi: 'Wi-Fi',
+  cocina: 'Cocina equipada',
+  cochera: 'Cochera cubierta',
+  tv: 'TV',
+}
+
+// Every unit offers all of these, so the list lives here rather than in the
+// Studio. No asador here: the grill area is shared (see /servicios). No air
+// conditioning either: it is a paid extra (OPTIONAL_SERVICES.acPricePerDay),
+// not included.
+export const DEFAULT_AMENITIES = ['wifi', 'cocina', 'cochera'] as const

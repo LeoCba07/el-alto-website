@@ -9,22 +9,27 @@ import { ANIMATION_TIMING, TRUST_STATS } from '@/lib/constants'
 
 export interface TrustSignalsProps {
   stats?: {
-    anosExperiencia?: number
     tripAdvisorRating?: number
-    tripAdvisorMaxRating?: number
     cantidadResenas?: number
     rankingEnTanti?: number
   }
 }
 
 function useCountUp(end: number, duration: number = 2000, start: number = 0, decimals: number = 0) {
-  const [count, setCount] = useState(start)
+  // Seed with the real value so SSR, crawlers and clients without JS read the
+  // actual number. Seeding with `start` rendered "0+ years" into the HTML.
+  const [count, setCount] = useState(end)
   const [hasStarted, setHasStarted] = useState(false)
 
   const startCounting = () => {
     if (hasStarted) return
     setHasStarted(true)
 
+    // Reduced motion keeps the final value already on screen.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    // The first animation frame lands on `start`, so no separate reset is
+    // needed -- and the observer fires before the section scrolls into view.
     const startTime = Date.now()
     const animate = () => {
       const now = Date.now()
@@ -89,13 +94,13 @@ function AnimatedStat({
 }
 
 export default function TrustSignals({ stats }: TrustSignalsProps) {
-  const { ref, isInView } = useInView(0.5)
+  const { ref, isInView } = useInView(0.5, '300px')
   const [showShine, setShowShine] = useState(false)
 
   // Use stats from Sanity with fallbacks to constants
-  const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
+  const yearsExperience = TRUST_STATS.yearsExperience
   const tripAdvisorRating = stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating
-  const tripAdvisorMaxRating = stats?.tripAdvisorMaxRating ?? TRUST_STATS.tripAdvisorMaxRating
+  const tripAdvisorMaxRating = TRUST_STATS.tripAdvisorMaxRating
   const rankingInTanti = stats?.rankingEnTanti ?? TRUST_STATS.rankingInTanti
 
   useEffect(() => {
@@ -111,7 +116,7 @@ export default function TrustSignals({ stats }: TrustSignalsProps) {
   }, [isInView])
 
   return (
-    <section ref={ref} className="bg-forest-dark py-6 border-b border-white/10">
+    <section ref={ref} className="bg-forest-dark py-6">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
           <AnimatedStat

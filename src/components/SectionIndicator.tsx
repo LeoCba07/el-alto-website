@@ -13,11 +13,14 @@ const SECTIONS: Section[] = [
   { id: 'servicios', label: 'Servicios' },
   { id: 'ubicacion', label: 'Ubicación' },
   { id: 'testimonios', label: 'Testimonios' },
+  { id: 'videos', label: 'Videos' },
   { id: 'contacto', label: 'Contacto' },
 ]
 
-export default function SectionIndicator() {
+export default function SectionIndicator({ hasVideos = true }: { hasVideos?: boolean }) {
   const [activeSection, setActiveSection] = useState('hero')
+  // The videos section only renders when Sanity has videos; its dot follows it.
+  const sections = hasVideos ? SECTIONS : SECTIONS.filter((s) => s.id !== 'videos')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +60,7 @@ export default function SectionIndicator() {
       aria-label="Navegación de secciones"
     >
       <div className="bg-black/60 backdrop-blur-sm rounded-full py-4 px-2.5 flex flex-col items-center gap-4">
-        {SECTIONS.map((section) => (
+        {sections.map((section) => (
           <button
             key={section.id}
             onClick={() => scrollToSection(section.id)}

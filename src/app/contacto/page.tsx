@@ -58,7 +58,6 @@ export default async function ContactoPage() {
   // Extract config values with fallbacks
   const horarios = config?.horarios
   const politicas = config?.politicasReserva
-  const stats = config?.estadisticas
 
   const checkIn = horarios?.checkIn || BUSINESS_HOURS.checkIn
   const checkOut = horarios?.checkOut || BUSINESS_HOURS.checkOut
@@ -73,7 +72,7 @@ export default async function ContactoPage() {
   // Payment methods are hardcoded as they rarely change
   const paymentMethods = RESERVATION_POLICIES.paymentMethods
 
-  const yearsExperience = stats?.anosExperiencia ?? TRUST_STATS.yearsExperience
+  const yearsExperience = TRUST_STATS.yearsExperience
 
   const email = config?.email || SITE_CONFIG.EMAIL
   const telefonoMovil = config?.telefonoMovil || '+5493572501030'
@@ -102,12 +101,12 @@ export default async function ContactoPage() {
             {/* Check-in/Check-out Info - Shows first on mobile, right side on desktop */}
             <div className="lg:col-span-2 lg:order-2">
               <div className="bg-forest-dark text-white rounded-2xl p-6 md:p-8 shadow-xl h-full">
-                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                <h2 className="text-xl font-bold mb-6 flex items-center gap-3">
                   <span className="w-10 h-10 bg-amber/20 rounded-full flex items-center justify-center">
                     <HiOutlineClock className="w-5 h-5 text-amber" />
                   </span>
                   Información útil
-                </h3>
+                </h2>
 
                 <div className="space-y-5">
                   <div className="flex items-start gap-4">
@@ -220,7 +219,7 @@ export default async function ContactoPage() {
                 <p className="text-text-medium text-sm mb-8">
                   Te responderemos a la brevedad por WhatsApp
                 </p>
-                <ContactForm />
+                <ContactForm checkInTime={checkIn} checkOutTime={checkOut} />
               </div>
             </div>
           </div>
@@ -277,11 +276,11 @@ export default async function ContactoPage() {
               {/* Distance References */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white rounded-2xl p-4 text-center border-t-4 border-t-amber border-x border-b border-sand shadow-sm hover:shadow-md transition-shadow">
-                  <p className="text-2xl font-bold text-amber">10 min</p>
+                  <p className="text-2xl font-bold text-amber">20 min</p>
                   <p className="text-sm text-text-medium">de Villa Carlos Paz</p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 text-center border-t-4 border-t-amber border-x border-b border-sand shadow-sm hover:shadow-md transition-shadow">
-                  <p className="text-2xl font-bold text-amber">500 m</p>
+                  <p className="text-2xl font-bold text-amber">600 m</p>
                   <p className="text-sm text-text-medium">del centro de Tanti</p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 text-center border-t-4 border-t-amber border-x border-b border-sand shadow-sm hover:shadow-md transition-shadow">

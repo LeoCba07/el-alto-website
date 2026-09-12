@@ -6,6 +6,15 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'temporadaVigente',
+      title: 'Temporada vigente',
+      type: 'string',
+      description:
+        'Ej: "2025/26". Actualizalo cuando cargues los precios de la temporada nueva. Si queda vacío, la tabla de precios no muestra el año.',
+      validation: (Rule) =>
+        Rule.regex(/^\d{4}\/\d{2}$/, { name: 'año/año' }).warning('Usá el formato 2025/26'),
+    }),
+    defineField({
       name: 'temporadaAlta',
       title: '🔴 Temporada Alta',
       type: 'object',
@@ -207,10 +216,11 @@ export default defineType({
     }),
   ],
   preview: {
-    prepare() {
+    select: { temporada: 'temporadaVigente' },
+    prepare({ temporada }) {
       return {
         title: 'Tarifas por Temporada',
-        subtitle: 'Haz clic para actualizar precios',
+        subtitle: temporada ? `Temporada ${temporada}` : 'Haz clic para actualizar precios',
       }
     },
   },

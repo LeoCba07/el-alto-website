@@ -8,6 +8,7 @@ import configuracionSitio from './configuracionSitio'
 import tarifaTemporada from './tarifaTemporada'
 import servicio from './servicio'
 import unidadesDestacadas from './unidadesDestacadas'
+import videosInicio from './videosInicio'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -20,5 +21,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     tarifaTemporada,
     servicio,
     unidadesDestacadas,
+    videosInicio,
   ],
 }
