@@ -69,7 +69,7 @@ function getUnidadesSummaryFromData(unidades?: ChatbotUnidad[]): string | undefi
 
 // Links to pages for "Para más información"
 const INFO_LINKS: Record<string, { url: string; label: string }> = {
-  tarifas: { url: '/precios', label: 'ver todas las tarifas' },
+  tarifas: { url: '/precios', label: 'ver todos los precios' },
   servicios: { url: '/servicios', label: 'ver todos los servicios' },
   mas_servicios: { url: '/servicios', label: 'ver servicios' },
   ubicacion: { url: '/contacto', label: 'ver ubicación' },
@@ -130,7 +130,8 @@ const MAIN_MENU_OPTIONS = ['disponibilidad', 'unidades', 'tarifas', 'servicios',
 
 // Quick reply button options with icons (matching site-wide icon usage)
 const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<{ className?: string }> }> = {
-  tarifas: { label: 'Tarifas', icon: HiOutlineCreditCard },
+  // Keys stay "tarifas" so the chatbot_option events keep their names in GA4.
+  tarifas: { label: 'Precios', icon: HiOutlineCreditCard },
   disponibilidad: { label: 'Disponibilidad', icon: HiOutlineCalendarDays },
   servicios: { label: 'Servicios', icon: HiOutlineSquares2X2 },
   ubicacion: { label: 'Ubicación', icon: HiOutlineMapPin },
@@ -139,7 +140,7 @@ const QUICK_REPLIES: Record<string, { label: string; icon?: React.ComponentType<
   mascotas: { label: 'Mascotas', icon: PiPawPrint },
   pago: { label: 'Formas de pago', icon: HiOutlineCreditCard },
   consultar_disponibilidad: { label: 'Consultar disponibilidad', icon: HiOutlineCalendarDays },
-  ver_tarifas: { label: 'Ver tarifas', icon: HiOutlineArrowTopRightOnSquare },
+  ver_tarifas: { label: 'Ver precios', icon: HiOutlineArrowTopRightOnSquare },
   ver_unidades: { label: 'Ver unidades', icon: HiOutlineArrowTopRightOnSquare },
   mas_servicios: { label: 'Más servicios', icon: HiOutlineSquares2X2 },
   como_llegar: { label: 'Cómo llegar', icon: HiOutlineMapPin },

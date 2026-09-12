@@ -12,7 +12,8 @@ import {
 import { formatDateAR } from '@/lib/constants'
 import { useWhatsAppNumber } from './WhatsAppNumber'
 
-export default function ContactForm() {
+// The hours come from the Studio's Configuración, read by /contacto.
+export default function ContactForm({ checkInTime, checkOutTime }: { checkInTime: string; checkOutTime: string }) {
   const whatsappNumber = useWhatsAppNumber()
   const [nombre, setNombre] = useState('')
   const [checkIn, setCheckIn] = useState('')
@@ -154,7 +155,7 @@ export default function ContactForm() {
               <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkIn}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
-              Entrada · desde 13:30 hs
+              Entrada · desde {checkInTime} hs
             </p>
           </div>
 
@@ -174,7 +175,7 @@ export default function ContactForm() {
               <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkOut}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
-              Salida · hasta 10:00 hs
+              Salida · hasta {checkOutTime} hs
             </p>
           </div>
         </div>

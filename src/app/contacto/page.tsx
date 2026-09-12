@@ -219,7 +219,7 @@ export default async function ContactoPage() {
                 <p className="text-text-medium text-sm mb-8">
                   Te responderemos a la brevedad por WhatsApp
                 </p>
-                <ContactForm />
+                <ContactForm checkInTime={checkIn} checkOutTime={checkOut} />
               </div>
             </div>
           </div>
