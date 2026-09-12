@@ -33,7 +33,6 @@ export interface SiteConfig {
   }
   estadisticas?: {
     tripAdvisorRating?: number
-    tripAdvisorMaxRating?: number
     cantidadResenas?: number
     rankingEnTanti?: number
   }

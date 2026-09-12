@@ -155,7 +155,7 @@ export default async function Home() {
         <LocationTeaser />
       </section>
       <section id="testimonios">
-        <Testimonials testimonios={testimonios} />
+        <Testimonials testimonios={testimonios} tripAdvisorRating={config?.estadisticas?.tripAdvisorRating} />
       </section>
       {videos.length > 0 && (
         <section id="videos">

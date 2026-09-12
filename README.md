@@ -90,13 +90,12 @@ All of them need `SANITY_API_TOKEN` with write access. Create a short-lived toke
 
 The owner edits content in Sanity Studio (`/studio`):
 
-- Unit types, descriptions, photos and amenities
+- Unit types, descriptions and photos
 - Pricing by season
-- Homepage: hero, featured units panel and videos (YouTube links)
+- Homepage: hero, featured units panel, featured services and videos (YouTube links)
 - FAQs and chatbot answers
 - Testimonials
 - Contact info, hours and social links
-- Nearby attractions
 
 ---
 

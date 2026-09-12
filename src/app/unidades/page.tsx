@@ -15,7 +15,6 @@ interface SanityUnidad {
   destacado?: string
   capacidadTexto: string
   cantidad: number
-  amenities?: string[]
   fotos?: Array<{
     asset: { _ref: string }
     alt?: string
@@ -49,7 +48,7 @@ export default async function UnidadesPage() {
         nombre: unidad.nombre,
         capacidad: unidad.capacidadTexto,
         cantidad: unidad.cantidad,
-        amenities: unidad.amenities?.length ? unidad.amenities : [...DEFAULT_AMENITIES],
+        amenities: [...DEFAULT_AMENITIES],
         descripcion: unidad.descripcion,
         destacado: unidad.destacado || '',
         photos: unidad.fotos?.length

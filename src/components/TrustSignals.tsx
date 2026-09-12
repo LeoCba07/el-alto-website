@@ -10,7 +10,6 @@ import { ANIMATION_TIMING, TRUST_STATS } from '@/lib/constants'
 export interface TrustSignalsProps {
   stats?: {
     tripAdvisorRating?: number
-    tripAdvisorMaxRating?: number
     cantidadResenas?: number
     rankingEnTanti?: number
   }
@@ -101,7 +100,7 @@ export default function TrustSignals({ stats }: TrustSignalsProps) {
   // Use stats from Sanity with fallbacks to constants
   const yearsExperience = TRUST_STATS.yearsExperience
   const tripAdvisorRating = stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating
-  const tripAdvisorMaxRating = stats?.tripAdvisorMaxRating ?? TRUST_STATS.tripAdvisorMaxRating
+  const tripAdvisorMaxRating = TRUST_STATS.tripAdvisorMaxRating
   const rankingInTanti = stats?.rankingEnTanti ?? TRUST_STATS.rankingInTanti
 
   useEffect(() => {

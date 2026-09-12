@@ -24,7 +24,6 @@ import { useWhatsAppNumber } from './WhatsAppNumber'
 export interface ChatbotRespuesta {
   clave: string
   respuesta: string
-  opcionesSeguimiento?: string[]
 }
 
 export interface ChatBotProps {
@@ -229,7 +228,8 @@ export default function ChatBot({
       if (r.clave === 'tarifas') return
       sanityData[r.clave] = {
         answer: r.respuesta,
-        followUp: r.opcionesSeguimiento || ['consultar_disponibilidad', 'otra_pregunta']
+        // Only the text comes from the Studio: the buttons are wiring, kept here.
+        followUp: dynamicDefaults[r.clave]?.followUp || ['consultar_disponibilidad', 'otra_pregunta']
       }
     })
     // Merge with base (tarifas answer is already set from Sanity tarifas)

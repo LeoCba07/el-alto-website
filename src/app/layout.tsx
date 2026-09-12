@@ -141,7 +141,7 @@ function generateJsonLd(config: SiteConfig | null) {
       "@type": "AggregateRating",
       ratingValue: String(stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating),
       reviewCount: String(stats?.cantidadResenas ?? TRUST_STATS.reviewCount),
-      bestRating: String(stats?.tripAdvisorMaxRating ?? TRUST_STATS.tripAdvisorMaxRating),
+      bestRating: String(TRUST_STATS.tripAdvisorMaxRating),
     },
     sameAs: [
       redes?.instagram || "https://instagram.com/complejoelalto",

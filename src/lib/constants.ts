@@ -35,15 +35,15 @@ export const SITE_CONFIG = {
 
 // Business hours (fallbacks - prefer Sanity configuracionSitio when available)
 export const BUSINESS_HOURS = {
-  checkIn: '13:30',
+  checkIn: '13:00',
   checkOut: '10:00',
   lateCheckOut: '18:00',
   lateCheckOutFee: 50, // percentage
   poolOpen: '9:30',
-  poolClose: '22:00',
+  poolClose: '21:00',
   receptionOpen: '9:00',
   receptionClose: '19:00',
-  latestArrival: '20:00',
+  latestArrival: '19:00',
 } as const
 
 // Reservation policies (single source of truth)
@@ -133,7 +133,7 @@ export const formatTimeDisplay = (time: string): string => {
 // See: src/sanity/schemaTypes/tarifaTemporada.ts
 // To seed initial data: node scripts/seed-tarifas.mjs
 
-// Amenities shown per unit. Keys match the option list in the `unidad` schema.
+// Amenities shown per unit.
 export const AMENITY_LABELS: Record<string, string> = {
   wifi: 'Wi-Fi',
   cocina: 'Cocina equipada',
@@ -141,9 +141,8 @@ export const AMENITY_LABELS: Record<string, string> = {
   tv: 'TV',
 }
 
-// Shown when a unit has no amenities loaded in Sanity. Every unit currently
-// offers all of these, so an empty CMS still describes them correctly; tag a
-// unit in the Studio to override this for that unit alone. No asador here:
-// the grill area is shared (see /servicios). No air conditioning either: it
-// is a paid extra (OPTIONAL_SERVICES.acPricePerDay), not included.
+// Every unit offers all of these, so the list lives here rather than in the
+// Studio. No asador here: the grill area is shared (see /servicios). No air
+// conditioning either: it is a paid extra (OPTIONAL_SERVICES.acPricePerDay),
+// not included.
 export const DEFAULT_AMENITIES = ['wifi', 'cocina', 'cochera'] as const

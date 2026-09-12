@@ -16,6 +16,8 @@ export interface TestimonialsProps {
     comentario?: string
     rating?: number
   }[]
+  // From the Studio's Configuración, like the trust strip at the top.
+  tripAdvisorRating?: number
 }
 
 // Shown when Sanity has no testimonios loaded, mirroring the documents that
@@ -65,7 +67,8 @@ function sourceIcon(source?: string) {
   return RiDoubleQuotesL
 }
 
-export default function Testimonials({ testimonios }: TestimonialsProps) {
+export default function Testimonials({ testimonios, tripAdvisorRating }: TestimonialsProps) {
+  const rating = tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating
   const testimonials = testimonios?.length
     ? testimonios.map((t) => ({
         quote: t.comentario ?? '',
@@ -90,7 +93,7 @@ export default function Testimonials({ testimonios }: TestimonialsProps) {
             </h2>
             <div className="flex items-center justify-center gap-2 text-white/80">
               <SiTripadvisor className="w-5 h-5 text-amber" />
-              <span>{TRUST_STATS.tripAdvisorRating}/{TRUST_STATS.tripAdvisorMaxRating} en TripAdvisor · Travelers&apos; Choice Top 10%</span>
+              <span>{rating}/{TRUST_STATS.tripAdvisorMaxRating} en TripAdvisor · Travelers&apos; Choice Top 10%</span>
             </div>
           </div>
         </FadeUp>

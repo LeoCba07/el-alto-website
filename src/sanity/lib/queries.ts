@@ -23,44 +23,10 @@ export const unidadesQuery = groq`
     destacado,
     capacidadTexto,
     cantidad,
-    amenities,
     fotos[] {
       asset->,
       alt
     },
-  }
-`
-
-export const unidadBySlugQuery = groq`
-  *[_type == "unidad" && slug.current == $slug][0] {
-    _id,
-    nombre,
-    slug,
-    tipo,
-    descripcion,
-    destacado,
-    capacidadTexto,
-    cantidad,
-    amenities,
-    fotos[] {
-      asset->,
-      alt
-    },
-    precioBase
-  }
-`
-
-// Normas
-export const normasQuery = groq`
-  *[_type == "norma"] | order(categoria asc, orden asc) {
-    _id,
-    titulo,
-    descripcion,
-    icono,
-    categoria,
-    tipo,
-    horario,
-    detalle
   }
 `
 
@@ -151,7 +117,6 @@ export const configuracionSitioQuery = groq`
     },
     estadisticas {
       tripAdvisorRating,
-      tripAdvisorMaxRating,
       cantidadResenas,
       rankingEnTanti
     },
@@ -189,14 +154,14 @@ export const videosInicioQuery = groq`
 export const chatbotRespuestasQuery = groq`
   *[_type == "chatbotRespuesta"] {
     clave,
-    respuesta,
-    opcionesSeguimiento
+    respuesta
   }
 `
 
-// Servicios Destacados (for feature cards on /servicios page)
+// Servicios Destacados (feature cards on the homepage and /servicios).
+// Every servicio is one of these photo cards.
 export const serviciosDestacadosQuery = groq`
-  *[_type == "servicio" && categoria == "destacado"] | order(orden asc) {
+  *[_type == "servicio"] | order(orden asc) {
     _id,
     nombre,
     descripcion,

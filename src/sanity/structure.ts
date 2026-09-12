@@ -21,6 +21,14 @@ export const structure: StructureResolver = (S) =>
             .schemaType('tarifaTemporada')
             .documentId('tarifaTemporada')
         ),
+      // Singleton for the homepage hero
+      S.listItem()
+        .title('Página Principal')
+        .child(
+          S.document()
+            .schemaType('heroSection')
+            .documentId('heroSection')
+        ),
       // Singleton for unidades destacadas
       S.listItem()
         .title('Unidades Destacadas (Home)')
@@ -40,6 +48,6 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       // All other document types
       ...S.documentTypeListItems().filter(
-        (listItem) => !['configuracionSitio', 'tarifaTemporada', 'unidadesDestacadas', 'videosInicio'].includes(listItem.getId() || '')
+        (listItem) => !['configuracionSitio', 'tarifaTemporada', 'heroSection', 'unidadesDestacadas', 'videosInicio'].includes(listItem.getId() || '')
       ),
     ])
