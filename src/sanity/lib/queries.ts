@@ -117,7 +117,6 @@ export const configuracionSitioQuery = groq`
     },
     estadisticas {
       tripAdvisorRating,
-      cantidadResenas,
       rankingEnTanti
     },
     redesSociales {

@@ -154,6 +154,10 @@ export default defineType({
           name: 'cantidadResenas',
           title: 'Cantidad de reseñas',
           type: 'number',
+          // No longer read: it only fed the review stars in the structured data,
+          // which Google doesn't accept from another site. Hidden rather than
+          // removed so the stored value doesn't show as unknown.
+          hidden: true,
         },
         {
           name: 'rankingEnTanti',

@@ -10,7 +10,6 @@ import { ANIMATION_TIMING, TRUST_STATS } from '@/lib/constants'
 export interface TrustSignalsProps {
   stats?: {
     tripAdvisorRating?: number
-    cantidadResenas?: number
     rankingEnTanti?: number
   }
 }

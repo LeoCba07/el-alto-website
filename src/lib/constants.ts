@@ -83,7 +83,6 @@ export const TRUST_STATS = {
   yearsExperience: new Date().getFullYear() - FOUNDING_YEAR,
   tripAdvisorRating: 4.6,
   tripAdvisorMaxRating: 5,
-  reviewCount: 150,
   rankingInTanti: 1,
 } as const
 
