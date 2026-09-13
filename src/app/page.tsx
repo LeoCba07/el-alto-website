@@ -146,7 +146,11 @@ export default async function Home() {
     name: v.titulo,
     description: v.descripcion || v.titulo,
     thumbnailUrl: v.thumb,
-    uploadDate: v.fechaPublicacion,
+    // Sanity stores a bare date, but Google wants a date-time with a timezone:
+    // midnight in Argentina, which is UTC-3 all year.
+    uploadDate: /^\d{4}-\d{2}-\d{2}$/.test(v.fechaPublicacion ?? '')
+      ? `${v.fechaPublicacion}T00:00:00-03:00`
+      : v.fechaPublicacion,
     embedUrl: `https://www.youtube.com/embed/${v.id}`,
     contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
   }))
