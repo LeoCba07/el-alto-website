@@ -122,7 +122,7 @@ export default function Footer({ config }: FooterProps) {
           <p>Legajo N°272/07 — Agencia Córdoba Turismo</p>
           <span className="hidden sm:inline">·</span>
           <p>
-            Desarrollado por{' '}
+            Web desarrollada por{' '}
             <a
               href="https://www.linkedin.com/in/leandro-trabucco"
               target="_blank"
