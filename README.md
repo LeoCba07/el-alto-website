@@ -22,27 +22,25 @@ The old WordPress site had placeholder text, spelling errors, and a broken conta
 
 Every way in ends in WhatsApp. The assistant and the contact form always send a complete enquiry; the widget does when the guest picks dates, and the floating button opens a generic greeting. The owner keeps the content up to date in the Studio, and the site reads it from Sanity.
 
+**Enquiries**
+
 ```mermaid
 flowchart LR
-  guest([Guest]) --> site
-
-  subgraph site [Next.js on Vercel]
-    chat[Chat assistant]
-    form[Contact form]
-    widget[Enquiry widget]
-    fab[Floating WhatsApp button]
-    studio["Sanity Studio (/studio)"]
-  end
-
+  guest([Guest]) --> chat[Chat assistant] & form[Contact form] & widget[Enquiry widget] & fab[Floating WhatsApp button]
   chat & form --> full["Pre-written enquiry<br/>with dates and guests"]
   widget -->|dates picked| full
   widget -->|no dates| generic[Generic greeting]
   fab --> generic
   full & generic --> wa[WhatsApp] --> owner([Owner])
+```
 
-  owner -->|prices, units, photos, FAQs| studio
+**Content**
+
+```mermaid
+flowchart LR
+  owner([Owner]) -->|prices, units, photos, FAQs| studio["Sanity Studio (/studio)"]
   studio --> content[(Sanity content)]
-  content -->|public CDN reads| site
+  content -->|public CDN reads| site[Next.js on Vercel]
   site -.->|conversion events| ga[Google Analytics 4]
 ```
 
