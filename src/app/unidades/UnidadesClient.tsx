@@ -205,65 +205,72 @@ export default function UnidadesClient({ unidades }: UnidadesClientProps) {
               <PhotoCarousel key={displayedUnit.id} photos={displayedUnit.photos} altPrefix={displayedUnit.nombre} />
             </div>
 
-            {/* Unit Info */}
-            <div className="lg:col-span-2 bg-white rounded-2xl border border-sand p-6 md:p-8">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <span className="text-xs font-medium text-amber-dark bg-amber/20 px-3 py-1 rounded-full">
-                    {displayedUnit.destacado}
-                  </span>
-                  <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
-                    {displayedUnit.nombre}
-                  </h2>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-sand">
-                <div className="flex items-center gap-2.5 bg-amber/15 border border-amber/40 px-4 py-2.5 rounded-xl">
-                  <HiOutlineUserGroup className="w-6 h-6 text-amber-dark shrink-0" aria-hidden="true" />
-                  <span className="text-lg font-bold text-forest-dark leading-none">
-                    {displayedUnit.capacidad}
-                    <span className="font-medium text-text-medium text-sm"> personas</span>
-                  </span>
-                </div>
-                <div className="text-sm text-text-medium">
-                  {displayedUnit.cantidad} {displayedUnit.cantidad === 1 ? 'unidad disponible' : 'unidades disponibles'}
-                </div>
-              </div>
-
-              <p className="text-text-medium mb-6 leading-relaxed">
-                {displayedUnit.descripcion}
-              </p>
-
-              {displayedUnit.amenities.length > 0 && (
-                <div className="mb-6 pb-6 border-b border-sand">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-text-light mb-3">
-                    Qué incluye
-                  </p>
-                  <ul className="grid grid-cols-2 gap-y-2.5 gap-x-3">
-                    {displayedUnit.amenities.map((key) => {
-                      const Icon = amenityIcons[key]
-                      const label = AMENITY_LABELS[key]
-                      if (!Icon || !label) return null
-                      return (
-                        <li key={key} className="flex items-center gap-2 text-sm text-text-medium">
-                          <Icon className="w-4 h-4 text-forest shrink-0" aria-hidden="true" />
-                          <span>{label}</span>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              )}
-
-              <Link
-                href="/contacto"
-                className="flex items-center justify-center gap-2 w-full bg-amber text-text-dark py-4 rounded-full font-semibold hover:bg-amber-dark transition-colors"
+            {/* Unit Info. Every unit's details are in the HTML, so search
+                engines read all five; only the displayed one is shown. */}
+            {unitTypes.map((unit) => (
+              <div
+                key={unit.id}
+                hidden={unit.id !== displayedUnit.id}
+                className="lg:col-span-2 bg-white rounded-2xl border border-sand p-6 md:p-8"
               >
-                <SiWhatsapp className="w-5 h-5" />
-                Consultar disponibilidad
-              </Link>
-            </div>
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <span className="text-xs font-medium text-amber-dark bg-amber/20 px-3 py-1 rounded-full">
+                      {unit.destacado}
+                    </span>
+                    <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
+                      {unit.nombre}
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-sand">
+                  <div className="flex items-center gap-2.5 bg-amber/15 border border-amber/40 px-4 py-2.5 rounded-xl">
+                    <HiOutlineUserGroup className="w-6 h-6 text-amber-dark shrink-0" aria-hidden="true" />
+                    <span className="text-lg font-bold text-forest-dark leading-none">
+                      {unit.capacidad}
+                      <span className="font-medium text-text-medium text-sm"> personas</span>
+                    </span>
+                  </div>
+                  <div className="text-sm text-text-medium">
+                    {unit.cantidad} {unit.cantidad === 1 ? 'unidad disponible' : 'unidades disponibles'}
+                  </div>
+                </div>
+
+                <p className="text-text-medium mb-6 leading-relaxed">
+                  {unit.descripcion}
+                </p>
+
+                {unit.amenities.length > 0 && (
+                  <div className="mb-6 pb-6 border-b border-sand">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-text-light mb-3">
+                      Qué incluye
+                    </p>
+                    <ul className="grid grid-cols-2 gap-y-2.5 gap-x-3">
+                      {unit.amenities.map((key) => {
+                        const Icon = amenityIcons[key]
+                        const label = AMENITY_LABELS[key]
+                        if (!Icon || !label) return null
+                        return (
+                          <li key={key} className="flex items-center gap-2 text-sm text-text-medium">
+                            <Icon className="w-4 h-4 text-forest shrink-0" aria-hidden="true" />
+                            <span>{label}</span>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
+
+                <Link
+                  href="/contacto"
+                  className="flex items-center justify-center gap-2 w-full bg-amber text-text-dark py-4 rounded-full font-semibold hover:bg-amber-dark transition-colors"
+                >
+                  <SiWhatsapp className="w-5 h-5" />
+                  Consultar disponibilidad
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
