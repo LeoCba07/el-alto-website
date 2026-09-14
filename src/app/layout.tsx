@@ -97,7 +97,6 @@ export const metadata: Metadata = {
 
 // Generate JSON-LD with config from Sanity (with fallbacks)
 function generateJsonLd(config: SiteConfig | null) {
-  const stats = config?.estadisticas;
   const redes = config?.redesSociales;
 
   return {
@@ -137,12 +136,8 @@ function generateJsonLd(config: SiteConfig | null) {
       { "@type": "LocationFeatureSpecification", name: "Quincho", value: true },
     ],
     priceRange: "$$",
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: String(stats?.tripAdvisorRating ?? TRUST_STATS.tripAdvisorRating),
-      reviewCount: String(stats?.cantidadResenas ?? TRUST_STATS.reviewCount),
-      bestRating: String(TRUST_STATS.tripAdvisorMaxRating),
-    },
+    // No aggregateRating: the only rating is TripAdvisor's, and Google's
+    // review snippet rules don't accept ratings taken from another site.
     sameAs: [
       redes?.instagram || "https://instagram.com/complejoelalto",
       redes?.facebook || "https://facebook.com/complejoelalto",
