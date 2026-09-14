@@ -63,6 +63,8 @@
   --color-amber: #c8973e;
   --color-amber-dark: #a67c2e;
   --color-amber-light: #daa94d;
+  /* Small text on an amber/20 tint: 5.1:1 on white, where amber-dark was 3.2:1 */
+  --color-amber-deep: #7d5c1f;
 
   /* Text Colors */
   --color-text-dark: #2c2416;

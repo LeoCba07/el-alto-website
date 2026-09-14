@@ -39,15 +39,31 @@ export default function Hero({
 }: HeroProps) {
   const heroImages: HeroImage[] = imagenes?.length ? imagenes : defaultImages.map((url) => ({ url }))
   const [currentIndex, setCurrentIndex] = useState(0)
+  // Only the first photo is in the page at load; the rest mount once the page
+  // has finished loading. Otherwise a phone fetched all six (about 800 KB)
+  // at once, and they competed with the one on screen.
+  const [showAllSlides, setShowAllSlides] = useState(false)
+
+  useEffect(() => {
+    const reveal = () => setShowAllSlides(true)
+    if (document.readyState === 'complete') {
+      reveal()
+      return
+    }
+    window.addEventListener('load', reveal, { once: true })
+    return () => window.removeEventListener('load', reveal)
+  }, [])
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % heroImages.length)
   }, [heroImages.length])
 
+  // The carousel starts turning once the other photos are in.
   useEffect(() => {
+    if (!showAllSlides) return
     const interval = setInterval(nextSlide, 8000) // Slower transition
     return () => clearInterval(interval)
-  }, [nextSlide])
+  }, [nextSlide, showAllSlides])
 
   // The visible height, measured rather than taken from svh: with svh in the
   // page, Chrome for iOS opened from another app painted it offset, with the
@@ -86,6 +102,7 @@ export default function Hero({
     <section className="relative min-h-[calc(100vh+4rem)] md:min-h-screen w-full overflow-hidden">
       {/* Background Images with Crossfade */}
       {heroImages.map((img, index) => {
+        if (index > 0 && !showAllSlides) return null
         const alt = img.alt || 'El Alto - Alojamiento en las sierras'
         return (
           <div
@@ -112,8 +129,11 @@ export default function Hero({
                   sizes="(max-aspect-ratio: 16/9) 178vh, 100vw"
                   alt={alt}
                   className="absolute inset-0 h-full w-full object-cover"
+                  // Eager for all: the other slides only mount after the page
+                  // has loaded, and lazy left them unfetched when the carousel
+                  // turned to them, which showed a grey hero.
                   fetchPriority={index === 0 ? 'high' : 'low'}
-                  loading={index === 0 ? 'eager' : 'lazy'}
+                  loading="eager"
                   decoding="async"
                 />
               </picture>
@@ -152,7 +172,9 @@ export default function Hero({
 
           {/* Center - Main Title */}
           <div className="text-center px-6">
-            <h1 className="text-[4.0625rem] md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4 animate-fade-in-up opacity-0" style={{ animationDelay: `${ANIMATION_TIMING.heroFadeIn.title}s`, animationFillMode: 'forwards' }}>
+            {/* No fade-in: starting the page's largest text invisible held back
+                when phones counted the page as loaded (LCP). */}
+            <h1 className="text-[4.0625rem] md:text-7xl lg:text-8xl font-bold text-white font-serif drop-shadow-2xl mb-2 sm:mb-4">
               {titulo}
             </h1>
             {/* Regular rather than light: thin white type dissolved into the photo. */}

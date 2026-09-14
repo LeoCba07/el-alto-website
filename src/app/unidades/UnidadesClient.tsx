@@ -215,7 +215,7 @@ export default function UnidadesClient({ unidades }: UnidadesClientProps) {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <span className="text-xs font-medium text-amber-dark bg-amber/20 px-3 py-1 rounded-full">
+                    <span className="text-xs font-medium text-amber-deep bg-amber/20 px-3 py-1 rounded-full">
                       {unit.destacado}
                     </span>
                     <h2 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
