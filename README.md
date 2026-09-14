@@ -18,6 +18,15 @@ The old WordPress site had placeholder text, spelling errors, and a broken conta
 - **SEO:** server-rendered content, `LodgingBusiness` and `VideoObject` structured data, and an `llms.txt` so AI assistants read the site without running JavaScript.
 - **Google Analytics 4** tracks visits and conversions: `whatsapp_click`, `chatbot_open`, `chatbot_option`, `video_play`.
 
+## Decisions
+
+- **WhatsApp instead of a booking engine.** The owner already takes every reservation over WhatsApp and has no availability system to sync with. The site's job is to make the first message complete, with dates and guest count, not to replace that conversation.
+- **A lean Studio.** Only what the owner actually changes is editable: prices, units, photos, videos and FAQs. Content that never changes lives in code, so there are no dead fields to confuse the owner or drift from what the site shows.
+- **A scripted assistant, not an AI chatbot.** Fixed answers and quick replies, all ending in WhatsApp. The prices and units answers are built from the same Sanity documents as the pages, so they can't contradict them.
+- **Everything in the HTML.** FAQs and unit details are server-rendered, even where they're collapsed on screen, so search engines and AI assistants can read them.
+- **Left out on purpose:** online payments, guest accounts and an automated test suite. Every PR runs lint, a typecheck and a production build, and the guest flows are tested by hand on phones.
+- **Trade-off accepted:** Google Analytics is the heaviest script on the page and keeps mobile Lighthouse around 67, but the conversion events are the reason it's there.
+
 ## Tech Stack
 
 Next.js 16 · TypeScript · Tailwind CSS 4 · Sanity · Vercel · Google Analytics 4
@@ -58,7 +67,7 @@ npm run dev
 
 ## Deploys
 
-`main` deploys straight to production on Vercel. Work goes on a branch, which gets a Vercel preview, and reaches `main` only once it has been reviewed.
+`main` deploys straight to production on Vercel. Work goes on a branch, which gets a Vercel preview, and reaches `main` only once it has been reviewed. Every PR also runs lint, a typecheck and a production build in GitHub Actions ([`ci.yml`](.github/workflows/ci.yml)).
 
 ## Structure
 ```
