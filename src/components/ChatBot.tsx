@@ -443,6 +443,10 @@ export default function ChatBot({
   const minCheckOut = bookingData.checkIn
     ? new Date(new Date(bookingData.checkIn).getTime() + 86400000).toISOString().split('T')[0]
     : today
+  const dateClass =
+    'peer block min-w-0 w-full h-10 appearance-none bg-white px-3 py-2 rounded-lg border border-sand text-sm text-left [&::-webkit-date-and-time-value]:text-left focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest'
+  const dateHintClass =
+    'pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-text-medium peer-focus:hidden'
 
   // Handle check-in change and validate checkout
   const handleCheckInChange = (newCheckIn: string) => {
@@ -532,7 +536,9 @@ export default function ChatBot({
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[85%] ${
+                // The date picker takes the full width: at 85% the two date
+                // columns were too narrow for a date plus Chrome's calendar icon.
+                className={`${message.isInput === 'dates' && currentStep === 'dates' ? 'w-full' : 'max-w-[85%]'} ${
                   message.type === 'user'
                     ? 'bg-forest text-white rounded-2xl rounded-br-sm px-4 py-2.5'
                     : 'space-y-3'
@@ -579,26 +585,38 @@ export default function ChatBot({
                 {/* Date Input */}
                 {message.isInput === 'dates' && currentStep === 'dates' && (
                   <div className="bg-white rounded-xl p-4 shadow-sm border border-sand space-y-3">
+                    {/* iOS Safari gives date inputs a wide intrinsic size that
+                        overflowed the column, and draws an empty one as a blank
+                        box. min-w-0 lets them shrink; while empty and unfocused
+                        the value is hidden behind a single hint, as in BookingWidget. */}
                     <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="text-xs text-text-medium mb-1 block">Entrada</label>
-                        <input
-                          type="date"
-                          min={today}
-                          value={bookingData.checkIn}
-                          onChange={(e) => handleCheckInChange(e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-sand text-sm focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest"
-                        />
+                      <div className="min-w-0">
+                        <label htmlFor="chat-checkin" className="text-xs text-text-medium mb-1 block">Entrada</label>
+                        <div className="relative">
+                          <input
+                            id="chat-checkin"
+                            type="date"
+                            min={today}
+                            value={bookingData.checkIn}
+                            onChange={(e) => handleCheckInChange(e.target.value)}
+                            className={`${dateClass} ${bookingData.checkIn ? 'text-text-dark' : 'text-transparent focus:text-text-dark'}`}
+                          />
+                          {!bookingData.checkIn && <span aria-hidden="true" className={dateHintClass}>Elegir fecha</span>}
+                        </div>
                       </div>
-                      <div>
-                        <label className="text-xs text-text-medium mb-1 block">Salida</label>
-                        <input
-                          type="date"
-                          min={minCheckOut}
-                          value={bookingData.checkOut}
-                          onChange={(e) => setBookingData({ ...bookingData, checkOut: e.target.value })}
-                          className="w-full px-3 py-2 rounded-lg border border-sand text-sm focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest"
-                        />
+                      <div className="min-w-0">
+                        <label htmlFor="chat-checkout" className="text-xs text-text-medium mb-1 block">Salida</label>
+                        <div className="relative">
+                          <input
+                            id="chat-checkout"
+                            type="date"
+                            min={minCheckOut}
+                            value={bookingData.checkOut}
+                            onChange={(e) => setBookingData({ ...bookingData, checkOut: e.target.value })}
+                            className={`${dateClass} ${bookingData.checkOut ? 'text-text-dark' : 'text-transparent focus:text-text-dark'}`}
+                          />
+                          {!bookingData.checkOut && <span aria-hidden="true" className={dateHintClass}>Elegir fecha</span>}
+                        </div>
                       </div>
                     </div>
                     <button
