@@ -181,3 +181,13 @@ export const serviciosDestacadosQuery = groq`
     }
   }
 `
+
+// Sitemap: when each page's content was last edited in the Studio
+export const sitemapLastModifiedQuery = groq`{
+  "home": *[_type in ["heroSection", "unidadesDestacadas", "videosInicio", "servicio", "testimonio"]] | order(_updatedAt desc)[0]._updatedAt,
+  "unidades": *[_type == "unidad"] | order(_updatedAt desc)[0]._updatedAt,
+  "precios": *[_type == "tarifaTemporada"] | order(_updatedAt desc)[0]._updatedAt,
+  "servicios": *[_type == "servicio"] | order(_updatedAt desc)[0]._updatedAt,
+  "faq": *[_type == "preguntaFrecuente"] | order(_updatedAt desc)[0]._updatedAt,
+  "config": *[_type == "configuracionSitio"][0]._updatedAt
+}`

@@ -129,7 +129,6 @@ export default function FAQClient({ categories }: FAQClientProps) {
   const whatsappNumber = useWhatsAppNumber()
   const faqCategories = categories?.length ? categories : defaultCategories
   const [activeCategory, setActiveCategory] = useState(faqCategories[0].id)
-  const active = faqCategories.find((c) => c.id === activeCategory)!
 
   return (
     <div className="bg-cream min-h-screen flex flex-col">
@@ -172,12 +171,15 @@ export default function FAQClient({ categories }: FAQClientProps) {
             })}
           </div>
 
-          {/* Questions */}
-          <div className="bg-white rounded-2xl border border-sand p-6">
-            {active.questions.map((item, idx) => (
-              <QuestionItem key={`${activeCategory}-${idx}`} q={item.pregunta} a={item.respuesta} />
-            ))}
-          </div>
+          {/* Questions. Every category is in the HTML, so search engines read
+              all of them; only the selected one is shown. */}
+          {faqCategories.map((cat) => (
+            <div key={cat.id} hidden={cat.id !== activeCategory} className="bg-white rounded-2xl border border-sand p-6">
+              {cat.questions.map((item, idx) => (
+                <QuestionItem key={idx} q={item.pregunta} a={item.respuesta} />
+              ))}
+            </div>
+          ))}
         </div>
       </section>
 

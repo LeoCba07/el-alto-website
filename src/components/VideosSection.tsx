@@ -49,7 +49,7 @@ function VideoCard({ id, titulo, descripcion, thumb }: Video) {
           >
             <Image
               src={thumb}
-              alt=""
+              alt={titulo}
               fill
               unoptimized
               className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"

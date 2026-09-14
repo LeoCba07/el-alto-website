@@ -4,6 +4,7 @@ import { HiOutlineMapPin, HiOutlineHome, HiOutlineArrowRight } from 'react-icons
 
 export const metadata: Metadata = {
   title: 'Página no encontrada',
+  robots: { index: false, follow: true },
 }
 
 export default function NotFound() {
