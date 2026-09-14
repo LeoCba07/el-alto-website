@@ -25,8 +25,6 @@ The old WordPress site had placeholder text, spelling errors, and a broken conta
 - **A scripted assistant, not an AI chatbot.** Fixed answers and quick replies, all ending in WhatsApp. The prices and units answers are built from the same Sanity documents as the pages, so they can't contradict them.
 - **Everything in the HTML.** FAQs and unit details are server-rendered, even where they're collapsed on screen, so search engines and AI assistants can read them.
 - **Left out on purpose:** online payments, guest accounts and an automated test suite. Every PR runs lint, a typecheck and a production build, and the guest flows are tested by hand on phones.
-- **Trade-off accepted:** Google Analytics is the heaviest script on the page and keeps mobile Lighthouse around 67, but the conversion events are the reason it's there.
-
 ## Tech Stack
 
 Next.js 16 · TypeScript · Tailwind CSS 4 · Sanity · Vercel · Google Analytics 4
