@@ -223,7 +223,7 @@ export default async function ServiciosPage() {
                       <ServiceIcon icon="ac" className="w-5 h-5 text-forest" />
                       <span className="font-medium text-text-dark">Aire acondicionado</span>
                     </div>
-                    <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">{OPTIONAL_SERVICES.acPricePerDay}</span>
+                    <span className="text-xs font-semibold text-amber-deep bg-amber/20 px-2 py-0.5 rounded-full">{OPTIONAL_SERVICES.acPricePerDay}</span>
                   </div>
                   <p className="text-sm text-text-medium ml-7">
                     Opcional para mantener tarifas accesibles.
@@ -235,7 +235,7 @@ export default async function ServiciosPage() {
                       <ServiceIcon icon="breakfast" className="w-5 h-5 text-forest" />
                       <span className="font-medium text-text-dark">Desayuno</span>
                     </div>
-                    <span className="text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
+                    <span className="text-xs font-semibold text-amber-deep bg-amber/20 px-2 py-0.5 rounded-full">Consultar</span>
                   </div>
                   <p className="text-sm text-text-medium ml-7">
                     Desayuno seco servido en tu unidad.
@@ -296,7 +296,7 @@ function FeatureCard({ image, title, description, note }: { image: string; title
 
 function AmenityRow({ icon, label, pill, pillVariant }: { icon: string; label: string; pill?: string; pillVariant?: 'default' | 'price' }) {
   const pillStyles = pillVariant === 'price'
-    ? 'text-xs font-semibold text-amber-dark bg-amber/20 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
+    ? 'text-xs font-semibold text-amber-deep bg-amber/20 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
     : 'text-xs text-text-light bg-sand/70 px-2 py-0.5 rounded-full leading-none inline-flex items-center'
 
   return (

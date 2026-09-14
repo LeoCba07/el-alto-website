@@ -120,7 +120,7 @@ export default function BookingWidget() {
   const dateClass = (value: string) =>
     `peer ${fieldBase} text-[0.8125rem] sm:text-sm ${value ? 'text-text-dark' : 'text-transparent focus:text-text-dark'}`
   const dateHintClass =
-    'pointer-events-none absolute inset-y-0 left-1 flex items-center text-[0.8125rem] sm:text-sm font-medium text-text-light peer-focus:hidden'
+    'pointer-events-none absolute inset-y-0 left-1 flex items-center text-[0.8125rem] sm:text-sm font-medium text-text-medium peer-focus:hidden'
 
   return (
     <div className="mx-auto w-full max-w-2xl">

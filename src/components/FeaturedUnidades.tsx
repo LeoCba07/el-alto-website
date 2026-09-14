@@ -61,7 +61,7 @@ export default function FeaturedUnidades({
           {/* Summary Info */}
           <div className="lg:col-span-2 bg-white rounded-2xl border border-sand p-6 md:p-8">
             <div className="mb-4">
-              <span className="text-xs font-medium text-amber-dark bg-amber/20 px-3 py-1 rounded-full">
+              <span className="text-xs font-medium text-amber-deep bg-amber/20 px-3 py-1 rounded-full">
                 {insignia}
               </span>
               <h3 className="text-2xl md:text-3xl font-bold text-forest-dark font-serif mt-3">
