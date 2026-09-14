@@ -18,6 +18,32 @@ The old WordPress site had placeholder text, spelling errors, and a broken conta
 - **SEO:** server-rendered content, `LodgingBusiness` and `VideoObject` structured data, and an `llms.txt` so AI assistants read the site without running JavaScript.
 - **Google Analytics 4** tracks visits and conversions: `whatsapp_click`, `chatbot_open`, `chatbot_option`, `video_play`.
 
+## How it works
+
+Every way in ends in WhatsApp. The assistant and the contact form always send a complete enquiry; the widget does when the guest picks dates, and the floating button opens a generic greeting. The owner keeps the content up to date in the Studio, and the site reads it from Sanity.
+
+**Enquiries**
+
+```mermaid
+flowchart LR
+  guest([Guest]) --> chat[Chat assistant] & form[Contact form] & widget[Enquiry widget] & fab[Floating WhatsApp button]
+  chat & form --> full["Pre-written enquiry<br/>with dates and guests"]
+  widget -->|dates picked| full
+  widget -->|no dates| generic[Generic greeting]
+  fab --> generic
+  full & generic --> wa[WhatsApp] --> owner([Owner])
+```
+
+**Content**
+
+```mermaid
+flowchart LR
+  owner([Owner]) -->|prices, units, photos, FAQs| studio["Sanity Studio (/studio)"]
+  studio --> content[(Sanity content)]
+  content -->|public CDN reads| site[Next.js on Vercel]
+  site -.->|conversion events| ga[Google Analytics 4]
+```
+
 ## Decisions
 
 - **WhatsApp instead of a booking engine.** The owner already takes every reservation over WhatsApp and has no availability system to sync with. The site's job is to make the first message complete, with dates and guest count, not to replace that conversation.
