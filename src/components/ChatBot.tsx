@@ -293,6 +293,27 @@ export default function ChatBot({
     setTimeout(() => setAnimationStage('closed'), 250)
   }
 
+  // Keyboard users land on the close button when the chat opens, can close it
+  // with Escape, and get focus back on the chat button once it has closed.
+  const openButtonRef = useRef<HTMLButtonElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const wasOpenRef = useRef(false)
+  useEffect(() => {
+    if (animationStage === 'open') {
+      wasOpenRef.current = true
+      closeButtonRef.current?.focus()
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') handleClose()
+      }
+      window.addEventListener('keydown', onKeyDown)
+      return () => window.removeEventListener('keydown', onKeyDown)
+    }
+    if (animationStage === 'closed' && wasOpenRef.current) {
+      wasOpenRef.current = false
+      openButtonRef.current?.focus()
+    }
+  }, [animationStage])
+
   // Auto-scroll to show the start of the last message (not the bottom)
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -485,6 +506,9 @@ export default function ChatBot({
     >
       {/* Closed state - Chat help button */}
       <button
+        ref={openButtonRef}
+        // Invisible while the chat is open, so kept out of the tab order.
+        inert={animationStage !== 'closed'}
         onClick={() => animationStage === 'closed' && handleOpen()}
         aria-label="Abrir chat de consultas"
         aria-expanded={isOpen}
@@ -499,9 +523,10 @@ export default function ChatBot({
       </button>
 
       {/* Open state - Chat window */}
+      {/* Not aria-modal: the page behind stays usable while the chat is open. */}
       <div
         role="dialog"
-        aria-modal="true"
+        inert={!isOpen}
         aria-label="Chat de consultas - Complejo El Alto"
         className={`absolute inset-0 flex flex-col overflow-hidden rounded-2xl border border-sand transition-opacity duration-100 ${
           animationStage === 'open' ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -519,9 +544,10 @@ export default function ChatBot({
             </div>
           </div>
           <button
+            ref={closeButtonRef}
             onClick={(e) => { e.stopPropagation(); handleClose() }}
             aria-label="Cerrar chat"
-            className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber"
           >
             <HiXMark className="w-5 h-5" />
           </button>
