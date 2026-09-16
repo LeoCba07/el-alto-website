@@ -22,7 +22,7 @@
   /* Text colors */
   --color-text-dark: #2c2416;       /* Warm dark brown - primary text */
   --color-text-medium: #5c4d3d;     /* Medium brown - secondary text */
-  --color-text-light: #8a7a68;      /* Light brown - muted text */
+  --color-text-light: #6c6052;      /* Light brown - muted text, 4.5:1+ on cream, sand and white */
 
   /* Stone accents */
   --color-stone: #9c8e7c;           /* Warm gray - borders */
@@ -71,12 +71,12 @@
   /* Text Colors */
   --color-text-dark: #2c2416;
   --color-text-medium: #5c4d3d;
-  --color-text-light: #8a7a68;
+  --color-text-light: #6c6052;
 
   /* Legacy mappings */
   --color-earth-dark: #2c2416;
   --color-earth-medium: #5c4d3d;
-  --color-earth-light: #8a7a68;
+  --color-earth-light: #6c6052;
   --color-terracotta: #c8973e;
   --color-terracotta-dark: #a67c2e;
   --color-sage: #3d5c4e;

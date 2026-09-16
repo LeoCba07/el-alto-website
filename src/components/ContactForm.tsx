@@ -128,7 +128,7 @@ export default function ContactForm({ checkInTime, checkOutTime }: { checkInTime
           } bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors`}
         />
         {errors.nombre && (
-          <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.nombre}</p>
+          <p role="alert" className="mt-1.5 text-sm text-red-700">{errors.nombre}</p>
         )}
       </div>
 
@@ -152,7 +152,7 @@ export default function ContactForm({ checkInTime, checkOutTime }: { checkInTime
               } bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors`}
             />
             {errors.checkIn && (
-              <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkIn}</p>
+              <p role="alert" className="mt-1.5 text-sm text-red-700">{errors.checkIn}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
               Entrada · desde {checkInTime} hs
@@ -172,7 +172,7 @@ export default function ContactForm({ checkInTime, checkOutTime }: { checkInTime
               } bg-white focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber transition-colors`}
             />
             {errors.checkOut && (
-              <p role="alert" className="mt-1.5 text-sm text-red-500">{errors.checkOut}</p>
+              <p role="alert" className="mt-1.5 text-sm text-red-700">{errors.checkOut}</p>
             )}
             <p className="mt-1.5 text-xs text-text-light">
               Salida · hasta {checkOutTime} hs

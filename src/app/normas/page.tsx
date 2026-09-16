@@ -185,17 +185,17 @@ export default async function NormasPage() {
             <div className="p-6">
               <div className="grid sm:grid-cols-3 gap-4">
                 <div className="bg-white/10 rounded-xl p-5">
-                  <p className="text-amber font-medium text-sm mb-2">Temporada Alta/Media</p>
+                  <p className="text-amber-pale font-medium text-sm mb-2">Temporada Alta/Media</p>
                   <p className="text-2xl font-bold mb-1">{cancelHighMidFullDays} días</p>
                   <p className="text-sm text-white/70">Reembolso total. Entre {cancelHighMidPartialDays}-{cancelHighMidFullDays - 1} días se cobra 1 noche.</p>
                 </div>
                 <div className="bg-white/10 rounded-xl p-5">
-                  <p className="text-amber font-medium text-sm mb-2">Temporada Baja</p>
+                  <p className="text-amber-pale font-medium text-sm mb-2">Temporada Baja</p>
                   <p className="text-2xl font-bold mb-1">{cancelLowHours} hs</p>
                   <p className="text-sm text-white/70">Cancelación gratuita hasta {cancelLowHours} hs antes del check-in.</p>
                 </div>
                 <div className="bg-white/10 rounded-xl p-5">
-                  <p className="text-amber font-medium text-sm mb-2">Promociones</p>
+                  <p className="text-amber-pale font-medium text-sm mb-2">Promociones</p>
                   <p className="text-2xl font-bold mb-1">No reemb.</p>
                   <p className="text-sm text-white/70">Las tarifas promocionales no son reembolsables.</p>
                 </div>

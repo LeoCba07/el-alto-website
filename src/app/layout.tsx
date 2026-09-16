@@ -219,7 +219,7 @@ export default async function RootLayout({
         )}
       </head>
       <body
-        className={`${geistSans.variable} ${merriweather.variable} antialiased`}
+        className={`${geistSans.variable} ${merriweather.variable} antialiased flex flex-col min-h-dvh`}
       >
         {/* Every WhatsApp link reads the Studio's number from here. */}
         <WhatsAppNumberProvider number={config?.numeroWhatsapp}>
@@ -230,7 +230,8 @@ export default async function RootLayout({
             Saltar al contenido principal
           </a>
           <Header />
-          <main id="main-content">{children}</main>
+          {/* flex-1 keeps the footer at the bottom of the screen on short pages. */}
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer config={config} />
           <WhatsAppButton />
           <ChatBot respuestas={respuestas} siteConfig={config} tarifas={tarifas} unidades={unidades} />

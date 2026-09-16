@@ -114,7 +114,7 @@ export default function LocationTeaser() {
 
                 {/* Tag */}
                 <div className="absolute top-3 left-3">
-                  <span className="text-xs font-medium text-white bg-amber/80 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                  <span className="text-xs font-medium text-text-dark bg-amber-light/90 backdrop-blur-sm px-2.5 py-1 rounded-full">
                     {attraction.tag}
                   </span>
                 </div>
