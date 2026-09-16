@@ -14,7 +14,7 @@ export default function PageCTA() {
       </p>
       <Link
         href="/contacto"
-        className="inline-flex items-center gap-2 bg-amber text-text-dark px-8 py-4 rounded-full font-semibold text-lg hover:bg-amber-dark transition-colors shadow-lg"
+        className="inline-flex items-center gap-2 bg-amber-light text-text-dark px-8 py-4 rounded-full font-semibold text-lg hover:bg-amber-pale transition-colors shadow-lg"
       >
         <SiWhatsapp className="w-5 h-5" />
         Consultar disponibilidad

@@ -218,7 +218,7 @@ export default async function NormasPage() {
           </p>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 bg-amber text-text-dark px-8 py-4 rounded-full font-semibold hover:bg-amber-dark transition-all hover:shadow-lg hover:shadow-amber/25"
+            className="inline-flex items-center gap-2 bg-amber-light text-text-dark px-8 py-4 rounded-full font-semibold hover:bg-amber-pale transition-all hover:shadow-lg hover:shadow-amber/25"
           >
             <HiOutlineChatBubbleLeftRight className="w-5 h-5" />
             Contactanos

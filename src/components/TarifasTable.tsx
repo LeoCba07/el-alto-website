@@ -78,7 +78,7 @@ export default function TarifasTable({ tarifas, temporada }: TarifasTableProps) 
           </p>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 bg-amber text-text-dark px-6 py-3 rounded-full font-semibold mt-4 hover:bg-amber-dark transition-colors"
+            className="inline-flex items-center gap-2 bg-amber-light text-text-dark px-6 py-3 rounded-full font-semibold mt-4 hover:bg-amber-pale transition-colors"
           >
             <SiWhatsapp className="w-5 h-5" />
             Consultar tarifas
