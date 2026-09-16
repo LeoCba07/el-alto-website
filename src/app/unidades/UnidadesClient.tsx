@@ -264,7 +264,7 @@ export default function UnidadesClient({ unidades }: UnidadesClientProps) {
 
                 <Link
                   href="/contacto"
-                  className="flex items-center justify-center gap-2 w-full bg-amber text-text-dark py-4 rounded-full font-semibold hover:bg-amber-dark transition-colors"
+                  className="flex items-center justify-center gap-2 w-full bg-amber-light text-text-dark py-4 rounded-full font-semibold hover:bg-amber-pale transition-colors"
                 >
                   <SiWhatsapp className="w-5 h-5" />
                   Consultar disponibilidad
