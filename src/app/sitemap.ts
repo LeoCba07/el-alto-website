@@ -61,5 +61,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    {
+      url: `${baseUrl}/privacidad`,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
   ]
 }

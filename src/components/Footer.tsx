@@ -115,12 +115,17 @@ export default function Footer({ config }: FooterProps) {
           </a>
         </div>
 
-        {/* Bottom row: Copyright + Legajo + Dev credit */}
-        <div className="pt-4 border-t border-cream/10 flex flex-col sm:flex-row justify-center items-center gap-x-6 gap-y-1 text-xs text-cream/70">
+        {/* Bottom row: Copyright + Legajo + Privacidad + Dev credit. Stacked below lg,
+            where the four items don't fit on one line (same breakpoint as the top row). */}
+        <div className="pt-4 border-t border-cream/10 flex flex-col lg:flex-row justify-center items-center gap-x-6 gap-y-1 text-xs text-cream/70">
           <p>© {currentYear} Complejo El Alto</p>
-          <span className="hidden sm:inline">·</span>
+          <span className="hidden lg:inline">·</span>
           <p>Legajo N°272/07 — Agencia Córdoba Turismo</p>
-          <span className="hidden sm:inline">·</span>
+          <span className="hidden lg:inline">·</span>
+          <Link href="/privacidad" className="hover:text-amber transition-colors">
+            Privacidad
+          </Link>
+          <span className="hidden lg:inline">·</span>
           <p>
             Web desarrollada por{' '}
             <a
