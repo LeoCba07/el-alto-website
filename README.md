@@ -50,10 +50,11 @@ flowchart LR
 - **A lean Studio.** Only what the owner actually changes is editable: prices, units, photos, videos and FAQs. Content that never changes lives in code, so there are no dead fields to confuse the owner or drift from what the site shows.
 - **A scripted assistant, not an AI chatbot.** Fixed answers and quick replies, all ending in WhatsApp. The prices and units answers are built from the same Sanity documents as the pages, so they can't contradict them.
 - **Everything in the HTML.** FAQs and unit details are server-rendered, even where they're collapsed on screen, so search engines and AI assistants can read them.
-- **Left out on purpose:** online payments, guest accounts and an automated test suite. Every PR runs lint, a typecheck and a production build, and the guest flows are tested by hand on phones.
+- **Left out on purpose:** online payments and guest accounts. End-to-end tests cover the main guest flows; everything else is still tested by hand on phones.
+
 ## Tech Stack
 
-Next.js 16 · TypeScript · Tailwind CSS 4 · Sanity · Vercel · Google Analytics 4
+Next.js 16 · TypeScript · Tailwind CSS 4 · Sanity · Vercel · Google Analytics 4 · Playwright
 
 ## Screenshots
 
@@ -91,7 +92,22 @@ npm run dev
 
 ## Deploys
 
-`main` deploys straight to production on Vercel. Work goes on a branch, which gets a Vercel preview, and reaches `main` only once it has been reviewed. Every PR also runs lint, a typecheck and a production build in GitHub Actions ([`ci.yml`](.github/workflows/ci.yml)).
+`main` deploys straight to production on Vercel. Work goes on a branch, which gets a Vercel preview, and reaches `main` only once it has been reviewed. Every PR also runs lint, a typecheck and a production build ([`ci.yml`](.github/workflows/ci.yml)), plus the Playwright tests in Chromium, Firefox and WebKit ([`playwright.yml`](.github/workflows/playwright.yml)).
+
+## Testing
+
+End-to-end tests with [Playwright](https://playwright.dev), run on every PR against the live site.
+
+- **Smoke tests:** every public page loads (200) and shows a heading.
+- **Contact form:** filling it in opens WhatsApp with the guest's name and dates already written. Nothing is ever sent.
+- **Date validation:** past check-in dates, check-out before check-in, same-day stays and a missing check-out are rejected before reaching WhatsApp.
+
+Dates are calculated from today, so the tests don't break as time passes. The tests were also checked to fail when they should, to avoid tests that pass without testing anything.
+
+```bash
+npx playwright test          # all browsers
+npx playwright test --ui     # interactive mode
+```
 
 ## Structure
 ```
@@ -99,6 +115,7 @@ src/
 ├── app/        # Pages (App Router)
 ├── components/ # React components
 └── sanity/     # Schemas & queries
+e2e/            # Playwright end-to-end tests
 scripts/        # One-off Sanity seed & migration scripts
 docs/           # Session logs: what changed, why, and what's left
 ```
@@ -133,4 +150,5 @@ The owner edits content in Sanity Studio (`/studio`):
 
 ---
 
-Built by [LeoCba07](https://github.com/LeoCba07)
+The code is © [LeoCba07](https://github.com/LeoCba07). All rights reserved; it's shared here as a portfolio piece.
+The name, content, photos and branding belong to Complejo El Alto. 
