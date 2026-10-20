@@ -26,11 +26,20 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'https://www.complejoelalto.com.ar',
+    baseURL: process.env.BASE_URL ?? 'https://www.complejoelalto.com.ar',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
+
+  webServer: process.env.CI
+    ? {
+        command: 'npm run start',
+        url: 'http://localhost:3000',
+        reuseExistingServer: false,
+        timeout: 120_000,
+      }
+    : undefined,
 
   /* Configure projects for major browsers */
   projects: [

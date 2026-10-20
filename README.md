@@ -96,7 +96,7 @@ npm run dev
 
 ## Testing
 
-End-to-end tests with [Playwright](https://playwright.dev), run on every PR against the live site.
+End-to-end tests with [Playwright](https://playwright.dev), run on every PR against a production build of the branch.
 
 - **Smoke tests:** every public page loads (200) and shows a heading.
 - **Contact form:** filling it in opens WhatsApp with the guest's name and dates already written. Nothing is ever sent.
