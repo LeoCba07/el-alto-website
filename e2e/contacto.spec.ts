@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
 
+function DaysFromToday(days: number): string {
+    const date = new Date(); // hoy
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10);
+}
 
 test('has title', async ({ page }) => {
     // Go to El Alto website
@@ -43,10 +48,10 @@ test('contact form fills and opens WhatsApp with the message', async ({ page }) 
     await expect(nombre).toHaveValue('Leo');
 
     // Fill date of check-in
-    await page.getByRole('textbox', { name: 'Fecha de entrada' }).fill('2026-10-20');
+    await page.getByRole('textbox', { name: 'Fecha de entrada' }).fill(DaysFromToday(7));
 
     // Fill date of check-out
-    await page.getByRole('textbox', { name: 'Fecha de salida' }).fill('2026-10-28');
+    await page.getByRole('textbox', { name: 'Fecha de salida' }).fill(DaysFromToday(10));
 
     // Write optional textbox
     await page.getByRole('textbox', { name: 'Consulta adicional (opcional)' }).fill('aaa');
