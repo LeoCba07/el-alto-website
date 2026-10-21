@@ -124,7 +124,19 @@ test('contact page rejects an empty check-out date', async ({ page }) => {
 
     await page.getByRole('button', { name: 'Continuar a WhatsApp' }).click();
 
-    await expect(page.getByText('Selecciona la fecha de salida')).toBeVisible();
+    await expect(page.getByText('Seleccioná la fecha de salida')).toBeVisible();
+});
+
+test('contact page rejects an empty check-in date', async ({ page }) => {
+    await page.goto('/contacto');
+
+    await page.getByRole('textbox', { name: 'Nombre' }).fill('Leo');
+
+    await page.getByRole('textbox', { name: 'Fecha de salida' }).fill(daysFromToday(10));
+
+    await page.getByRole('button', { name: 'Continuar a WhatsApp' }).click();
+
+    await expect(page.getByText('Seleccioná la fecha de entrada')).toBeVisible();
 });
 
 test('contact page rejects an empty name field', async ({ page }) => {
@@ -136,7 +148,7 @@ test('contact page rejects an empty name field', async ({ page }) => {
 
     await page.getByRole('button', { name: 'Continuar a WhatsApp' }).click();
 
-    await expect(page.getByText('Ingresa tu nombre')).toBeVisible();
+    await expect(page.getByText('Ingresá tu nombre')).toBeVisible();
 });
 
 test('contact page rejects a check-out before check-in', async ({ page }) => {

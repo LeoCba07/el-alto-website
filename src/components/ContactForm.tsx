@@ -49,13 +49,13 @@ export default function ContactForm({ checkInTime, checkOutTime }: { checkInTime
     const newErrors: Record<string, string> = {}
 
     if (!nombre.trim()) {
-      newErrors.nombre = 'Ingresa tu nombre'
+      newErrors.nombre = 'Ingresá tu nombre'
     }
     if (!checkIn) {
-      newErrors.checkIn = 'Selecciona la fecha de entrada'
+      newErrors.checkIn = 'Seleccioná la fecha de entrada'
     }
     if (!checkOut) {
-      newErrors.checkOut = 'Selecciona la fecha de salida'
+      newErrors.checkOut = 'Seleccioná la fecha de salida'
     }
     if (checkIn && checkOut && new Date(checkIn) >= new Date(checkOut)) {
       newErrors.checkOut = 'La fecha de salida debe ser posterior a la entrada'
