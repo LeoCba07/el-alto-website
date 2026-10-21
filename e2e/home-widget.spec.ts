@@ -45,3 +45,22 @@ test('opens WhatsApp with generic greeting when there are no dates', async ({ pa
     const message = new URL(page1.url()).searchParams.get('text');
     expect(message).toBe(`¡Hola! Quisiera consultar disponibilidad en Complejo El Alto.`);
 });
+
+test('does not open WhatsApp and shows an error for a past check-in', async ({ page }) => {
+    // Listener for popups
+    let popups = 0;
+    page.on('popup', () => {
+        popups++;
+    });
+
+    // Define and fill past check-in date
+    const checkIn = daysFromToday(-1);
+    const entrada = page.getByLabel('Entrada');
+    await entrada.fill(checkIn);
+
+    await page.getByRole('button', { name: 'Consultar' }).click();
+
+    // Check for error message and popups to be 0
+    await expect(page.getByText('La fecha de entrada no puede ser en el pasado')).toBeVisible();
+    expect(popups).toBe(0);
+});
