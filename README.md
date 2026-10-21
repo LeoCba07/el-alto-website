@@ -101,6 +101,7 @@ End-to-end tests with [Playwright](https://playwright.dev), run on every PR agai
 - **Smoke tests:** every public page loads (200) and shows a heading.
 - **Contact form:** filling it in opens WhatsApp with the guest's name and dates already written. Nothing is ever sent.
 - **Date validation:** past check-in dates, check-out before check-in, same-day stays and a missing check-out are rejected before reaching WhatsApp.
+- **Enquiry widget (home page):** with both dates it opens WhatsApp with the dates and guest count; with no dates, a generic greeting. A past check-in shows an error and WhatsApp doesn't open.
 
 Dates are calculated from today, so the tests don't break as time passes. The tests were also checked to fail when they should, to avoid tests that pass without testing anything.
 
