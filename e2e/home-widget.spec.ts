@@ -64,3 +64,51 @@ test('does not open WhatsApp and shows an error for a past check-in', async ({ p
     await expect(page.getByText('La fecha de entrada no puede ser en el pasado')).toBeVisible();
     expect(popups).toBe(0);
 });
+
+test('does not open WhatsApp and shows an error for a same-day check-out', async ({ page }) => {
+    // Listener for popups
+    let popups = 0;
+    page.on('popup', () => {
+        popups++;
+    });
+
+    // Define and fill check-in date
+    const checkIn = daysFromToday(7);
+    const entrada = page.getByLabel('Entrada');
+    await entrada.fill(checkIn);
+
+    // Define and fill check-out date on same day as check-in
+    const checkOut = daysFromToday(7);
+    const salida = page.getByLabel('Salida');
+    await salida.fill(checkOut);
+
+    await page.getByRole('button', { name: 'Consultar' }).click();
+
+    // Check for error message and popups to be 0
+    await expect(page.getByText('La salida tiene que ser posterior a la entrada')).toBeVisible();
+    expect(popups).toBe(0);
+});
+
+test('does not open WhatsApp and shows an error for a check-out date before check-in', async ({ page }) => {
+    // Listener for popups
+    let popups = 0;
+    page.on('popup', () => {
+        popups++;
+    });
+
+    // Define and fill check-in date
+    const checkIn = daysFromToday(7);
+    const entrada = page.getByLabel('Entrada');
+    await entrada.fill(checkIn);
+
+    // Define and fill check-out date 2 days before check-in
+    const checkOut = daysFromToday(5);
+    const salida = page.getByLabel('Salida');
+    await salida.fill(checkOut);
+
+    await page.getByRole('button', { name: 'Consultar' }).click();
+
+    // Check for error message and popups to be 0
+    await expect(page.getByText('La salida tiene que ser posterior a la entrada')).toBeVisible();
+    expect(popups).toBe(0);
+});
