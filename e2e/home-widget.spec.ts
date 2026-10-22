@@ -112,3 +112,47 @@ test('does not open WhatsApp and shows an error for a check-out date before chec
     await expect(page.getByText('La salida tiene que ser posterior a la entrada')).toBeVisible();
     expect(popups).toBe(0);
 });
+
+test('does not open WhatsApp and shows an error for a past check-out with no check-in', async ({ page }) => {
+    // Known bug issue #21: a check-out on or before today with no check-in is not rejected
+    test.fail();
+
+    // Listener for popups
+    let popups = 0;
+    page.on('popup', () => {
+        popups++;
+    });
+
+    // Define and fill in past check-out date
+    const checkOut = daysFromToday(-1);
+    const salida = page.getByLabel('Salida');
+    await salida.fill(checkOut);
+
+    await page.getByRole('button', { name: 'Consultar' }).click();
+
+    // Check for error message and popups to be 0
+    await expect(page.getByText('La fecha de salida debe ser a partir de mañana')).toBeVisible();
+    expect(popups).toBe(0);
+});
+
+test('does not open WhatsApp and shows an error for a check-out date set to today with no check-in', async ({ page }) => {
+    // Known bug issue #21: a check-out on or before today with no check-in is not rejected
+    test.fail();
+
+    // Listener for popups
+    let popups = 0;
+    page.on('popup', () => {
+        popups++;
+    });
+
+    // Define and fill in check-out date to be today
+    const checkOut = daysFromToday(0);
+    const salida = page.getByLabel('Salida');
+    await salida.fill(checkOut);
+
+    await page.getByRole('button', { name: 'Consultar' }).click();
+
+    // Check for error message and popups to be 0
+    await expect(page.getByText('La fecha de salida debe ser a partir de mañana')).toBeVisible();
+    expect(popups).toBe(0);
+});
