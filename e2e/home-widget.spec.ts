@@ -65,7 +65,7 @@ test('does not open WhatsApp and shows an error for a past check-in', async ({ p
     expect(popups).toBe(0);
 });
 
-test('shows an error for a same-day check-out', async ({ page }) => {
+test('does not open WhatsApp and shows an error for a same-day check-out', async ({ page }) => {
     // Listener for popups
     let popups = 0;
     page.on('popup', () => {
@@ -89,7 +89,7 @@ test('shows an error for a same-day check-out', async ({ page }) => {
     expect(popups).toBe(0);
 });
 
-test('shows an error for a check-out date before check-in', async ({ page }) => {
+test('does not open WhatsApp and shows an error for a check-out date before check-in', async ({ page }) => {
     // Listener for popups
     let popups = 0;
     page.on('popup', () => {
