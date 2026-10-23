@@ -30,6 +30,10 @@ export class HomeWidget {
         await this.checkOut.fill(date);
     }
 
+    async submit() {
+        await this.submitButton.click();
+    }
+
     async submitAndGetMessage(): Promise <string | null> {
         const page1Promise = this.page.waitForEvent('popup');
         await this.submitButton.click();
