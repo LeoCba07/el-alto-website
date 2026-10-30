@@ -65,7 +65,7 @@ test('does not open WhatsApp and shows an error for a same-day check-out', async
     // Define and fill check-out date on same day as check-in
     const checkOut = daysFromToday(7);
     await widget.fillCheckOut(checkOut);
-    
+
     // Check for error message and popups to be 0
     await widget.submit();
     await expect(widget.page.getByText('La salida tiene que ser posterior a la entrada')).toBeVisible();
@@ -96,9 +96,6 @@ test('does not open WhatsApp and shows an error for a check-out date before chec
 
 // B3
 test('does not open WhatsApp and shows an error for a past check-out with no check-in', async () => {
-    // Known bug issue #21: a check-out on or before today with no check-in is not rejected
-    test.fail();
-
     // Listener for popups
     let popups = 0;
     widget.page.on('popup', () => {
@@ -117,9 +114,6 @@ test('does not open WhatsApp and shows an error for a past check-out with no che
 
 // B4
 test('does not open WhatsApp and shows an error for a check-out date set to today with no check-in', async () => {
-    // Known bug issue #21: a check-out on or before today with no check-in is not rejected
-    test.fail();
-
     // Listener for popups
     let popups = 0;
     widget.page.on('popup', () => {
@@ -134,4 +128,17 @@ test('does not open WhatsApp and shows an error for a check-out date set to toda
     await widget.submit();
     await expect(widget.page.getByText('La fecha de salida debe ser a partir de mañana')).toBeVisible();
     expect(popups).toBe(0);
+});
+
+// B5
+test('opens WhatsApp with only the check-out for a check-out tomorrow with no check-in', async () => {
+
+    // Define and fill in check-out date to be tomorrow
+    const checkOut = daysFromToday(1);
+    await widget.fillCheckOut(checkOut);
+    const message = await widget.submitAndGetMessage();
+
+    // Check WhatsApp message on URL has only Salida date and no Check-in
+    expect(message).toContain(`Salida: ${toArgentineDate(checkOut)}`);
+    expect(message).not.toContain('Entrada:');
 });

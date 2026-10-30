@@ -77,6 +77,10 @@ export default function BookingWidget() {
       fail('La salida tiene que ser posterior a la entrada')
       return
     }
+    if (!checkIn && checkOut && checkOut <= today) {
+      fail('La fecha de salida debe ser a partir de mañana')
+      return
+    }
     setError('')
 
     const dates = [
